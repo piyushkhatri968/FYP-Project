@@ -1,14 +1,21 @@
-require("dotenv").config();
-const express = require("express");
+import dotenv from "dotenv";
+dotenv.config();
+import cors from "cors";
+import express from "express";
 const app = express();
-// const port = process.env.PORT;
+const PORT = process.env.PORT || 8080;
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // Your frontend URL
+    credentials: true, // Allow credentials (cookies)
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("FYP PROJECT");
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}!`);
-// });
-
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
