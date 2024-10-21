@@ -61,7 +61,7 @@ const Login = () => {
             <div>
               <Label value="Your email" className="h-64" />
               <TextInput
-                type="text"
+                type="email"
                 placeholder="name@company.com"
                 id="email"
                 onChange={handleInputChange}
