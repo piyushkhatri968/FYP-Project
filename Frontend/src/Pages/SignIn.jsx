@@ -11,6 +11,7 @@ import {
 const Login = () => {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const [uiError, setUiError] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,35 +21,26 @@ const Login = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if (!formData.usernameOrEmail || !formData.password) {
+    setUiError(null);
+    if (!formData.email || !formData.password) {
+      setUiError("Please fill out all fields.");
       return dispatch(signInFailure("Please fill out all fields."));
     }
     try {
       dispatch(signInStart());
-      const res = await fetch(
-        "https://fyp-project-tiest-backend.vercel.app/api/auth/signin",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.usernameOrEmail.includes("@")
-              ? undefined
-              : formData.usernameOrEmail, // Use as username if not an email
-            email: formData.usernameOrEmail.includes("@")
-              ? formData.usernameOrEmail
-              : undefined, // Use as email if it's an email
-            password: formData.password,
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:8080/api/auth/signin", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await res.json();
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
+      if (!res.ok) {
+        setUiError(data.message);
+        return dispatch(signInFailure(data.message));
       }
 
       if (res.ok) {
@@ -56,7 +48,8 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      setUiError(error.message);
+      return dispatch(signInFailure(error.message));
     }
   };
 
@@ -67,13 +60,14 @@ const Login = () => {
         <div className="flex-1">
           <form className="flex flex-col gap-4" onSubmit={submitHandler}>
             <div>
-              <Label value="Your Username/Email" className="h-64" />
+              <Label value="Your Email" className="h-64" />
               <TextInput
-                type="text"
-                placeholder="Enter username or email"
-                id="usernameOrEmail"
+                type="email"
+                placeholder="abc@company.com"
+                id="email"
                 onChange={handleInputChange}
                 className="mt-1"
+                required
               />
             </div>
             <div>
@@ -84,6 +78,7 @@ const Login = () => {
                 id="password"
                 onChange={handleInputChange}
                 className="mt-1"
+                required
               />
             </div>
             <Button gradientDuoTone="purpleToPink" type="submit">
@@ -103,9 +98,9 @@ const Login = () => {
               Sign Up
             </Link>
           </div>
-          {errorMessage && (
+          {uiError && (
             <Alert className="mt-5" color="failure">
-              {errorMessage}
+              {uiError}
             </Alert>
           )}
         </div>

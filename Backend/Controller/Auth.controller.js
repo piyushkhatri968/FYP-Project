@@ -57,16 +57,10 @@ export const signup = async (req, res, next) => {
 };
 
 export const signin = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const validUser = await User.findOne({
-      // it will check either username is given or email
-      $or: [
-        { email: email?.trim().toLowerCase() },
-        { username: username?.trim() },
-      ],
-    });
+    const validUser = await User.findOne({ email });
 
     if (!validUser) {
       return next(errorHandler(404, "User not found"));

@@ -11,6 +11,7 @@ import {
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const [uiError, setUiError] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,40 +21,41 @@ const SignUp = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setUiError(null);
     if (
       !formData.fullName ||
       !formData.username ||
       !formData.email ||
       !formData.password
     ) {
+      setUiError("Please fill out all fields.");
       return dispatch(signInFailure("Please fill out all fields."));
     }
     try {
       dispatch(signInStart());
-      const res = await fetch(
-        "https://fyp-project-tiest-backend.vercel.app/api/auth/signup",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await res.json();
-      if (data.success === false) {
+      if (!res.ok) {
+        setUiError(data.errors[0]);
         return dispatch(signInFailure(data.message));
       }
 
       if (res.ok) {
+        setUiError(null);
         dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      setUiError(error.message);
+      return dispatch(signInFailure(error.message));
     }
   };
 
@@ -119,9 +121,9 @@ const SignUp = () => {
               Sign In
             </Link>
           </div>
-          {errorMessage && (
+          {uiError && (
             <Alert className="mt-5" color="failure">
-              {errorMessage}
+              {uiError}
             </Alert>
           )}
         </div>

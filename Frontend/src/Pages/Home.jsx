@@ -1,27 +1,26 @@
-import { Button } from "flowbite-react";
-import React from "react";
+import { Button, Spinner } from "flowbite-react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signoutsuccess } from "../Redux/User/UserSlice";
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSignOut = async () => {
     try {
-      const res = await fetch(
-        "https://fyp-project-tiest-backend.vercel.app/api/auth/signout",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const res = await fetch("http://localhost:8080/api/auth/signout", {
+        method: "POST",
+        credentials: "include",
+      });
       const data = await res.json();
       if (!res.ok) {
         console.log(data);
       } else {
         dispatch(signoutsuccess());
-        navigate("/login");
+        navigate("/signin");
       }
     } catch (error) {
       console.log(error);
@@ -35,8 +34,20 @@ const Home = () => {
           <p className="text-center mt-10 font-bold text-3xl">
             Welcome {currentUser.fullName} !
           </p>
-          <Button className="mx-auto mt-5" onClick={handleSignOut}>
-            Sign Out
+          <Button
+            className="mx-auto mt-5"
+            gradientDuoTone="purpleToPink"
+            type="submit"
+            onClick={handleSignOut}
+          >
+            {loading ? (
+              <>
+                <Spinner size="sm" />
+                <span className="pl-3">Signing out ...</span>
+              </>
+            ) : (
+              "Sign Out"
+            )}
           </Button>
         </div>
       )}
