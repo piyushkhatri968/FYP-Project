@@ -21,7 +21,7 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    if (!formData.usernameOrEmail || !formData.password) {
       return dispatch(signInFailure("Please fill out all fields."));
     }
     try {
@@ -34,7 +34,15 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            username: formData.usernameOrEmail.includes("@")
+              ? undefined
+              : formData.usernameOrEmail, // Use as username if not an email
+            email: formData.usernameOrEmail.includes("@")
+              ? formData.usernameOrEmail
+              : undefined, // Use as email if it's an email
+            password: formData.password,
+          }),
         }
       );
 
@@ -59,11 +67,11 @@ const Login = () => {
         <div className="flex-1">
           <form className="flex flex-col gap-4" onSubmit={submitHandler}>
             <div>
-              <Label value="Your email" className="h-64" />
+              <Label value="Your Username/Email" className="h-64" />
               <TextInput
-                type="email"
-                placeholder="name@company.com"
-                id="email"
+                type="text"
+                placeholder="Enter username or email"
+                id="usernameOrEmail"
                 onChange={handleInputChange}
                 className="mt-1"
               />
