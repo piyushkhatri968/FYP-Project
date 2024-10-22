@@ -32,7 +32,7 @@ const Home = () => {
       {currentUser && (
         <div className="text-center">
           <p className="text-center mt-10 font-bold text-3xl">
-            Welcome {currentUser.fullName} !
+            Welcome {currentUser.name} !
           </p>
           <Button
             className="mx-auto mt-5"
