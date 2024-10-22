@@ -75,7 +75,7 @@ const SignUp = () => {
           <h1 className="text-4xl md:text-5xl font-bold">Sign Up</h1>
           <div className="flex justify-center items-center gap-6 border border-gray-500 max-w-60 py-3 px-4 rounded-full mx-auto">
             <Link
-              to={"/home"}
+              to={"/"}
               className="hover:text-red-600 transition-all duration-500 font-bold"
             >
               Home
