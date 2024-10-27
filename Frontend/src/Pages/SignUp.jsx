@@ -10,6 +10,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../Redux/User/UserSlice.js";
+import SocialAuth from "../Components/SocialAuth.jsx";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -148,6 +149,7 @@ const SignUp = () => {
                   <Alert color="failure">{uiError}</Alert>
                 </div>
               )}
+              <SocialAuth />
               <div className="flex items-center justify-center gap-2">
                 <span className="text-gray-600 text-[17px]">
                   Have an Account?{" "}
