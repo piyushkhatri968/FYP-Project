@@ -4,10 +4,12 @@ import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn";
 import PrivateRoute from "./Components/PrivateRoute";
 import SignUp from "./Pages/SignUp";
+import ScrollToTop from "./Components/ScrollToTop";
 const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
