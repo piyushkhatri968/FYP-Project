@@ -64,7 +64,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center fade-in">
       <div className="h-[50vh] sm:h-[60vh] bg-[#070e1f] bg-opacity-80 relative flex justify-center items-center text-white">
         <img
           src={signUpImg}
