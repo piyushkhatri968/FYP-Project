@@ -6,14 +6,13 @@ import PrivateRoute from "./Components/PrivateRoute";
 import SignUp from "./Pages/SignUp";
 import ScrollToTop from "./Components/ScrollToTop";
 import Footer from "./Footer";
+import Navbar from "./Components/Navbar";
 const App = () => {
   return (
     <div>
-      {/* hello */}
-      {/* Piyush */}
-      {/* testing */}
       <BrowserRouter>
         <ScrollToTop />
+        <Navbar />
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
