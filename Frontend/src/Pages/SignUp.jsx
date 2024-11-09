@@ -50,7 +50,7 @@ const SignUp = () => {
       if (!res.ok) {
         console.log(data.message);
         if (data.message === "Error in schemaValidation") {
-          return setUiError("Password must be at least 6 characters");
+          return setUiError("Password must be atleast 6 characters");
         }
         setUiError(data.message);
         return dispatch(signInFailure(data.message));
