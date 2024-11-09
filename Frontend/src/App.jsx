@@ -5,6 +5,7 @@ import SignIn from "./Pages/SignIn";
 import PrivateRoute from "./Components/PrivateRoute";
 import SignUp from "./Pages/SignUp";
 import ScrollToTop from "./Components/ScrollToTop";
+import Footer from "./Footer";
 const App = () => {
   return (
     <div>
@@ -20,7 +21,9 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
+    
     </div>
   );
 };
