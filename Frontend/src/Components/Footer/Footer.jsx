@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
+import AboutPage from "../../Pages/About/AboutPage";
 function Footer() {
   return (
     <footer className="footer">
@@ -18,15 +19,15 @@ function Footer() {
               <Link to="#">
                 <i className="fab fa-facebook" />
               </Link>
-              <a to="#">
+              <Link to="#">
                 <i className="fab fa-twitter" />
-              </a>
-              <a to="#">
+              </Link>
+              <Link to="#">
                 <i className="fab fa-pinterest" />
-              </a>
-              <a to="#">
+              </Link>
+              <Link to="#">
                 <i className="fab fa-linkedin" />
-              </a>
+              </Link>
             </div>
           </div>
           {/* For Candidate Links */}
@@ -58,22 +59,22 @@ function Footer() {
             <h3>Quick Links</h3>
             <ul>
               <li>
-                <a to="#">Home</a>
+                <Link to="/">Home</Link>
               </li>
               <li>
-                <a to="#">About</a>
+                <Link to={"/about"}>About</Link>
               </li>
               <li>
-                <a to="#">FAQ</a>
+                <Link to="#">FAQ</Link>
               </li>
               <li>
-                <a to="#">Pricing</a>
+                <Link to="#">Pricing</Link>
               </li>
               <li>
-                <a to="#">Privacy</a>
+                <Link to="#">Privacy</Link>
               </li>
               <li>
-                <a to="#">Contact</a>
+                <Link to={"/contact"}>Contact</Link>
               </li>
             </ul>
           </div>

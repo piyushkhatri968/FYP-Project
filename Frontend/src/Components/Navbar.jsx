@@ -12,7 +12,17 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 bg-[#010C29] text-white h-[5rem] position-relative">
       <div className="logo">Logo</div>
-      <div className="">Options</div>
+      <div className="flex gap-10">
+        <Link to="/about" className="font-semibold">
+          About
+        </Link>
+        <Link to="/jobs" className="font-semibold">
+          Jobs
+        </Link>
+        <Link to="/contact" className="font-semibold">
+          Contact Us
+        </Link>
+      </div>
       {currentUser ? (
         <div onClick={handleModal}>
           <img
