@@ -10,6 +10,7 @@ import {
 } from "../Redux/User/UserSlice";
 import SocialAuth from "../Components/SocialAuth.jsx";
 import Theme from "../Components/Theme.jsx";
+import signUpImg from "../assets/Images/signUp.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
@@ -59,7 +60,7 @@ const Login = () => {
   return (
     <div className="text-center fade-in">
       {/* Them section */}
-      <Theme />
+      <Theme pageName="Sign In" heroImage={signUpImg} />
       <div>
         {/* Sign Up form */}
         <div>
