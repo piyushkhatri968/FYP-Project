@@ -1,36 +1,80 @@
 import React, { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const [openModal, setOpenModal] = useState(false);
+  const [openProfileModal, setProfileOpenModal] = useState(false);
+  const location = useLocation();
 
-  const handleModal = () => {
-    setOpenModal(!openModal);
+  const handleProfileModal = () => {
+    setProfileOpenModal(!openProfileModal);
   };
 
   return (
-    <nav className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 bg-[#010C29] text-white h-[5rem] position-relative">
-      <div className="logo">Logo</div>
-      <div className="flex gap-10">
-        <Link to="/about" className="font-semibold">
-          About
-        </Link>
-        <Link to="/jobs" className="font-semibold">
-          Jobs
-        </Link>
-        <Link to="/contact" className="font-semibold">
-          Contact Us
-        </Link>
+    <nav className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 bg-[#010C29] text-white h-[5rem] position-fixed">
+      <div className="logo">
+        <Link to="/">Logo</Link>
+      </div>
+      <div>
+        <ul className="flex gap-10">
+          <li>
+            <Link
+              to="/about"
+              className={`font-semibold ${
+                location.pathname === "/about" ? "text-red-600" : ""
+              }`}
+            >
+              About
+            </Link>
+          </li>
+          <li className=" navbar-group font-semibold flex items-center gap-2 cursor-pointer relative">
+            <span>Jobs</span>
+            <span>
+              <IoIosArrowDown className="text-md" />
+            </span>
+            {/* Dropdown menu */}
+            <ul className="navbar-group-part absolute w-[15rem] mt-3 -left-4 top-full z-10 bg-[#061742] text-white shadow-lg hidden">
+              <li>
+                <Link
+                  to="/find-job"
+                  className={`text-sm block px-4 py-2 font-normal text-white hover:bg-[#657294] border-b border-dashed border-gray-600 ${
+                    location.pathname === "/find-job" ? "bg-[#657294]" : ""
+                  }`}
+                >
+                  Find A Job
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/post-job"
+                  className="text-sm block px-4 py-2 font-normal text-white hover:bg-[#657294]"
+                >
+                  Post A Job
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <Link
+              to="/contact"
+              className={`font-semibold ${
+                location.pathname === "/contact" ? "text-red-600" : ""
+              }`}
+            >
+              Contact Us
+            </Link>
+          </li>
+        </ul>
       </div>
       {currentUser ? (
-        <div onClick={handleModal}>
+        <div>
           <img
             src={currentUser.profilePicture}
             alt="user profile"
             className="w-10 h-10 rounded-full"
           />
-          {openModal && <div className="absolute">{currentUser.name}</div>}
         </div>
       ) : (
         <div className="flex gap-3 items-center">

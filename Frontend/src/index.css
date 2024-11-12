@@ -13,8 +13,45 @@
   }
 }
 
+/* navbar */
+
+.navbar-group::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  z-index: 1;
+}
+
+.navbar-group:hover .navbar-group-part,
+.navbar-group:hover::before {
+  display: block;
+}
 
 
+@keyframes dropdown-fade-in {
+  from {
+    transform: translateY(40px);
+    opacity: 0; 
+  }
+  to {
+    transform: translateY(0); 
+    opacity: 1;
+  }
+}
 
 
+.navbar-group-part {
+  display: none; /* Initially hidden */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease, transform 1s ease;
+}
 
+
+.navbar-group:hover .navbar-group-part {
+  display: block;
+  animation: dropdown-fade-in 0.3s ease forwards;
+}

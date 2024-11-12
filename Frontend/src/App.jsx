@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css"
+import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn";
@@ -12,24 +12,26 @@ import AboutPage from "./Pages/About/AboutPage";
 import ContactPage from "./Pages/Contact/ContactPage";
 import JobsPage from "./Pages/Jobs/JobsPage";
 import BlogPage from "./Pages/Blogs/BlogPage";
+import FindAJob from "./Pages/Jobs/FindAJob";
 
 const App = () => {
   return (
-    <div>
+    <div className="fade-in">
       <BrowserRouter>
         <ScrollToTop />
         <Navbar />
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
-          </Route> 
+          </Route>
 
-         <Route path="about"  element={<AboutPage/>}   />
-         <Route path="/contact"  element={<ContactPage/>} />
-         <Route path="/jobs" element={<JobsPage/>}  />
-         <Route path="/blog" element={<BlogPage/>}  />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/find-job" element={<FindAJob />} />
         </Routes>
         <Footer />
       </BrowserRouter>
