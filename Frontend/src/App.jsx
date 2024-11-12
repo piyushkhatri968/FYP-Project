@@ -10,7 +10,6 @@ import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar";
 import AboutPage from "./Pages/About/AboutPage";
 import ContactPage from "./Pages/Contact/ContactPage";
-import JobsPage from "./Pages/Jobs/JobsPage";
 import BlogPage from "./Pages/Blogs/BlogPage";
 import FindAJob from "./Pages/Jobs/FindAJob";
 
@@ -27,7 +26,6 @@ const App = () => {
 
           <Route path="about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/jobs" element={<JobsPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />

@@ -6,11 +6,11 @@ const Theme = (props) => {
   return (
     //? For Main name pass the prop as 'pageName' and for the image "heroImage"
 
-    <div className="h-[50vh] sm:h-[60vh] bg-[#070e1f] bg-opacity-80 relative flex justify-center items-center text-white">
+    <div className="h-[40vh] sm:h-[50vh] bg-[#070e1f] bg-opacity-80 relative flex justify-center items-center text-white">
       <img
         src={props.heroImage}
         alt=""
-        className="absolute top-0 -z-10 w-[100%] h-[50vh] sm:h-[60vh] object-cover mx-auto"
+        className="absolute top-0 -z-10 w-[100%] h-[40vh] sm:h-[50vh] object-cover mx-auto"
       />
       {/* Top Design */}
       <div className="flex flex-col items-center gap-6">
