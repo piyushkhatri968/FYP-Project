@@ -70,6 +70,7 @@ const PopularJobCategory = () => {
             </div>
           </div>
         ))}
+        {/* PK */}
       </div>
     </div>
   );
