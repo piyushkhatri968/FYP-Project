@@ -24,31 +24,41 @@ const steps = [
     },
   ];
 function EasyToUse() {
-    return (
-        <div className="flex flex-col items-center justify-center bg-cover bg-center bg-opacity-90 py-16" style={{ backgroundImage: `url("https://path-to-your-background-image.com")` }}>
-          <h2 className="text-3xl font-bold text-white mb-12">Easiest Way To Use</h2>
-          
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12">
-            {steps.map((step) => (
-              <div key={step.id} className="group bg-white bg-opacity-5 hover:bg-opacity-10 rounded-lg p-6 text-center transition-colors duration-300 shadow-lg w-64">
-                {/* Circle Icon with Number */}
-                <div className="relative flex items-center justify-center w-20 h-20 mx-auto mb-4 rounded-full border-4 border-dotted border-red-500">
-                  {step.icon}
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">{step.id}</span>
-                </div>
-                
-                {/* Title */}
-                <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
-                
-                {/* Description */}
-                <p className="text-gray-300 text-sm">
-                  {step.description}
-                </p>
+  return (
+    <div className="relative flex flex-col items-center justify-center py-16" style={{ backgroundImage: `url("https://templates.hibootstrap.com/jovie/default/assets/img/section-bg/1.jpg")`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gray-900 bg-opacity-80"></div>
+      
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center">
+        <h2 className="text-3xl font-bold text-white mb-12">Easiest Way To Use</h2>
+        
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+          {steps.map((step) => (
+            <div 
+              key={step.id} 
+              className="group relative bg-white bg-opacity-10 rounded-lg p-6 text-center transition-colors duration-300 shadow-lg w-64"
+            >
+              {/* Circle Icon with Number */}
+              <div className="relative flex items-center justify-center w-20 h-20 mx-auto mb-4 rounded-full border-4 border-dotted border-red-500 transition-colors duration-300 hover:bg-red-500 hover:border-transparent">
+                {React.cloneElement(step.icon, { className: "text-red-500 group-hover:text-white" })}
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">{step.id}</span>
               </div>
-            ))}
-          </div>
+              
+              {/* Title */}
+              <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
+              
+              {/* Description */}
+              <p className="text-gray-300 text-sm">
+                {step.description}
+              </p>
+            </div>
+          ))}
         </div>
-      );
+      </div>
+    </div>
+  );
 }
 
 export default EasyToUse
