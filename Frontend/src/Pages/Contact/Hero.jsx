@@ -1,11 +1,13 @@
 import React from 'react'
-
+import Theme from './../../Components/Theme';
+import HeroPic from "../../assets/Images/contact-hero.jpg";
 
 function Hero() {
     return (
-        <div>
-            <h1>Hero Section</h1>
-        </div>
+       <>
+       <Theme heroImage={HeroPic} pageName="Contact Us" />
+       </>
+        
       );
 }
 
