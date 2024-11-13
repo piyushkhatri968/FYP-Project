@@ -1,4 +1,5 @@
 import React from 'react'
+import aboutsecpic from "../../assets/Images/aboutsection.jpg"
 import { FiFileText } from 'react-icons/fi';     // Icon for "Browse Job"
 import { FiBriefcase } from 'react-icons/fi';    // Icon for "Find Your Vacancy"
 import { FiSend } from 'react-icons/fi';         // Icon for "Submit Resume"
@@ -25,7 +26,7 @@ const steps = [
   ];
 function EasyToUse() {
   return (
-    <div className="relative flex flex-col items-center justify-center py-16" style={{ backgroundImage: `url("https://templates.hibootstrap.com/jovie/default/assets/img/section-bg/1.jpg")`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="relative flex flex-col items-center justify-center py-16" style={{ backgroundImage: `url(${aboutsecpic})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       
       {/* Overlay */}
       <div className="absolute inset-0 bg-gray-900 bg-opacity-80"></div>

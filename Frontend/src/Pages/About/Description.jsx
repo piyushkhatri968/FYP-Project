@@ -23,7 +23,7 @@ function Description() {
             {/* Right Section (Image Content) */}
             <div className="md:w-1/2 flex justify-center md:justify-end mt-8 md:mt-0">
               <img
-                src="https://templates.hibootstrap.com/jovie/default/assets/img/about.jpg"  
+                src="\src\assets\Images\desc-about.jpg"  
                 alt="Team"
                 className="w-full max-w-sm h-80 object-cover rounded-lg shadow-md"
               />
