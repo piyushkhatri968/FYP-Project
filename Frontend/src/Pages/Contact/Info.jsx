@@ -1,19 +1,19 @@
 import React from "react";
-import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
+import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 function Info() {
   const contactItems = [
     {
       icon: <FiPhone className="text-blue-600 text-2xl" />,
-      lines: ["+1-456-644-7457", "+1-745-967-4567"]
+      lines: ["+1-456-644-7457", "+1-745-967-4567"],
     },
     {
       icon: <FiMail className="text-blue-600 text-2xl" />,
-      lines: ["info@jovie.com", "hello@jovie.com"]
+      lines: ["info@jovie.com", "hello@jovie.com"],
     },
     {
       icon: <FiMapPin className="text-blue-600 text-2xl" />,
-      lines: ["123, Denver, USA", "Street view 3/B, USA"]
-    }
+      lines: ["123, Denver, USA", "Street view 3/B, USA"],
+    },
   ];
 
   return (
