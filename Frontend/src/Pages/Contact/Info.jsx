@@ -17,7 +17,7 @@ function Info() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-6 p-8 mt-16">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-6 p-10 mt-10">
       {contactItems.map((item, index) => (
         <div
           key={index}
@@ -30,7 +30,7 @@ function Info() {
             {item.lines.map((line, i) => (
               <p
                 key={i}
-                className="text-sm font-medium hover:text-blue-600 transition-colors duration-300"
+                className="text-sm font-medium hover:text-red-600 transition-colors duration-300"
               >
                 {line}
               </p>
