@@ -50,10 +50,10 @@ const PopularJobCategory = () => {
       <h1 className="text-4xl font-semibold text-center">
         Popular Jobs Category
       </h1>
-      <p className="text-center max-w-[60vw] mx-auto mt-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est illum nisi
-        ullam odio quam error laboriosam molestiae hic temporibus, perspiciatis
-        suscipit ducimus maiores dolore quibusdam.
+      <p className="text-center max-w-[50vw] mx-auto mt-4 text-gray-600">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+        suspendisse ultrices gravida. Risus
       </p>
       <div className=" m-16 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {category.map((item, index) => (
@@ -66,7 +66,9 @@ const PopularJobCategory = () => {
             </div>
             <div>
               <h1 className="text-xl font-bold">{item.name}</h1>
-              <p className="text-gray-500 group-hover:text-white transition-all duration-500">{item.jobs}</p>
+              <p className="text-gray-500 group-hover:text-white transition-all duration-500">
+                {item.jobs}
+              </p>
             </div>
           </div>
         ))}

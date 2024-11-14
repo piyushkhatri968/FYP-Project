@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,7 +15,7 @@ import Navbar from "./Components/Navbar";
 import AboutPage from "./Pages/About/AboutPage";
 import ContactPage from "./Pages/Contact/ContactPage";
 import BlogPage from "./Pages/Blogs/BlogPage";
-import FindAJob from "./Pages/Jobs/FindAJob";
+import FindAJob from "./Pages/Jobs/FinaAJob/FindAJob";
 import HRPage from "./Pages/Hr_Dashboard/HrPage";
 import MainLayout from "./Components/MainLayout";
 import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
@@ -25,8 +25,7 @@ const App = () => {
     <div className="fade-in">
       <BrowserRouter>
         <ScrollToTop />
-       
-        
+
         <Routes>
           {/* MainLayout Routes */}
           <Route element={<MainLayout />}>
@@ -46,7 +45,6 @@ const App = () => {
             <Route path="hr" element={<HRPage />} />
           </Route>
         </Routes>
-       
       </BrowserRouter>
     </div>
   );
