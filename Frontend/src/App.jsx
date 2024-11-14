@@ -5,9 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignIn from "./Pages/SignIn";
 import PrivateRoute from "./Components/PrivateRoute";
-import SignUp from "./Pages/SignUp";
 import ScrollToTop from "./Components/ScrollToTop";
 import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar";
@@ -19,6 +17,8 @@ import HRPage from "./Pages/Hr_Dashboard/HrPage";
 import MainLayout from "./Components/MainLayout";
 import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
 import Home from "./Pages/Home/HomePage";
+import SignIn from "./Pages/Authentication/SignIn";
+import SignUp from "./Pages/Authentication/SignUp";
 
 const App = () => {
   return (

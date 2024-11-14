@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
-import signUpImg from "../assets/Images/signUp.png";
-import animateArrow from "../assets/Icons/rigth-arrow.gif";
+import signUpImg from "../../assets/Images/signUp.png";
+import animateArrow from "../../assets/Icons/rigth-arrow.gif";
 import { Alert, Spinner } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +8,9 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
-} from "../Redux/User/UserSlice.js";
-import SocialAuth from "../Components/SocialAuth.jsx";
-import Theme from "../Components/Theme.jsx";
+} from "../../Redux/User/UserSlice.js";
+import SocialAuth from "../../Components/SocialAuth.jsx";
+import Theme from "../../Components/Theme.jsx";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});

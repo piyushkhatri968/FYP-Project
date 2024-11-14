@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Alert, Spinner } from "flowbite-react";
-import animateArrow from "../assets/Icons/rigth-arrow.gif";
+import animateArrow from "../../assets/Icons/rigth-arrow.gif";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInSuccess,
   signInStart,
   signInFailure,
-} from "../Redux/User/UserSlice";
-import SocialAuth from "../Components/SocialAuth.jsx";
-import Theme from "../Components/Theme.jsx";
-import signUpImg from "../assets/Images/signUp.png";
+} from "../../Redux/User/UserSlice";
+import SocialAuth from "../../Components/SocialAuth.jsx";
+import Theme from "../../Components/Theme.jsx";
+import signUpImg from "../../assets/Images/signUp.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
