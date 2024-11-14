@@ -66,6 +66,16 @@ const Navbar = () => {
               Contact Us
             </Link>
           </li>
+          <li>
+          <Link
+              to="/hr"
+              className={`font-semibold ${
+                location.pathname === "/hr" ? "text-red-600" : ""
+              }`}
+            >
+              HR-Dashboard
+            </Link>
+          </li>
         </ul>
       </div>
       {currentUser ? (

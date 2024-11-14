@@ -16,26 +16,37 @@ import AboutPage from "./Pages/About/AboutPage";
 import ContactPage from "./Pages/Contact/ContactPage";
 import BlogPage from "./Pages/Blogs/BlogPage";
 import FindAJob from "./Pages/Jobs/FindAJob";
+import HRPage from "./Pages/Hr_Dashboard/HrPage";
+import MainLayout from "./Components/MainLayout";
+import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
 
 const App = () => {
   return (
     <div className="fade-in">
       <BrowserRouter>
         <ScrollToTop />
-        <Navbar />
+       
+        
         <Routes>
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Home />} />
+          {/* MainLayout Routes */}
+          <Route element={<MainLayout />}>
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="about" element={<AboutPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="blog" element={<BlogPage />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="signin" element={<SignIn />} />
+            <Route path="find-job" element={<FindAJob />} />
           </Route>
 
-          <Route path="about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/find-job" element={<FindAJob />} />
+          {/* HRLayout Route */}
+          <Route element={<HRLayout />}>
+            <Route path="hr" element={<HRPage />} />
+          </Route>
         </Routes>
-        <Footer />
+       
       </BrowserRouter>
     </div>
   );
