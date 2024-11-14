@@ -29,9 +29,10 @@ const App = () => {
         <Routes>
           {/* MainLayout Routes */}
           <Route element={<MainLayout />}>
-            <Route element={<PrivateRoute />}>
+            {/* <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
-            </Route>
+            </Route> */}
+              <Route path="/" element={<Home />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="blog" element={<BlogPage />} />
