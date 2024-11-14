@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import SignOut from "../Pages/Authentication/SignOut";
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [openProfileModal, setProfileOpenModal] = useState(false);
@@ -82,12 +83,26 @@ const Navbar = () => {
         </ul>
       </div>
       {currentUser ? (
-        <div>
-          <img
-            src={currentUser.profilePicture}
-            alt="user profile"
-            className="w-10 h-10 rounded-full"
-          />
+        <div className="relative">
+          <div onClick={handleProfileModal}>
+            <img
+              src={currentUser.profilePicture}
+              alt="user profile"
+              className="w-10 h-10 rounded-full"
+            />
+          </div>
+          <div>
+            {openProfileModal && (
+              <div className="absolute top-14 -left-20 bg-[#374151] w-[12.5vw] text-center border-t-2 rounded-lg">
+                <p>{currentUser && currentUser.name}</p>
+                <p>{currentUser && currentUser.email}</p>
+                <hr className="my-2" />
+                <Link to="#">Profile</Link>
+                <hr className="my-2" />
+                <SignOut />
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div className="flex gap-3 items-center">
