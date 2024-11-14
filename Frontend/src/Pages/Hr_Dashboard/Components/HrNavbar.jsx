@@ -11,10 +11,10 @@ const HRNavbar = () => {
       </div>
       <div>
         <ul className="flex gap-10 items-center">
-          <li>
+          <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
             <Link to="/hr/dashboard" className="font-semibold">Dashboard</Link>
           </li>
-          <li className="font-semibold flex items-center gap-2 cursor-pointer relative group">
+          <li className="font-semibold flex items-center gap-2 cursor-pointer relative group hover:bg-[#070e1f] px-4 py-2 rounded">
             <span>Jobs</span>
             <IoIosArrowDown className="text-md" />
             <ul className="absolute w-[12rem] mt-3 left-0 top-full z-10 bg-[#061742] text-white shadow-lg hidden group-hover:block">
@@ -26,11 +26,11 @@ const HRNavbar = () => {
               </li>
             </ul>
           </li>
-          <li>
+          <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
             <Link to="/hr/profile-settings" className="font-semibold">Profile Settings</Link>
           </li>
           <li>
-            <Link to="/" className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md">Sign up / Login</Link>
+            <Link to="/" className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md hover:bg-[#b82828]">Sign up / Login</Link>
           </li>
         </ul>
       </div>
