@@ -59,14 +59,14 @@ const PopularJobCategory = () => {
         {category.map((item, index) => (
           <div
             key={index}
-            className="border border-red-600 border-dashed w-70 h-24 flex items-center justify-start gap-4 p-4"
+            className="group border border-red-600 border-dashed w-70 h-24 flex items-center justify-start gap-4 p-4 hover:text-white hover:bg-[#FD1616] transition-all duration-500"
           >
             <div className="text-4xl text-red-600 bg-red-200 p-4 rounded-full border border-red-600 border-dashed">
               {item.image}
             </div>
             <div>
               <h1 className="text-xl font-bold">{item.name}</h1>
-              <p>{item.jobs}</p>
+              <p className="text-gray-500 group-hover:text-white transition-all duration-500">{item.jobs}</p>
             </div>
           </div>
         ))}
