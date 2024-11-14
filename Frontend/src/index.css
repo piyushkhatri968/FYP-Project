@@ -59,3 +59,17 @@
   display: block;
   animation: dropdown-fade-in 0.3s ease forwards;
 }
+
+/* HOME PAGE */
+
+@keyframes Flikker {
+  0% {
+    transform: translateY(-30);
+  }
+  50% {
+    transform: translateY(30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

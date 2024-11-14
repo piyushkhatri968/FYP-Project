@@ -12,29 +12,32 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 bg-[#010C29] text-white h-[5rem] fixed z-20 w-full">
+    <nav className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 bg-[#010C29] text-white h-[5rem] w-full">
       <div className="logo">
         <Link to="/">Logo</Link>
       </div>
       <div>
         <ul className="flex gap-10">
+          {/* ABOUT */}
           <li>
             <Link
               to="/about"
-              className={`font-semibold ${
+              className={`font-semibold hover:text-red-600 ${
                 location.pathname === "/about" ? "text-red-600" : ""
               }`}
             >
               About
             </Link>
           </li>
-          <li className=" navbar-group font-semibold flex items-center gap-2 cursor-pointer relative">
+          {/* JOBS */}
+          <li className=" navbar-group font-semibold flex items-center gap-2 cursor-pointer relative hover:text-red-600">
             <span>Jobs</span>
             <span>
               <IoIosArrowDown className="text-md" />
             </span>
             {/* Dropdown menu */}
             <ul className="navbar-group-part absolute w-[15rem] mt-3 -left-4 top-full z-10 bg-[#061742] text-white shadow-lg hidden">
+              {/* FIND A JOB */}
               <li>
                 <Link
                   to="/find-job"
@@ -55,11 +58,11 @@ const Navbar = () => {
               </li>
             </ul>
           </li>
-
+          {/* CONTACT US  */}
           <li>
             <Link
               to="/contact"
-              className={`font-semibold ${
+              className={`font-semibold hover:text-red-600 ${
                 location.pathname === "/contact" ? "text-red-600" : ""
               }`}
             >
@@ -67,7 +70,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-          <Link
+            <Link
               to="/hr"
               className={`font-semibold ${
                 location.pathname === "/hr" ? "text-red-600" : ""

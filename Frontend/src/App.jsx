@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn";
 import PrivateRoute from "./Components/PrivateRoute";
 import SignUp from "./Pages/SignUp";
@@ -19,6 +18,7 @@ import FindAJob from "./Pages/Jobs/FinaAJob/FindAJob";
 import HRPage from "./Pages/Hr_Dashboard/HrPage";
 import MainLayout from "./Components/MainLayout";
 import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
+import Home from "./Pages/Home/HomePage";
 
 const App = () => {
   return (

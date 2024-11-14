@@ -1,8 +1,8 @@
-import { Button, Spinner } from "flowbite-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signoutsuccess } from "../Redux/User/UserSlice";
+import bannerImg from "../assets/Images/Home/banner-img.png";
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
@@ -28,29 +28,35 @@ const Home = () => {
   };
 
   return (
-    <div>
-      {currentUser && (
-        <div className="text-center">
-          <p className="text-center mt-10 font-bold text-3xl">
-            Welcome {currentUser.name} !
-          </p>
-          <Button
-            className="mx-auto mt-5"
-            gradientDuoTone="purpleToPink"
-            type="submit"
-            onClick={handleSignOut}
-          >
-            {loading ? (
-              <>
-                <Spinner size="sm" />
-                <span className="pl-3">Signing out ...</span>
-              </>
-            ) : (
-              "Sign Out"
-            )}
-          </Button>
-        </div>
-      )}
+    <div className="">
+      {/* HERO SECTION  */}
+
+
+      {/* Sign out  */}
+      {/* <div>
+        {currentUser && (
+          <div className="text-center">
+            <p className="text-center mt-10 font-bold text-3xl">
+              Welcome {currentUser.name} !
+            </p>
+            <Button
+              className="mx-auto mt-5"
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              onClick={handleSignOut}
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Signing out ...</span>
+                </>
+              ) : (
+                "Sign Out"
+              )}
+            </Button>
+          </div>
+        )}
+      </div> */}
     </div>
   );
 };
