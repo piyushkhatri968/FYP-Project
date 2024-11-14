@@ -3,6 +3,7 @@ import React from "react";
 import HRNavbar from "./HRNavbar";
 import HRSidebar from "./HRSidebar";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 const HRLayout = () => {
   return (
@@ -16,7 +17,10 @@ const HRLayout = () => {
         <main className="flex-1 p-6 bg-gray-100">
           <Outlet /> {/* Renders the nested route */}
         </main>
+
       </div>
+           {/* Footer at the bottom*/}
+           <Footer />
     </div>
   );
 };
