@@ -1,7 +1,7 @@
 // CandidateProfiles.js
 import React from 'react';
 
-const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewShortlisted }) => {
+const  CandidateApplications = ({ candidate, onViewProfile, onShortlist }) => {
     const candidates = [
         {
           id: 1,
@@ -10,13 +10,13 @@ const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewSh
           experience: 3,
           isShortlisted: true,
         },
-        {
-          id: 2,
-          name: 'Bob Smith',
-          position: 'Backend Developer',
-          experience: 5,
-          isShortlisted: false,
-        },
+        // {
+        //   id: 2,
+        //   name: 'Bob Smith',
+        //   position: 'Backend Developer',
+        //   experience: 5,
+        //   isShortlisted: false,
+        // },
         {
           id: 3,
           name: 'Carol Danvers',
@@ -36,7 +36,7 @@ const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewSh
       
       <div className="space-y-4">
         {candidates.map((candidate) => (
-          <div key={candidate.id} className="bg-gray-100 p-4 rounded shadow flex items-center justify-between">
+          <div key={candidate.id} className="bg-gray-100 p-4 rounded shadow flex items-center justify-between ">
             <div>
               <h4 className="text-lg font-semibold text-gray-800">{candidate.name}</h4>
               <p className="text-gray-600">Position: {candidate.position}</p>
@@ -45,7 +45,7 @@ const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewSh
                 Status: {candidate.isShortlisted ? 'Shortlisted' : 'Applied'}
               </p>
             </div>
-            <div className="space-x-2">
+            <div className="space-x-4">
               <button
                 onClick={() => onViewProfile(candidate)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -54,7 +54,7 @@ const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewSh
               </button>
               <button
                 onClick={() => onShortlist(candidate)}
-                className={`px-4 py-2 rounded ${
+                className={`px-5 py-2 rounded ${
                   candidate.isShortlisted ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
                 }`}
               >
@@ -64,13 +64,13 @@ const  CandidateApplications = ({ candidate, onViewProfile, onShortlist,onViewSh
             </div>
 
             <div>
-      <h3 className="text-2xl font-bold mb-4">All Candidate Applications</h3>
-      <button
+      {/* <h3 className="text-2xl font-bold mb-4">All Candidate Applications</h3> */}
+      {/* <button
         onClick={onViewShortlisted}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-6"
       >
         View Shortlisted Candidates
-      </button>
+      </button> */}
       
       {/* Render candidate list */}
     </div>

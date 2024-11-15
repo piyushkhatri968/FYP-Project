@@ -6,13 +6,15 @@ import JobForm from "./JobForm";
 import JobAnalytics from "./JobAnalytics";
 import CandidateApplications from "./CandidateApplications";
 import ShortListCandidates from "./ShortListCandidates";
+import ApplicationTracking from "./ApplicationTracking";
 
 const JobsPage = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isViewingAnalytics, setIsViewingAnalytics] = useState(false);
   const [isViewingCandidates, setIsViewingCandidates] = useState(false);
-  const [showShortlisted, setShowShortlisted] = useState(false); // New state for shortlisted view
+  const [isViewingTracking, setIsViewingTracking] = useState(false); // New state for tracking view
+  const [showShortlisted, setShowShortlisted] = useState(false); // State for shortlisted view
 
   // Sample candidates data (in a real app, this would be fetched from a server or API)
   const candidatesList = [
@@ -22,6 +24,7 @@ const JobsPage = () => {
       position: "Frontend Developer",
       experience: 3,
       isShortlisted: true,
+      stage: "applied",
     },
     {
       id: 2,
@@ -29,6 +32,7 @@ const JobsPage = () => {
       position: "Backend Developer",
       experience: 5,
       isShortlisted: false,
+      stage: "interviewed",
     },
     {
       id: 3,
@@ -36,6 +40,15 @@ const JobsPage = () => {
       position: "Data Scientist",
       experience: 2,
       isShortlisted: true,
+      stage: "shortlisted",
+    },
+    {
+      id: 4,
+      name: "David Brown",
+      position: "UI Designer",
+      experience: 4,
+      isShortlisted: false,
+      stage: "hired",
     },
   ];
 
@@ -44,6 +57,7 @@ const JobsPage = () => {
     setIsEditing(false);
     setIsViewingAnalytics(false);
     setIsViewingCandidates(false);
+    setIsViewingTracking(false);
     setShowShortlisted(false); // Reset shortlisted view when selecting a new job
   };
 
@@ -60,6 +74,7 @@ const JobsPage = () => {
   const handleJobCandidates = (job) => {
     setSelectedJob(job);
     setIsViewingCandidates(true);
+    setIsViewingTracking(false);
     setShowShortlisted(false); // Reset shortlisted view when switching to all candidates
   };
 
@@ -78,6 +93,12 @@ const JobsPage = () => {
     // Implement further hiring logic as needed
   };
 
+  const handleViewTracking = () => {
+    setIsViewingTracking(true);
+    setIsViewingCandidates(false);
+    setShowShortlisted(false);
+  };
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold mb-6">Job Management</h2>
@@ -85,7 +106,8 @@ const JobsPage = () => {
       {!selectedJob &&
         !isEditing &&
         !isViewingAnalytics &&
-        !isViewingCandidates && (
+        !isViewingCandidates &&
+        !isViewingTracking && (
           <JobListings
             onSelect={handleJobSelect}
             onEdit={handleJobEdit}
@@ -98,12 +120,14 @@ const JobsPage = () => {
       {selectedJob &&
         !isEditing &&
         !isViewingAnalytics &&
-        !isViewingCandidates && (
+        !isViewingCandidates &&
+        !isViewingTracking && (
           <JobDetails
             job={selectedJob}
             onEdit={handleJobEdit}
             onAnalytics={() => handleJobAnalytics(selectedJob)}
             onCandidates={() => handleJobCandidates(selectedJob)}
+            onTracking={handleViewTracking} // Pass the handler to view tracking
           />
         )}
 
@@ -133,6 +157,10 @@ const JobsPage = () => {
           onViewProfile={(candidate) => console.log("Viewing", candidate)}
           onHire={handleHire}
         />
+      )}
+
+      {isViewingTracking && (
+        <ApplicationTracking applications={candidatesList} />
       )}
     </div>
   );

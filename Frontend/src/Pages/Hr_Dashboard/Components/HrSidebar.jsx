@@ -40,6 +40,17 @@ const Sidebar = () => {
         </li>
         <li className="hover:bg-[red] p-2 rounded">
           <Link
+            to="/job-analytics"
+            className={`font-semibold ${
+              location.pathname === "/job-analytics" ? "text-red-600" : ""
+            }`}
+          >
+            Analytics
+          </Link>
+        </li>
+
+        <li className="hover:bg-[red] p-2 rounded">
+          <Link
             to="/shortlisted-candidates"
             className={`font-semibold ${
               location.pathname === "/shortlisted-candidates" ? "text-red-600" : ""

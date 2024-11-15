@@ -21,6 +21,10 @@ import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
 import JobsPage from "./Pages/Hr_Dashboard/Pages/job/JobsPage";
 import JobPostPage from "./Pages/Hr_Dashboard/Pages/JobPost/JobPostPage";
+import ApplicationTracking from "./Pages/Hr_Dashboard/Pages/job/ApplicationTracking";
+import CandidateApplications from "./Pages/Hr_Dashboard/Pages/job/CandidateApplications";
+import ShortListCandidates from "./Pages/Hr_Dashboard/Pages/job/ShortListCandidates";
+import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
 
 const App = () => {
   return (
@@ -46,7 +50,11 @@ const App = () => {
           {/* HRLayout Route */}
           <Route element={<HRLayout />}>
             <Route path="hr" element={<HRPage />} />
-            <Route path="/jobs" element={<JobsPage/>} />
+            <Route path="/manage-jobs" element={<JobsPage/>} />
+            <Route path="/application-tracking"  element={<ApplicationTracking/>} />
+            <Route path="/shortlisted-candidates" element={<ShortListCandidates/>} />
+            <Route path="/candidate-profiles" element={<CandidateApplications/>}/>
+            <Route path="/job-analytics" element={<JobAnalytics/>} />
             
           </Route>
         </Routes>
