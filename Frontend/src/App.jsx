@@ -19,6 +19,7 @@ import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
 import Home from "./Pages/Home/HomePage";
 import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
+import JobsPage from "./Pages/Hr_Dashboard/Pages/job/JobsPage";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
           {/* HRLayout Route */}
           <Route element={<HRLayout />}>
             <Route path="hr" element={<HRPage />} />
+            <Route path="/jobs" element={<JobsPage/>} />
           </Route>
         </Routes>
       </BrowserRouter>
