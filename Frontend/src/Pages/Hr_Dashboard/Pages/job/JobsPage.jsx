@@ -1,11 +1,11 @@
 // JobsPage.js
-import React, { useState } from 'react';
-import JobListings from './JobListings';
-import JobDetails from './JobDetails';
-import JobForm from './JobForm';
-import JobAnalytics from './JobAnalytics';
-import CandidateApplications from './CandidateApplications';
-import ShortListCandidates from './ShortListCandidates';
+import React, { useState } from "react";
+import JobListings from "./JobListings";
+import JobDetails from "./JobDetails";
+import JobForm from "./JobForm";
+import JobAnalytics from "./JobAnalytics";
+import CandidateApplications from "./CandidateApplications";
+import ShortListCandidates from "./ShortListCandidates";
 
 const JobsPage = () => {
   const [selectedJob, setSelectedJob] = useState(null);
@@ -16,9 +16,27 @@ const JobsPage = () => {
 
   // Sample candidates data (in a real app, this would be fetched from a server or API)
   const candidatesList = [
-    { id: 1, name: 'Alice Johnson', position: 'Frontend Developer', experience: 3, isShortlisted: true },
-    { id: 2, name: 'Bob Smith', position: 'Backend Developer', experience: 5, isShortlisted: false },
-    { id: 3, name: 'Carol Danvers', position: 'Data Scientist', experience: 2, isShortlisted: true },
+    {
+      id: 1,
+      name: "Alice Johnson",
+      position: "Frontend Developer",
+      experience: 3,
+      isShortlisted: true,
+    },
+    {
+      id: 2,
+      name: "Bob Smith",
+      position: "Backend Developer",
+      experience: 5,
+      isShortlisted: false,
+    },
+    {
+      id: 3,
+      name: "Carol Danvers",
+      position: "Data Scientist",
+      experience: 2,
+      isShortlisted: true,
+    },
   ];
 
   const handleJobSelect = (job) => {
@@ -56,7 +74,7 @@ const JobsPage = () => {
   };
 
   const handleHire = (candidate) => {
-    console.log('Hiring candidate:', candidate);
+    console.log("Hiring candidate:", candidate);
     // Implement further hiring logic as needed
   };
 
@@ -64,24 +82,30 @@ const JobsPage = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold mb-6">Job Management</h2>
 
-      {!selectedJob && !isEditing && !isViewingAnalytics && !isViewingCandidates && (
-        <JobListings
-          onSelect={handleJobSelect}
-          onEdit={handleJobEdit}
-          onCreate={handleJobCreate}
-          onAnalytics={handleJobAnalytics}
-          onCandidates={handleJobCandidates}
-        />
-      )}
+      {!selectedJob &&
+        !isEditing &&
+        !isViewingAnalytics &&
+        !isViewingCandidates && (
+          <JobListings
+            onSelect={handleJobSelect}
+            onEdit={handleJobEdit}
+            onCreate={handleJobCreate}
+            onAnalytics={handleJobAnalytics}
+            onCandidates={handleJobCandidates}
+          />
+        )}
 
-      {selectedJob && !isEditing && !isViewingAnalytics && !isViewingCandidates && (
-        <JobDetails
-          job={selectedJob}
-          onEdit={handleJobEdit}
-          onAnalytics={() => handleJobAnalytics(selectedJob)}
-          onCandidates={() => handleJobCandidates(selectedJob)}
-        />
-      )}
+      {selectedJob &&
+        !isEditing &&
+        !isViewingAnalytics &&
+        !isViewingCandidates && (
+          <JobDetails
+            job={selectedJob}
+            onEdit={handleJobEdit}
+            onAnalytics={() => handleJobAnalytics(selectedJob)}
+            onCandidates={() => handleJobCandidates(selectedJob)}
+          />
+        )}
 
       {isViewingAnalytics && <JobAnalytics job={selectedJob} />}
 
@@ -106,7 +130,7 @@ const JobsPage = () => {
       {showShortlisted && (
         <ShortListCandidates
           candidates={candidatesList}
-          onViewProfile={(candidate) => console.log('Viewing', candidate)}
+          onViewProfile={(candidate) => console.log("Viewing", candidate)}
           onHire={handleHire}
         />
       )}
