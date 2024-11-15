@@ -38,7 +38,7 @@ const App = () => {
             {/* <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
             </Route> */}
-              <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="blog" element={<BlogPage />} />
@@ -50,12 +50,20 @@ const App = () => {
           {/* HRLayout Route */}
           <Route element={<HRLayout />}>
             <Route path="hr" element={<HRPage />} />
-            <Route path="/manage-jobs" element={<JobsPage/>} />
-            <Route path="/application-tracking"  element={<ApplicationTracking/>} />
-            <Route path="/shortlisted-candidates" element={<ShortListCandidates/>} />
-            <Route path="/candidate-profiles" element={<CandidateApplications/>}/>
-            <Route path="/job-analytics" element={<JobAnalytics/>} />
-            
+            <Route path="/manage-jobs" element={<JobsPage />} />
+            <Route
+              path="/application-tracking"
+              element={<ApplicationTracking />}
+            />
+            <Route
+              path="/shortlisted-candidates"
+              element={<ShortListCandidates />}
+            />
+            <Route
+              path="/candidate-profiles"
+              element={<CandidateApplications />}
+            />
+            <Route path="/job-analytics" element={<JobAnalytics />} />
           </Route>
         </Routes>
       </BrowserRouter>
