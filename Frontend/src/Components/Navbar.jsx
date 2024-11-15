@@ -149,12 +149,15 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex gap-3 items-center">
-            <Link to="/signup" className="font-semibold">
+            <Link
+              to="/signup"
+              className="font-semibold hover:text-[#ce2f2f] transition-all duration-500"
+            >
               Sign Up
             </Link>
             <Link
               to="signin"
-              className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md"
+              className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md hover:text-black hover:bg-white transition-all duration-500"
             >
               Sign In
             </Link>
