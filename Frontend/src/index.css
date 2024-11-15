@@ -22,6 +22,27 @@
 
 /* navbar */
 
+.navbar-container {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease-in-out;
+  z-index: 20;
+}
+
+.navbar-container.hidden {
+  transform: translateY(-100%);
+}
+
+.navbar-container.visible {
+  transform: translateY(0);
+}
+
 .navbar-group::before {
   content: "";
   position: absolute;
@@ -59,6 +80,28 @@
   display: block;
   animation: dropdown-fade-in 0.3s ease forwards;
 }
+
+
+
+@media only screen and (max-width: 900px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+  }
+}
+
+/* Hide scrollbar for modern browsers */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+
 
 /* HOME PAGE */
 
