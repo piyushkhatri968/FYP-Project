@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Slider from "react-slick";
 import { FaQuoteLeft, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
@@ -16,7 +16,7 @@ function Reviews() {
       name: "Adam Smith",
       position: "Web Developer",
     },
-    // Add more reviews 
+    // Add more reviews
   ];
 
   const settings = {
@@ -42,8 +42,9 @@ function Reviews() {
           What Clients Say About Us
         </h2>
         <p className="text-gray-600 px-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+          suspendisse ultrices gravida.
         </p>
       </div>
 
@@ -56,8 +57,12 @@ function Reviews() {
                 <p className="text-gray-700 hover:text-white mb-6">
                   {review.text}
                 </p>
-                <h3 className="font-bold text-gray-800 hover:text-white">{review.name}</h3>
-                <p className="text-gray-600 hover:text-white">{review.position}</p>
+                <h3 className="font-bold text-gray-800 hover:text-white">
+                  {review.name}
+                </h3>
+                <p className="text-gray-600 hover:text-white">
+                  {review.position}
+                </p>
               </div>
             </div>
           ))}
@@ -67,13 +72,13 @@ function Reviews() {
         <div className="flex justify-center items-center mt-4 space-x-4">
           <button
             className="text-gray-600 hover:bg-red-500 hover:text-white rounded-full p-2 transition-colors duration-300"
-            onClick={() => document.querySelector('.slick-prev').click()}
+            onClick={() => document.querySelector(".slick-prev").click()}
           >
             <FaArrowLeft size={24} />
           </button>
           <button
             className="text-gray-600 hover:bg-red-500 hover:text-white rounded-full p-2 transition-colors duration-300"
-            onClick={() => document.querySelector('.slick-next').click()}
+            onClick={() => document.querySelector(".slick-next").click()}
           >
             <FaArrowRight size={24} />
           </button>
