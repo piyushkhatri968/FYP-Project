@@ -79,6 +79,27 @@ const Sidebar = () => {
             Notification Settings
           </Link>
         </li>
+        <li className="hover:bg-[red] p-2 rounded">
+          <Link
+            to="/job-notification"
+            className={`font-semibold ${
+              location.pathname === "/job-notification" ? "text-red-600" : ""
+            }`}
+          >
+            Post Job 
+          </Link>
+        </li>
+
+        {/* <li className="hover:bg-[red] p-2 rounded">
+          <Link
+            to="/postJob-notification"
+            className={`font-semibold ${
+              location.pathname === "/postJob-notification" ? "text-red-600" : ""
+            }`}
+          >
+            Post Job
+          </Link>
+        </li> */}
       </ul>
     </aside>
   );
