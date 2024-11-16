@@ -115,9 +115,9 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/hr"
+                to="/hr-home"
                 className={`font-semibold ${
-                  location.pathname === "/hr" ? "text-red-600" : ""
+                  location.pathname === "/hr-home" ? "text-red-600" : ""
                 }`}
               >
                 HR-Dashboard

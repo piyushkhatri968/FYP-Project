@@ -53,7 +53,7 @@ const App = () => {
 
           {/* HRLayout Route */}
           <Route element={<HRLayout />}>
-            <Route path="hr" element={<HRPage />} />
+            <Route path="hr-home" element={<HRPage />} />
             <Route path="/manage-jobs" element={<JobsPage />} />
             <Route
               path="/application-tracking"

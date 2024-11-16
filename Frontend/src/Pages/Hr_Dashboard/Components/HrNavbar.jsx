@@ -12,7 +12,7 @@ const HRNavbar = () => {
       <div>
         <ul className="flex gap-10 items-center">
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr/dashboard" className="font-semibold">Dashboard</Link>
+            <Link to="/hr-home" className="font-semibold">Dashboard</Link>
           </li>
           <li className="font-semibold flex items-center gap-2 cursor-pointer relative group hover:bg-[#070e1f] px-4 py-2 rounded">
             <span>Jobs</span>
