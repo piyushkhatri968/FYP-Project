@@ -20,11 +20,15 @@ import Home from "./Pages/Home/HomePage";
 import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
 import JobsPage from "./Pages/Hr_Dashboard/Pages/job/JobsPage";
-import JobPostPage from "./Pages/Hr_Dashboard/Pages/JobPost/JobPostPage";
+// import JobPostPage from "./Pages/Hr_Dashboard/Pages/JobPost/JobPostPage";
 import ApplicationTracking from "./Pages/Hr_Dashboard/Pages/job/ApplicationTracking";
 import CandidateApplications from "./Pages/Hr_Dashboard/Pages/job/CandidateApplications";
 import ShortListCandidates from "./Pages/Hr_Dashboard/Pages/job/ShortListCandidates";
 import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
+import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
+import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
+import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
+// import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
   return (
@@ -38,7 +42,7 @@ const App = () => {
             {/* <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
             </Route> */}
-              <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="blog" element={<BlogPage />} />
@@ -49,14 +53,26 @@ const App = () => {
 
           {/* HRLayout Route */}
           <Route element={<HRLayout />}>
-            <Route path="hr" element={<HRPage />} />
-            <Route path="/manage-jobs" element={<JobsPage/>} />
-            <Route path="/application-tracking"  element={<ApplicationTracking/>} />
-            <Route path="/shortlisted-candidates" element={<ShortListCandidates/>} />
-            <Route path="/candidate-profiles" element={<CandidateApplications/>}/>
-            <Route path="/job-analytics" element={<JobAnalytics/>} />
-            
+            <Route path="hr-home" element={<HRPage />} />
+            <Route path="/manage-jobs" element={<JobsPage />} />
+            <Route
+              path="/application-tracking"
+              element={<ApplicationTracking />}
+            />
+            <Route
+              path="/shortlisted-candidates"
+              element={<ShortListCandidates />}
+            />
+            <Route
+              path="/candidate-profiles"
+              element={<CandidateApplications />}
+            />
+            <Route path="/job-analytics" element={<JobAnalytics />} />
+            <Route path="/account-settings" element={<AccountSetting/>}  />
+            <Route path="/notification-settings" element={<NotificationSettings/>}  />
+            <Route path="/job-notification"  element={<JobNotification/>} />
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </div>
