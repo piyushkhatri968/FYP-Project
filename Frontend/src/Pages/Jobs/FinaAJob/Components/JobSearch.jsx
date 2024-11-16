@@ -5,19 +5,21 @@ import { IoLocationOutline } from "react-icons/io5";
 
 const JobSearch = () => {
   return (
-    <div className="shadow-2xl my-24 mx-12 rounded-xl">
+    <div className="shadow-2xl my-24 mx-4 md:mx-12 rounded-xl">
       <form>
-        <div className="flex flex-wrap items-center justify-center gap-10 py-14 w-full max-w-[85vw] mx-auto rounded-2xl">
-          <div className="flex items-center justify-between border border-gray-400 py-2 px-1 w-[15rem] rounded-xl focus-within:border-blue-500">
+        <div className="flex items-center justify-center gap-6 py-8 sm:py-14 w-full max-w-[90vw] mx-auto rounded-2xl px-8 flex-col lg:flex-row">
+          {/* Job Title or Keyword Input */}
+          <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full rounded-xl focus-within:border-blue-500">
             <input
               type="text"
               placeholder="Job Title or Keyword"
               className="border-none text-sm w-full text-gray-700 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-gray-50"
             />
-
             <CiSearch className="text-gray-600 text-lg mr-2" />
           </div>
-          <div className="flex items-center justify-between border border-gray-400 py-2 px-1 w-[15rem] rounded-xl focus-within:border-blue-500">
+
+          {/* Location Input */}
+          <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl focus-within:border-blue-500">
             <input
               type="text"
               placeholder="Location"
@@ -25,8 +27,10 @@ const JobSearch = () => {
             />
             <IoLocationOutline className="text-gray-600 text-lg mr-2" />
           </div>
-          <div className="flex items-center justify-between border border-gray-400 py-2 px-1 w-[15rem] rounded-xl">
-            <select className="border-none text-gray-700 text-sm font-semibold">
+
+          {/* Category Select */}
+          <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl">
+            <select className="border-none text-gray-700 text-sm font-semibold w-full">
               <option value="Category">Category</option>
               <option value="Category">Category</option>
               <option value="Category">Category</option>
@@ -35,7 +39,9 @@ const JobSearch = () => {
             </select>
             <FaChevronDown className="text-gray-600 text-sm mr-2" />
           </div>
-          <div className="flex items-center gap-4 bg-red-600 text-white py-3.5 w-[15rem] justify-center rounded-xl">
+
+          {/* Find a Job Button */}
+          <div className="flex items-center gap-4 bg-red-600 text-white py-3 w-full justify-center rounded-xl">
             <button className="font-semibold">FIND A JOB</button>
             <CiSearch className="text-lg" />
           </div>

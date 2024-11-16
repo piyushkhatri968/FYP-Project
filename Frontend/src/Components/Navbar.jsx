@@ -186,7 +186,10 @@ const Navbar = () => {
             }`}
           >
             <ul className="flex flex-col justify-center gap-[15px] mt-3">
-              <li className="flex items-center justify-between px-8">
+              <li
+                className="flex items-center justify-between px-8"
+                onClick={() => setMobilenav(!mobilenav)}
+              >
                 <span>
                   <Link to="/">Home</Link>
                 </span>
@@ -195,7 +198,10 @@ const Navbar = () => {
                 </span>
               </li>
               <hr />
-              <li className="flex items-center justify-between px-8">
+              <li
+                className="flex items-center justify-between px-8"
+                onClick={() => setMobilenav(!mobilenav)}
+              >
                 <span>
                   <Link to="/about">About</Link>
                 </span>
@@ -219,11 +225,19 @@ const Navbar = () => {
                   }`}
                 >
                   <hr />
-                  <Link to="/find-job" className="text-sm">
+                  <Link
+                    to="/find-job"
+                    className="text-sm"
+                    onClick={() => setMobilenav(!mobilenav)}
+                  >
                     Find A Job
                   </Link>
                   <hr />
-                  <Link to="/post-job" className="text-sm">
+                  <Link
+                    to="/post-job"
+                    className="text-sm"
+                    onClick={() => setMobilenav(!mobilenav)}
+                  >
                     Post A Job
                   </Link>
                 </div>
@@ -231,7 +245,9 @@ const Navbar = () => {
               <hr />
               <li className="flex items-center justify-between px-8">
                 <span>
-                  <Link to="/about">About</Link>
+                  <Link to="/contact" onClick={() => setMobilenav(!mobilenav)}>
+                    Contact Us
+                  </Link>
                 </span>
                 <span>
                   <FaPlus />

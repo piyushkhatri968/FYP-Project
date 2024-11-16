@@ -22,7 +22,7 @@ function Reviews() {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1500,
     slidesToShow: 2,
     slidesToScroll: 1,
     responsive: [
@@ -41,7 +41,7 @@ function Reviews() {
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           What Clients Say About Us
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 px-2">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
           labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
         </p>

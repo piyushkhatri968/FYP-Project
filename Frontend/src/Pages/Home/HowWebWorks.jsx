@@ -1,14 +1,15 @@
 import React from "react";
 import bannerImg3 from "../../assets/Images/Home/banner-img-3.png";
 import { BiDoorOpen } from "react-icons/bi";
+import { IoSearch } from "react-icons/io5";
+import { IoDocumentTextOutline } from "react-icons/io5";
+
 const HowWebWorks = () => {
   return (
-    <div className="flex justify-center items-center my-16">
+    <div className="flex justify-center items-center flex-wrap my-16">
       {/* LEFT SIDE */}
       <div className="flex flex-col gap-4">
-        <h1 className="text-4xl font-semibold text-center">
-          How Web Works For You
-        </h1>
+        <h1 className="text-4xl font-semibold">How Web Works For You</h1>
         <p className="text-gray-600 w-[40vw]">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
@@ -27,9 +28,9 @@ const HowWebWorks = () => {
         </div>
         <div className="mt-5 flex flex-col items-start justify-center gap-2">
           <div>
-            <BiDoorOpen className="text-4xl w-16 p-[10px] h-16 text-red-600 bg-red-200 rounded-full border border-red-600 border-dashed" />
+            <IoSearch className="text-4xl w-16 p-[10px] h-16 text-red-600 bg-red-200 rounded-full border border-red-600 border-dashed" />
           </div>
-          <h1 className="text-xl font-semibold">Find The Right Job</h1>
+          <h1 className="text-xl font-semibold">Research Companies</h1>
           <p className="text-gray-600 w-[40vw]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. ipsum
@@ -38,9 +39,9 @@ const HowWebWorks = () => {
         </div>
         <div className="mt-5 flex flex-col items-start justify-center gap-2">
           <div>
-            <BiDoorOpen className="text-4xl w-16 p-[10px] h-16 text-red-600 bg-red-200 rounded-full border border-red-600 border-dashed" />
+            <IoDocumentTextOutline className="text-4xl w-16 p-[10px] h-16 text-red-600 bg-red-200 rounded-full border border-red-600 border-dashed" />
           </div>
-          <h1 className="text-xl font-semibold">Find The Right Job</h1>
+          <h1 className="text-xl font-semibold">Save & Apply</h1>
           <p className="text-gray-600 w-[40vw]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. ipsum
@@ -53,7 +54,7 @@ const HowWebWorks = () => {
         <img
           src={bannerImg3}
           alt=""
-          className="w-[40vw]"
+          className="w-[35rem]"
           style={{
             animation: "Flikker 6s ease-in-out infinite",
           }}

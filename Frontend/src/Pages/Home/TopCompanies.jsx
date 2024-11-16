@@ -32,16 +32,16 @@ function TopCompanies() {
   return (
     <div>
       <h1 className="text-4xl font-semibold text-center">Top Companies</h1>
-      <p className="text-center max-w-[50vw] mx-auto my-4 text-gray-600">
+      <p className="text-center w-full sm:w-[35rem] mx-auto px-4 my-4 text-gray-600">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
         suspendisse ultrices gravida.
       </p>
-      <div className="flex flex-wrap justify-center gap-10 my-12">
+      <div className="flex flex-wrap justify-center gap-6 my-12">
         {Company.map((item, index) => (
           <div
             key={index}
-            className="group flex flex-col justify-center items-center gap-3 border border-dotted border-red-500 rounded-lg py-10 px-16 text-center "
+            className="group flex flex-col justify-center items-center gap-3 border border-dotted border-red-500 py-10 px-12 text-center "
           >
             <img
               src={item.img}

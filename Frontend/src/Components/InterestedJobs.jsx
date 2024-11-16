@@ -81,23 +81,23 @@ const InterestedJobs = () => {
     },
   ];
   return (
-    <div className="max-w-[85vw] mx-auto my-10">
-      <h1 className="text-4xl font-semibold text-center">
+    <div className="my-10 mx-auto px-8 md:px-12">
+      <h1 className="text-3xl md:text-4xl font-semibold text-center">
         Jobs You May Be Interested In
       </h1>
-      <p className="text-center max-w-[50vw] mx-auto my-4 text-gray-600">
+      <p className="text-center md:max-w-[50vw] mx-auto my-4 text-gray-600">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-16 mx-4 sm:mx-12 md:mx-0 text-center md:text-left">
         {Jobs.map((job, index) => (
           <div
             key={index}
-            className="flex items-center justify-between bg-[#FDE7E7] p-6 rounded-lg shadow-sm"
+            className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row"
           >
             {/* Company Image */}
-            <div className="w-[7.2rem] h-[4.3rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
+            <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
               <img
                 src={job.jobImage}
                 alt="Company Logo"
@@ -107,7 +107,7 @@ const InterestedJobs = () => {
             </div>
 
             {/* Job Details */}
-            <div className="flex flex-col flex-1 pl-8 gap-1">
+            <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
               <h2 className="text-lg font-bold">{job.jobName}</h2>
               <p className="text-sm ">
                 Via <span className="text-red-500">{job.companyName}</span>
@@ -120,18 +120,17 @@ const InterestedJobs = () => {
                 <CiFilter className="text-gray-600 text-lg" />
                 <span>{job.tag}</span>
               </div>
-
             </div>
 
             {/* Right Section (Status and Like Icon) */}
-            <div className="text-right">
-              <span className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
+            <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
+              <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
                 {job.work_schedules}
-              </span>
-              <div className="mt-4 flex justify-center ">
+              </div>
+              <div className=" flex justify-center ">
                 <CiHeart className="text-gray-500 text-2xl bg-white border rounded-lg" />
               </div>
-              <div className="flex justify-center mt-4 items-center gap-2 text-gray-500">
+              <div className="flex justify-center items-center gap-2 text-gray-500">
                 <CiClock1 />
                 <span>{job.posted_at}</span>
               </div>

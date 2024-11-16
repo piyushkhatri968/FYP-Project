@@ -1,34 +1,38 @@
 import React from "react";
-import bannerImg from "../../assets/Images/Home/banner-img.png"
+import bannerImg from "../../assets/Images/Home/banner-img.png";
 import { Link } from "react-router-dom";
+
 function Hero() {
   return (
-    <div className="flex items-center gap-48 justify-center h-[90vh] bg-gradient-to-r from-[#F2EDF8] to-[#FEF6F6]">
-      <div className="flex flex-col gap-5">
-        <p className="text-red-600 font-bold text-lg">
+    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-center h-auto lg:h-[90vh] bg-gradient-to-r from-[#F2EDF8] to-[#FEF6F6] px-4 lg:px-16 py-8">
+      <div className="flex flex-col gap-5 text-center lg:text-left">
+        <p className="text-red-600 font-bold text-base lg:text-lg mt-16 md:mt-8">
           Find Jobs, Employment & Career Opportunities
         </p>
-        <h1 className="text-[4rem] font-extrabold w-[40vw] leading-tight">
+        <h1 className="text-3xl lg:text-[4rem] lg:w-[40rem] text-[#001935] font-extrabold leading-snug lg:leading-tight">
           Get A Job That's Perfect For You
         </h1>
-        <p className="text-gray-800 w-[35vw] text-base">
+        <p className="text-gray-800 text-sm lg:text-base max-w-lg mx-auto lg:mx-0">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
-        <div className="flex gap-6">
-          <button className="font-semibold text-md bg-[#FD1616] text-white px-2 py-3 w-40 hover:bg-[#011935] transition-all duration-500">
+        <div className="flex gap-4 justify-center lg:justify-start">
+          <button className="font-semibold text-sm lg:text-md bg-[#FD1616] text-white px-4 py-3 w-full sm:w-auto hover:bg-[#011935] transition-all duration-500">
             Upload your CV
           </button>
-          <Link to="/contact" className="text-center font-semibold bg-white px-2 py-3 text-gray-800 w-40 hover:bg-[#FD1616] hover:text-white transition-all duration-500">
+          <Link
+            to="/contact"
+            className="text-center font-semibold bg-white px-4 py-3 text-gray-800 w-full sm:w-auto hover:bg-[#FD1616] hover:text-white transition-all duration-500"
+          >
             Contact Us
           </Link>
         </div>
       </div>
-      <div>
+      <div className="w-[20rem] md:w-[25rem] lg:w-[30rem]">
         <img
           src={bannerImg}
-          alt=""
-          className="w-[30vw] h-full"
+          alt="Hero Banner"
+          className=""
           style={{
             animation: "Flikker 6s ease-in-out infinite",
           }}

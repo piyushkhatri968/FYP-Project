@@ -20,28 +20,29 @@ function HomePage() {
       <PopularJobCategory />
 
       {/* TALENDTED DESIGNERS  */}
-      <div className="flex items-center justify-center gap-48 mb-20">
-        <div>
+      <div className="flex items-center justify-center flex-wrap lg:flex-nowrap gap-12 md:gap-16 lg:gap-20 mb-20">
+        <div className="w-[20rem] sm:w-[25rem] md:w-[20rem] lg:w-[27rem] pl-8">
           <img
             src={bannerImg2}
             alt=""
-            className="w-[30vw]"
+
             style={{
               animation: "Flikker 6s ease-in-out infinite",
             }}
+            draggable="false"
           />
         </div>
-        <div className="flex flex-col gap-5">
-          <h1 className="text-4xl font-semibold w-[40vw] leading-tight">
+        <div className="flex flex-col gap-5 px-4">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight ">
             Discover The Talented Designers In The World
           </h1>
-          <p className="text-gray-800 w-[40vw] text-base">
+          <p className="text-gray-800 text-base lg:w-[40rem]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
             ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
             accumsan lacus vel facilisis.
           </p>
-          <p className="text-gray-800 w-[40vw] text-base">
+          <p className="text-gray-800  text-base lg:w-[40rem]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
             ipsum suspendisse ultrices gravida.
