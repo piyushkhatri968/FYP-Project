@@ -11,6 +11,7 @@ import Stats from "../About/Stats";
 import Reviews from "../About/Reviews";
 import HowWebWorks from "./HowWebWorks";
 import SubscribeBox from "../../Components/SubscribeBox ";
+import JobRecruitment from "./JobRecruitment";
 
 function HomePage() {
   return (
@@ -59,6 +60,7 @@ function HomePage() {
       <TopCompanies />
       <Stats />
       <HowWebWorks />
+      <JobRecruitment/>
       <Reviews />
       <SubscribeBox />
     </>
