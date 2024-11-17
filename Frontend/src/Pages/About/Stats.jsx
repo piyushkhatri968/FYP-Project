@@ -11,7 +11,7 @@ function Stats() {
 
   return (
     <div className="bg-[#0a1128] py-12">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         {stats.map((stat, index) => (
           <div key={index} className="flex flex-col items-center">
             <div className="text-red-600 text-5xl mb-4">{stat.icon}</div>
