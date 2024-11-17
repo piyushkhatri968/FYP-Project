@@ -4,6 +4,8 @@ import "./index.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import { useSelector } from "react-redux";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./Components/PrivateRoute";
 import ScrollToTop from "./Components/ScrollToTop";
@@ -32,15 +34,16 @@ import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotif
 import InterviewScheduling from "./Pages/Hr_Dashboard/Pages/job/InterviewScheduling";
 import EmployeeAnnouncement from "./Pages/Hr_Dashboard/Pages/job/EmployeeAnnouncement";
 
-
 import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
+import HrPage from "./Pages/Hr_Dashboard/HrPage";
 
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
-    <div className="fade-in">
+    <div>
       <BrowserRouter>
         <ScrollToTop />
 
@@ -79,12 +82,21 @@ const App = () => {
             />
             <Route path="/job-analytics" element={<JobAnalytics />} />
 
-            <Route path="/account-settings" element={<AccountSetting/>}  />
-            <Route path="/notification-settings" element={<NotificationSettings/>}  />
-            <Route path="/job-notification"  element={<JobNotification/>} />
+            <Route path="/account-settings" element={<AccountSetting />} />
+            <Route
+              path="/notification-settings"
+              element={<NotificationSettings />}
+            />
+            <Route path="/job-notification" element={<JobNotification />} />
             {/* <Route path="/profile-settings" element={<ProfileSettings/>}  /> */}
-            <Route path="/schedule-interview" element={<InterviewScheduling/>}   />
-            <Route path="/employment-announcements" element={<EmployeeAnnouncement/>} />
+            <Route
+              path="/schedule-interview"
+              element={<InterviewScheduling />}
+            />
+            <Route
+              path="/employment-announcements"
+              element={<EmployeeAnnouncement />}
+            />
 
             <Route path="/account-settings" element={<AccountSetting />} />
             <Route
