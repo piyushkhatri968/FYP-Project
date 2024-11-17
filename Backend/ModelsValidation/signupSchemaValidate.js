@@ -21,6 +21,7 @@ export const signupValidation = (req, res, next) => {
       "string.min": "Password must be at least 6 characters",
       "any.required": "Password is required",
     }),
+    userType: Joi.string().required(),
   });
 
   const { error } = schema.validate(req.body, { abortEarly: false });
@@ -34,4 +35,3 @@ export const signupValidation = (req, res, next) => {
 
   next();
 };
-
