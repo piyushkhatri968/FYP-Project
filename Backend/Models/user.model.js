@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
     userType: {
       type: String,
       required: true,
-      default: "Employee",
     },
   },
   { timestamps: true }

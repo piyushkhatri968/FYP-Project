@@ -20,6 +20,14 @@ const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const checkUserType = () => {
+    if (formData.userType === "select" || !formData.userType) {
+      setUiError("Please select a user type.");
+      return false; // Indicate invalid user type
+    }
+    return true; // Indicate valid user type
+  };
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -35,6 +43,9 @@ const SignUp = () => {
       setUiError("Please fill out all fields.");
       return dispatch(signInFailure("Please fill out all fields."));
     }
+    if (!checkUserType()) {
+      return; // Stop execution if user type is invalid
+    }
     try {
       dispatch(signInStart());
       const res = await fetch("http://localhost:8080/api/auth/signup", {
@@ -48,9 +59,9 @@ const SignUp = () => {
 
       const data = await res.json();
       if (!res.ok) {
-        console.log(data.message);
         if (data.message === "Error in schemaValidation") {
-          return setUiError("Password must be atleast 6 characters");
+          setUiError("Password must be atleast 6 characters");
+          return dispatch(signInFailure(data.message));
         }
         setUiError(data.message);
         return dispatch(signInFailure(data.message));
@@ -114,6 +125,18 @@ const SignUp = () => {
                   id="password"
                   onChange={handleInputChange}
                 />
+              </div>
+              <div className="flex flex-col justify-center items-start w-full gap-2">
+                <label className="font-semibold">User Type</label>
+                <select
+                  id="userType"
+                  className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
+                  onChange={handleInputChange}
+                >
+                  <option value="select">Select</option>
+                  <option value="employee">Job Seeker</option>
+                  <option value="recruiter">Recruiter</option>
+                </select>
               </div>
               <button
                 className="bg-[#001935] text-white px-8 py-3 rounded-full font-semibold mt-5 hover:bg-red-600 transition-all duration-500"
