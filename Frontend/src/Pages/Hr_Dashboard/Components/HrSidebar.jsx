@@ -16,14 +16,14 @@ const HrSidebar = () => {
   };
 
   return (
-    <aside className="w-[250px] bg-[#061742] text-white h-screen flex flex-col justify-between p-6 shadow-lg">
+    <aside className="w-[250px] bg-[#061742] text-white h-screen flex flex-col justify-between p-6 shadow-lg overflow-y-auto sticky top-0">
       {/* Sidebar Header */}
       <div className="mb-9">
         <h1 className="text-3xl font-bold text-start text-white mb-4">
           HR Portal
         </h1>
         <ul className="space-y-4">
-          {[
+          {[ 
             { name: "Dashboard", path: "/hr-home" },
             { name: "Post a Job", path: "/job-notification" },
             { name: "Manage Jobs", path: "/manage-jobs" },
@@ -32,7 +32,9 @@ const HrSidebar = () => {
             { name: "Shortlist Candidates", path: "/shortlisted-candidates" },
             { name: "Job Analytics", path: "/job-analytics" },
             { name: "Notification Settings", path: "/notification-settings" },
-            { name: "Account Setting", path: "/account-settings" },
+            // { name: "Account Setting", path: "/account-settings" },
+            { name: "Announcements", path: "/employment-announcements" },
+
           ].map((item, index) => (
             <motion.li
               key={item.path}

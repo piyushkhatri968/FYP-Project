@@ -28,6 +28,9 @@ import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
 import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
 import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
 import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
+import InterviewScheduling from "./Pages/Hr_Dashboard/Pages/job/InterviewScheduling";
+import EmployeeAnnouncement from "./Pages/Hr_Dashboard/Pages/job/EmployeeAnnouncement";
+
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
@@ -71,6 +74,9 @@ const App = () => {
             <Route path="/account-settings" element={<AccountSetting/>}  />
             <Route path="/notification-settings" element={<NotificationSettings/>}  />
             <Route path="/job-notification"  element={<JobNotification/>} />
+            {/* <Route path="/profile-settings" element={<ProfileSettings/>}  /> */}
+            <Route path="/schedule-interview" element={<InterviewScheduling/>}   />
+            <Route path="/employment-announcements" element={<EmployeeAnnouncement/>} />
           </Route>
           
         </Routes>
