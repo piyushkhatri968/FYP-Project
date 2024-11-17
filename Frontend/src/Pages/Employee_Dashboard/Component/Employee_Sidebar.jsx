@@ -6,7 +6,7 @@ const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   return (
-    <div className="w-96 bg-white shadow-2xl rounded-xl p-6 ml-12">
+    <div className="w-96 bg-white shadow-2xl rounded-xl p-6 md:ml-12">
       {/* Profile Section */}
       <div className="text-center">
         <img

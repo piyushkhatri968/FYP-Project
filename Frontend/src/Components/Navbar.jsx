@@ -183,7 +183,7 @@ const Navbar = () => {
 
       {/* MOBILE NAVBAR */}
 
-      <nav className="mobile-nav hidden fixed z-30 w-full h-16 justify-between px-4 items-center bg-[#010C29] text-white">
+      <nav className="mobile-nav hidden fixed top-0 z-30 w-full h-16 justify-between px-4 items-center bg-[#010C29] text-white">
         <div className="logo">
           <Link to="/">Logo</Link>
         </div>
