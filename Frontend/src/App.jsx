@@ -29,6 +29,7 @@ import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
 import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
 import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
 import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
+import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
@@ -50,7 +51,8 @@ const App = () => {
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="find-job" element={<FindAJob />} />
-            <Route path="dashboard" element={<Employee_Dashboard />} />
+            <Route path="dashboard/employee" element={<Employee_Dashboard />} />
+            <Route path="dashboard/admin" element={<Admin_Dashboard />} />
           </Route>
 
           {/* HRLayout Route */}
