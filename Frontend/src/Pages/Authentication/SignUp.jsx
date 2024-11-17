@@ -134,7 +134,7 @@ const SignUp = () => {
                   onChange={handleInputChange}
                 >
                   <option value="select">Select</option>
-                  <option value="jobSeeker">Job Seeker</option>
+                  <option value="employee">Job Seeker</option>
                   <option value="recruiter">Recruiter</option>
                 </select>
               </div>

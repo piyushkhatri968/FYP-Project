@@ -140,7 +140,20 @@ const Navbar = () => {
                   <p>{currentUser && currentUser.name}</p>
                   <p>{currentUser && currentUser.email}</p>
                   <hr className="my-2" />
-                  <Link to="#">Profile</Link>
+                  <Link
+                    to={
+                      currentUser.userType === "recruiter"
+                        ? "/hr-home"
+                        : currentUser.userType === "employee"
+                        ? "/dashboard"
+                        : currentUser.userType === "admin"
+                        ? "/admin-dashboard"
+                        : null
+                    }
+                  >
+                    Profile
+                  </Link>
+
                   <hr className="my-2" />
                   <SignOut />
                 </div>

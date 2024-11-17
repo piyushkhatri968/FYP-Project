@@ -28,6 +28,7 @@ import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
 import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
 import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
 import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
+import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="find-job" element={<FindAJob />} />
+            <Route path="dashboard" element={<Employee_Dashboard />} />
           </Route>
 
           {/* HRLayout Route */}
@@ -68,11 +70,13 @@ const App = () => {
               element={<CandidateApplications />}
             />
             <Route path="/job-analytics" element={<JobAnalytics />} />
-            <Route path="/account-settings" element={<AccountSetting/>}  />
-            <Route path="/notification-settings" element={<NotificationSettings/>}  />
-            <Route path="/job-notification"  element={<JobNotification/>} />
+            <Route path="/account-settings" element={<AccountSetting />} />
+            <Route
+              path="/notification-settings"
+              element={<NotificationSettings />}
+            />
+            <Route path="/job-notification" element={<JobNotification />} />
           </Route>
-          
         </Routes>
       </BrowserRouter>
     </div>
