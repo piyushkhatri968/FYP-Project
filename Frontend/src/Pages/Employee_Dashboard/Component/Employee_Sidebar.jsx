@@ -1,29 +1,35 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Employee_Sidebar = () => {
+const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const location = useLocation();
   return (
-    <div className="w-96 bg-white shadow-lg rounded-xl p-6 px-12">
+    <div className="w-96 bg-white shadow-2xl rounded-xl p-6 ml-12">
       {/* Profile Section */}
       <div className="text-center">
         <img
           src={currentUser.profilePicture}
           alt="Profile"
-          className="w-24 h-24 rounded-full mx-auto"
+          className="w-32 h-32 rounded-full mx-auto"
         />
-        <h3 className="text-xl font-bold mt-4">John Smith</h3>
+        <h3 className="text-xl md:text-2xl font-bold mt-4">John Smith</h3>
         <p className="text-gray-500">Web Developer</p>
       </div>
 
       {/* Navigation Links */}
       <nav className="mt-6">
-        <ul className="space-y-2">
+        <ul>
           <li>
             <Link
               to="/dashboard/employee?tab=profile"
-              className="flex items-center gap-3 px-4 py-2 text-red-600 bg-red-100 rounded-lg font-semibold"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=profile"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-user"></i>
               My Profile
@@ -31,8 +37,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/resume"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=resume"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=resume"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-file"></i>
               My Resume
@@ -40,8 +51,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/applied-jobs"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=appliedjobs"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=appliedjobs"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-briefcase"></i>
               Applied Jobs
@@ -49,8 +65,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/messages"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=messages"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=messages"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-envelope"></i>
               Messages
@@ -58,8 +79,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/saved-jobs"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=saved-jobs"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=saved-jobs"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-heart"></i>
               Saved Jobs
@@ -67,8 +93,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/change-password"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=change-password"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=change-password"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-lock"></i>
               Change Password
@@ -76,8 +107,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/delete-account"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=delete-account"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=delete-account"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-trash"></i>
               Delete Account
@@ -85,8 +121,13 @@ const Employee_Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/logout"
-              className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              to="/dashboard/employee?tab=logout"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=logout"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-sign-out-alt"></i>
               Log Out
@@ -98,4 +139,4 @@ const Employee_Sidebar = () => {
   );
 };
 
-export default Employee_Sidebar;
+export default Sidebar;

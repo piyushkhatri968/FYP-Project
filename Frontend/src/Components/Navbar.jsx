@@ -9,7 +9,7 @@ import { FaPlus, FaMinus } from "react-icons/fa6";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const [openProfileModal, setProfileOpenModal] = useState(false);
+  const [openProfileModal, setOpenProfileModal] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobilenav, setMobilenav] = useState(false);
@@ -18,7 +18,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const handleProfileModal = () => {
-    setProfileOpenModal(!openProfileModal);
+    setOpenProfileModal(!openProfileModal);
   };
 
   // NAVBAR SMOOTH SCROLL
@@ -141,11 +141,12 @@ const Navbar = () => {
                   <p>{currentUser && currentUser.email}</p>
                   <hr className="my-2" />
                   <Link
+                    onClick={() => setOpenProfileModal(false)}
                     to={
                       currentUser.userType === "recruiter"
                         ? "/hr-home"
                         : currentUser.userType === "employee"
-                        ? "dashboard/employee"
+                        ? "dashboard/employee?tab=profile"
                         : currentUser.userType === "admin"
                         ? "dashboard/admin"
                         : null
@@ -155,7 +156,9 @@ const Navbar = () => {
                   </Link>
 
                   <hr className="my-2" />
-                  <SignOut />
+                  <div onClick={() => setOpenProfileModal(false)}>
+                    <SignOut />
+                  </div>
                 </div>
               )}
             </div>
