@@ -28,14 +28,14 @@ import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
 import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
 import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
 import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
-<<<<<<< HEAD
+
 import InterviewScheduling from "./Pages/Hr_Dashboard/Pages/job/InterviewScheduling";
 import EmployeeAnnouncement from "./Pages/Hr_Dashboard/Pages/job/EmployeeAnnouncement";
 
-=======
+
 import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
->>>>>>> bac7271bba84c9abc973bf7081165895166732ad
+
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
@@ -78,21 +78,20 @@ const App = () => {
               element={<CandidateApplications />}
             />
             <Route path="/job-analytics" element={<JobAnalytics />} />
-<<<<<<< HEAD
+
             <Route path="/account-settings" element={<AccountSetting/>}  />
             <Route path="/notification-settings" element={<NotificationSettings/>}  />
             <Route path="/job-notification"  element={<JobNotification/>} />
             {/* <Route path="/profile-settings" element={<ProfileSettings/>}  /> */}
             <Route path="/schedule-interview" element={<InterviewScheduling/>}   />
             <Route path="/employment-announcements" element={<EmployeeAnnouncement/>} />
-=======
+
             <Route path="/account-settings" element={<AccountSetting />} />
             <Route
               path="/notification-settings"
               element={<NotificationSettings />}
             />
             <Route path="/job-notification" element={<JobNotification />} />
->>>>>>> bac7271bba84c9abc973bf7081165895166732ad
           </Route>
         </Routes>
       </BrowserRouter>
