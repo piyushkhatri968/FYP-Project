@@ -10,11 +10,14 @@ const Sidebar = () => {
       {/* Profile Section */}
       <div className="text-center">
         <img
+          draggable="false"
           src={currentUser.profilePicture}
           alt="Profile"
-          className="w-32 h-32 rounded-full mx-auto"
+          className="w-32 h-32 rounded-full mx-auto object-cover"
         />
-        <h3 className="text-xl md:text-2xl font-bold mt-4">{currentUser.name}</h3>
+        <h3 className="text-xl md:text-2xl font-bold mt-4">
+          {currentUser.name}
+        </h3>
         <p className="text-gray-500">Web Developer</p>
       </div>
 

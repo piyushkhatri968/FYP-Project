@@ -127,11 +127,12 @@ const Navbar = () => {
         </div>
         {currentUser ? (
           <div className="relative">
-            <div onClick={handleProfileModal}>
+            <div onClick={handleProfileModal} className="w-11 h-11">
               <img
+                draggable="false"
                 src={currentUser.profilePicture}
                 alt="user profile"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover hover:w-11 hover:h-11 transition-all duration-300"
               />
             </div>
             <div>
