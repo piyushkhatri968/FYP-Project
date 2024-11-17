@@ -14,7 +14,7 @@ const Sidebar = () => {
           alt="Profile"
           className="w-32 h-32 rounded-full mx-auto"
         />
-        <h3 className="text-xl md:text-2xl font-bold mt-4">John Smith</h3>
+        <h3 className="text-xl md:text-2xl font-bold mt-4">{currentUser.name}</h3>
         <p className="text-gray-500">Web Developer</p>
       </div>
 
