@@ -37,7 +37,7 @@ const JobSearch = () => {
               <option value="Category">Category</option>
               <option value="Category">Category</option>
             </select>
-            <FaChevronDown className="text-gray-600 text-sm mr-2" />
+            
           </div>
 
           {/* Find a Job Button */}
