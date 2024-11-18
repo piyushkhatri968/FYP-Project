@@ -38,6 +38,7 @@ import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
 import HrPage from "./Pages/Hr_Dashboard/HrPage";
 import OrangeButton from "./Components/OrangeButton";
+import Resume from "./Components/Resume";
 
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
@@ -63,6 +64,7 @@ const App = () => {
             <Route path="signin" element={<SignIn />} />
             <Route path="find-job" element={<FindAJob />} />
             <Route path="dashboard/employee" element={<Employee_Dashboard />} />
+            <Route path="resume" element={<Resume />} />
             <Route path="dashboard/admin" element={<Admin_Dashboard />} />
           </Route>
 

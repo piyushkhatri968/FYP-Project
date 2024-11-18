@@ -116,16 +116,18 @@
 @keyframes ArrowFlikker {
   0% {
     transform: translateY(0px);
+    opacity: 1;
   }
   100% {
     transform: translateY(-15px);
+    opacity: 0.5;
   }
 }
 
 /* ORANGE BUTTON */
 
 .OrangeButton {
-  transform: translateY(-900px);
+  transform: translateY(-800px);
 }
 
 .OrangeButton.visiblebutton {

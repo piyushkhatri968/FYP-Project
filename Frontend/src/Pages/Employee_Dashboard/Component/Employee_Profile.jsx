@@ -2,7 +2,7 @@ import React from "react";
 
 const Employee_Profile = () => {
   return (
-    <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-2xl rounded-xl">
+    <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-lg rounded-xl md:w-[50rem]">
       {/* BASIC INFORMATION */}
 
       <div className="flex flex-col mt-3">
@@ -15,7 +15,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your Name"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -23,7 +23,7 @@ const Employee_Profile = () => {
             <input
               type="email"
               placeholder="Your Email"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -33,7 +33,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your Phone"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -41,7 +41,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Job Title"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -69,7 +69,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your Country"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -77,7 +77,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your City"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -87,7 +87,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="City Zip"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -95,7 +95,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your Region"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -123,7 +123,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Your Age"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -131,7 +131,7 @@ const Employee_Profile = () => {
             <input
               type="number"
               placeholder="Work Experience"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -141,7 +141,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Language"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -149,7 +149,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="Skill"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -177,7 +177,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="https://www.facebook.com/"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -185,7 +185,7 @@ const Employee_Profile = () => {
             <input
               type="number"
               placeholder="https://twitter.com/"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>
@@ -195,7 +195,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="https://www.linkedin.com/"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -203,7 +203,7 @@ const Employee_Profile = () => {
             <input
               type="text"
               placeholder="https://github.com/"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-72"
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
             />
           </div>
         </div>

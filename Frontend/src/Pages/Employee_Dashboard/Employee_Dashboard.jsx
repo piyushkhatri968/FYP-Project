@@ -4,7 +4,6 @@ import Employee_Sidebar from "./Component/Employee_Sidebar";
 import Employee_Profile from "./Component/Employee_Profile";
 import Theme from "../../Components/Theme";
 import heroImg from "../../assets/Images/Employee Dashboard/Hero.jpg";
-import Employee_Resume from "./Component/Employee_Resume";
 import Employee_saved_jobs from "./Component/Employee_saved_jobs";
 import Employee_Applied_Jobs from "./Component/Employee_Applied_Jobs";
 import Employee_Messages from "./Component/Employee_Messages";
@@ -25,19 +24,16 @@ const Employee_Dashboard = () => {
   }, [location.search]);
   return (
     <>
-      {/* <Theme pageName="Profile" heroImage={heroImg} /> */}
+      <Theme pageName="Profile" heroImage={heroImg} />
       <div className="flex flex-col justify-center gap-8 md:flex-row my-16">
-        <div className="md:w-96">
+        <div className="md:w-[28rem]">
           {/* SideBar */}
           <Employee_Sidebar />
         </div>
 
-        <div className="md:w-[44rem]">
+        <div className="md:w-[50rem]">
           {/* MY PROFILE */}
           {tab === "profile" && <Employee_Profile />}
-
-          {/* MY RESUME */}
-          {tab === "resume" && <Employee_Resume />}
 
           {/* APPLIED JOBS */}
           {tab === "appliedjobs" && <Employee_Applied_Jobs />}

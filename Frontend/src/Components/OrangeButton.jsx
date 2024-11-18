@@ -27,12 +27,12 @@ const OrangeButton = () => {
   return (
     <div
       onClick={scrollToTop}
-      className={`OrangeButton fixed z-50 bottom-6 right-6 bg-orange-500 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-orange-600 transition-all duration-300 ${
+      className={`OrangeButton fixed z-50 bottom-6 right-6 bg-OrangeColor w-14 h-14 rounded-full flex items-center justify-center cursor-pointer transform rotate-180 shadow-lg hover:bg-orange-600 transition-all duration-300 ${
         isVisible ? "visiblebutton" : "invisiblebutton"
       }`}
     >
       <MdKeyboardDoubleArrowUp
-        className="text-xl text-white"
+        className="text-3xl text-white "
         style={{
           animation: "ArrowFlikker 2s ease-in-out infinite",
         }}

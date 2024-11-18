@@ -6,7 +6,7 @@ const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   return (
-    <div className="w-96 bg-white shadow-2xl rounded-xl p-6 ">
+    <div className="w-[28rem] bg-white shadow-lg mx-auto rounded-xl py-6">
       {/* Profile Section */}
       <div className="text-center">
         <img
@@ -32,7 +32,7 @@ const Sidebar = () => {
                 location.search === "?tab=profile"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-user"></i>
               My Profile
@@ -40,13 +40,8 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/dashboard/employee?tab=resume"
-              className={`${
-                location.pathname === "/dashboard/employee" &&
-                location.search === "?tab=resume"
-                  ? "text-white bg-[#FD1616] font-bold"
-                  : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              to="/resume"
+              className={`flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-file"></i>
               My Resume
@@ -60,7 +55,7 @@ const Sidebar = () => {
                 location.search === "?tab=appliedjobs"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-briefcase"></i>
               Applied Jobs
@@ -74,7 +69,7 @@ const Sidebar = () => {
                 location.search === "?tab=messages"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-envelope"></i>
               Messages
@@ -88,7 +83,7 @@ const Sidebar = () => {
                 location.search === "?tab=saved-jobs"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-heart"></i>
               Saved Jobs
@@ -102,7 +97,7 @@ const Sidebar = () => {
                 location.search === "?tab=change-password"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-lock"></i>
               Change Password
@@ -116,7 +111,7 @@ const Sidebar = () => {
                 location.search === "?tab=delete-account"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-trash"></i>
               Delete Account
@@ -130,7 +125,7 @@ const Sidebar = () => {
                 location.search === "?tab=logout"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
-              } flex items-center gap-3 px-4 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <i className="fas fa-sign-out-alt"></i>
               Log Out
