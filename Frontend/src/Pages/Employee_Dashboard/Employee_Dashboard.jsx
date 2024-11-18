@@ -26,35 +26,37 @@ const Employee_Dashboard = () => {
   return (
     <>
       {/* <Theme pageName="Profile" heroImage={heroImg} /> */}
-      <div className="min-h-screen flex flex-col md:flex-row my-16">
-        <div className="md:w-[30rem]">
+      <div className="flex flex-col justify-center gap-8 md:flex-row my-16">
+        <div className="md:w-96">
           {/* SideBar */}
           <Employee_Sidebar />
         </div>
 
-        {/* MY PROFILE */}
-        {tab === "profile" && <Employee_Profile />}
+        <div className="md:w-[44rem]">
+          {/* MY PROFILE */}
+          {tab === "profile" && <Employee_Profile />}
 
-        {/* MY RESUME */}
-        {tab === "resume" && <Employee_Resume />}
+          {/* MY RESUME */}
+          {tab === "resume" && <Employee_Resume />}
 
-        {/* APPLIED JOBS */}
-        {tab === "appliedjobs" && <Employee_Applied_Jobs />}
+          {/* APPLIED JOBS */}
+          {tab === "appliedjobs" && <Employee_Applied_Jobs />}
 
-        {/* MESSAGES */}
-        {tab === "messages" && <Employee_Messages />}
+          {/* MESSAGES */}
+          {tab === "messages" && <Employee_Messages />}
 
-        {/* SAVED JOBS */}
-        {tab === "saved-jobs" && <Employee_saved_jobs />}
+          {/* SAVED JOBS */}
+          {tab === "saved-jobs" && <Employee_saved_jobs />}
 
-        {/* CHANGE PASSWORD */}
-        {tab === "change-password" && <Employee_change_password />}
+          {/* CHANGE PASSWORD */}
+          {tab === "change-password" && <Employee_change_password />}
 
-        {/* DELETE ACCOUNT */}
-        {tab === "delete-account" && <Employee_delete_account />}
+          {/* DELETE ACCOUNT */}
+          {tab === "delete-account" && <Employee_delete_account />}
 
-        {/* LOGOUT ACCOUNT */}
-        {tab === "logout" && <Employee_logout />}
+          {/* LOGOUT ACCOUNT */}
+          {tab === "logout" && <Employee_logout />}
+        </div>
       </div>
     </>
   );

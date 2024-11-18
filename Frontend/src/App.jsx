@@ -37,6 +37,7 @@ import EmployeeAnnouncement from "./Pages/Hr_Dashboard/Pages/job/EmployeeAnnounc
 import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
 import HrPage from "./Pages/Hr_Dashboard/HrPage";
+import OrangeButton from "./Components/OrangeButton";
 
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
@@ -45,6 +46,7 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <OrangeButton />
         <ScrollToTop />
 
         <Routes>

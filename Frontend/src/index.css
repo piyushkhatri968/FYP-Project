@@ -81,8 +81,6 @@
   animation: dropdown-fade-in 0.3s ease forwards;
 }
 
-
-
 @media only screen and (max-width: 900px) {
   .desktop-nav {
     display: none !important;
@@ -101,8 +99,6 @@
   display: none; /* Chrome, Safari, Edge */
 }
 
-
-
 /* HOME PAGE */
 
 @keyframes Flikker {
@@ -115,4 +111,24 @@
   100% {
     transform: translateY(0);
   }
+}
+
+@keyframes ArrowFlikker {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-15px);
+  }
+}
+
+/* ORANGE BUTTON */
+
+.OrangeButton {
+  transform: translateY(-900px);
+}
+
+.OrangeButton.visiblebutton {
+  transform: translateY(0px);
+  transition: all 2s linear;
 }
