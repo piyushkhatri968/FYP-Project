@@ -132,7 +132,7 @@ const Navbar = () => {
                 draggable="false"
                 src={currentUser.profilePicture}
                 alt="user profile"
-                className="w-10 h-10 rounded-full object-cover hover:w-11 hover:h-11 transition-all duration-300"
+                className="w-10 h-10 rounded-full object-cover"
               />
             </div>
             <div>
