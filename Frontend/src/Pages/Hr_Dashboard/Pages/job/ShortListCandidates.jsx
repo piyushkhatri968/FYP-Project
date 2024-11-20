@@ -12,21 +12,28 @@ const ShortlistCandidates = () => {
   const candidates = [
     {
       id: 1,
-      name: "Alice Johnson",
+      name: "Babar Hanif",
       position: "Frontend Developer",
       experience: 3,
       isShortlisted: true,
     },
     {
       id: 2,
-      name: "Carol Danvers",
+      name: "Yousaf khan",
       position: "Data Scientist",
       experience: 2,
       isShortlisted: true,
     },
     {
       id: 3,
-      name: "Bob Smith",
+      name: "Pawan Kumar",
+      position: "Backend Developer",
+      experience: 0,
+      isShortlisted: false,
+    },
+    {
+      id: 4,
+      name: "jatin Kumar",
       position: "Backend Developer",
       experience: 0,
       isShortlisted: false,

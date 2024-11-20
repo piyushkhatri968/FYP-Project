@@ -15,33 +15,21 @@ import AboutPage from "./Pages/About/AboutPage";
 import ContactPage from "./Pages/Contact/ContactPage";
 import BlogPage from "./Pages/Blogs/BlogPage";
 import FindAJob from "./Pages/Jobs/FinaAJob/FindAJob";
-import HRPage from "./Pages/Hr_Dashboard/HrPage";
+
 import MainLayout from "./Components/MainLayout";
-import HRLayout from "./Pages/Hr_Dashboard/Components/HrLayout";
+
 import Home from "./Pages/Home/HomePage";
 import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
-import JobsPage from "./Pages/Hr_Dashboard/Pages/job/JobsPage";
-// import JobPostPage from "./Pages/Hr_Dashboard/Pages/JobPost/JobPostPage";
-import ApplicationTracking from "./Pages/Hr_Dashboard/Pages/job/ApplicationTracking";
-import CandidateApplications from "./Pages/Hr_Dashboard/Pages/job/CandidateApplications";
-import ShortListCandidates from "./Pages/Hr_Dashboard/Pages/job/ShortListCandidates";
-import JobAnalytics from "./Pages/Hr_Dashboard/Pages/job/JobAnalytics";
-import AccountSetting from "./Pages/Hr_Dashboard/Pages/job/AccountSetting";
-import NotificationSettings from "./Pages/Hr_Dashboard/Pages/job/NotificationSettings";
-import JobNotification from "./Pages/Hr_Dashboard/Pages/JobNotification/JobNotification";
 
-import InterviewScheduling from "./Pages/Hr_Dashboard/Pages/job/InterviewScheduling";
-import EmployeeAnnouncement from "./Pages/Hr_Dashboard/Pages/job/EmployeeAnnouncement";
 
 import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
-import HrPage from "./Pages/Hr_Dashboard/HrPage";
+
 import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
-// import JobApplicationManagement from "./Pages/Hr_Dashboard/Pages/JobApplicationMangement/JobApplicationManagement";
+import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
 
-// import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -66,51 +54,13 @@ const App = () => {
             <Route path="find-job" element={<FindAJob />} />
             <Route path="dashboard/employee" element={<Employee_Dashboard />} />
             <Route path="resume" element={<Resume />} />
-            <Route path="dashboard/admin" element={<Admin_Dashboard />} />
+            
+          
+          </Route>
+          <Route>
+          {HrRoutes}
           </Route>
 
-          {/* HRLayout Route */}
-          <Route element={<HRLayout />}>
-            <Route path="hr-home" element={<HRPage />} />
-            <Route path="/manage-jobs" element={<JobsPage />} />
-            <Route
-              path="/application-tracking"
-              element={<ApplicationTracking />}
-            />
-            <Route
-              path="/shortlisted-candidates"
-              element={<ShortListCandidates />}
-            />
-            <Route
-              path="/candidate-profiles"
-              element={<CandidateApplications />}
-            />
-            <Route path="/job-analytics" element={<JobAnalytics />} />
-
-            <Route path="/account-settings" element={<AccountSetting />} />
-            <Route
-              path="/notification-settings"
-              element={<NotificationSettings />}
-            />
-            <Route path="/job-notification" element={<JobNotification />} />
-            {/* <Route path="/profile-settings" element={<ProfileSettings/>}  /> */}
-            <Route
-              path="/schedule-interview"
-              element={<InterviewScheduling />}
-            />
-            <Route
-              path="/employment-announcements"
-              element={<EmployeeAnnouncement />}
-            />
-
-            <Route path="/account-settings" element={<AccountSetting />} />
-            <Route
-              path="/notification-settings"
-              element={<NotificationSettings />}
-            />
-            <Route path="/job-notification" element={<JobNotification />} />
-            {/* <Route path="/jobapp" element={<JobApplicationManagement/>}  /> */}
-          </Route>
         </Routes>
       </BrowserRouter>
     </div>

@@ -99,13 +99,13 @@ const HrPage = () => {
                 <li className="flex items-center gap-4">
                   <FaCalendarCheck size={24} className="text-gray-500" />
                   <span className="text-gray-700">
-                    John Doe - 20th Nov, 2024 (10:00 AM)
+                    Pawan kumar - 20th Nov, 2024 (10:00 AM)
                   </span>
                 </li>
                 <li className="flex items-center gap-4">
                   <FaCalendarCheck size={24} className="text-gray-500" />
                   <span className="text-gray-700">
-                    Jane Smith - 22nd Nov, 2024 (2:00 PM)
+                    Piyush - 22nd Nov, 2024 (2:00 PM)
                   </span>
                 </li>
               </ul>

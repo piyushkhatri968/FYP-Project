@@ -9,10 +9,11 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [modalCandidate, setModalCandidate] = useState(null);
 
   const candidates = [
-    { id: 1, name: "Alice Johnson", position: "Frontend Developer", experience: 3, status: "Applied" },
-    { id: 2, name: "Bob Smith", position: "Backend Developer", experience: 1, status: "Applied" },
-    { id: 3, name: "Carol Danvers", position: "Data Scientist", experience: 0, status: "Shortlisted" },
-    { id: 4, name: "David Brown", position: "Frontend Developer", experience: 2, status: "Applied" },
+    { id: 1, name: "Babar Hanif", position: "Frontend Developer", experience: 3, status: "Applied" },
+    { id: 2, name: "Jagdesh kumar", position: "Backend Developer", experience: 1, status: "Applied" },
+    { id: 3, name: "Yousaf Khan", position: "Data Scientist", experience: 0, status: "Shortlisted" },
+    { id: 4, name: "Mubarak sharif", position: "Frontend Developer", experience: 2, status: "Applied" },
+    { id: 4, name: "Jatin Kumar", position: "Frontend Developer", experience: 0, status: "Applied" },
   ];
 
   const positions = ["Frontend Developer", "Backend Developer", "Data Scientist"];
