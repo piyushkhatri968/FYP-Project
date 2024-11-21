@@ -10,6 +10,7 @@ import Employee_Messages from "./Component/Employee_Messages";
 import Employee_change_password from "./Component/Employee_change_password";
 import Employee_delete_account from "./Component/Employee_delete_account";
 import Employee_logout from "./Component/Employee_logout";
+import Employee_Suggested_Jobs from "./Component/Employee_Suggested_Jobs";
 
 const Employee_Dashboard = () => {
   const location = useLocation();
@@ -37,6 +38,9 @@ const Employee_Dashboard = () => {
 
           {/* APPLIED JOBS */}
           {tab === "appliedjobs" && <Employee_Applied_Jobs />}
+
+          {/* SUGGESTED JOBS */}
+          {tab === "suggestedjobs" && <Employee_Suggested_Jobs />}
 
           {/* MESSAGES */}
           {tab === "messages" && <Employee_Messages />}

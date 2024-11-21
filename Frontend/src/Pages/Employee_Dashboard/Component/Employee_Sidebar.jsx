@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaLightbulb } from "react-icons/fa6";
 
 const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -59,6 +60,20 @@ const Sidebar = () => {
             >
               <i className="fas fa-briefcase"></i>
               Applied Jobs
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/employee?tab=suggestedjobs"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=suggestedjobs"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <FaLightbulb className="text-xl"/>
+              Suggested Jobs
             </Link>
           </li>
           <li>
