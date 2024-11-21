@@ -2,7 +2,7 @@ import React from "react";
 
 const Employee_Profile = () => {
   return (
-    <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-lg rounded-xl md:w-[50rem]">
+    <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-lg rounded-xl">
       {/* BASIC INFORMATION */}
 
       <div className="flex flex-col mt-3">

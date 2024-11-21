@@ -48,7 +48,7 @@ const App = () => {
 
           <Route>{HrRoutes}</Route>
         </Routes>
-          <Footer />
+          {/* <Footer /> */}
       </BrowserRouter>
     </div>
   );

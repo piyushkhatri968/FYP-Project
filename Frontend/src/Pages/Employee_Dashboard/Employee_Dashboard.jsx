@@ -11,6 +11,7 @@ import Employee_change_password from "./Component/Employee_change_password";
 import Employee_delete_account from "./Component/Employee_delete_account";
 import Employee_logout from "./Component/Employee_logout";
 import Employee_Suggested_Jobs from "./Component/Employee_Suggested_Jobs";
+import Employee_DetailDash from "./Component/Employee_DetailDash";
 
 const Employee_Dashboard = () => {
   const location = useLocation();
@@ -22,17 +23,19 @@ const Employee_Dashboard = () => {
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
-  }, [location.search]);
+  }, [location.search || location.pathname]);
   return (
     <>
-      <Theme pageName="Profile" heroImage={heroImg} />
-      <div className="flex flex-col justify-center gap-8 md:flex-row my-16">
-        <div className="md:w-[28rem]">
+      <div className="flex flex-col justify-center items-center md:items-start gap-8 md:flex-row my-16 md:mt-32">
+        <div className="w-80 md:w-96">
           {/* SideBar */}
           <Employee_Sidebar />
         </div>
 
-        <div className="md:w-[50rem]">
+        <div className="w-full">
+          {/* MY PROFILE */}
+          {tab === "dashboard" && <Employee_DetailDash />}
+
           {/* MY PROFILE */}
           {tab === "profile" && <Employee_Profile />}
 

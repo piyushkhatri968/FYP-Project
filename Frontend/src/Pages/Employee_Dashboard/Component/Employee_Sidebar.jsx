@@ -7,9 +7,9 @@ const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   return (
-    <div className="w-[28rem] bg-white shadow-lg mx-auto rounded-xl py-6">
+    <div className="md:w-96 bg-white shadow-lg mx-auto rounded-xl py-6">
       {/* Profile Section */}
-      <div className="text-center">
+      <div className="text-center mx-auto">
         <img
           draggable="false"
           src={currentUser.profilePicture}
@@ -25,6 +25,20 @@ const Sidebar = () => {
       {/* Navigation Links */}
       <nav className="mt-6">
         <ul>
+          <li>
+            <Link
+              to="/dashboard/employee?tab=dashboard"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=dashboard"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <i className="fas fa-user"></i>
+              Dashboard
+            </Link>
+          </li>
           <li>
             <Link
               to="/dashboard/employee?tab=profile"
@@ -72,7 +86,7 @@ const Sidebar = () => {
                   : null
               } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
-              <FaLightbulb className="text-xl"/>
+              <FaLightbulb className="text-xl" />
               Suggested Jobs
             </Link>
           </li>
