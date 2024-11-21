@@ -15,7 +15,7 @@ const Theme = (props) => {
       {/* Top Design */}
       <div className="flex flex-col items-center gap-6">
         <h1 className="text-4xl md:text-5xl font-bold">{props.pageName}</h1>
-        <div className="flex justify-center items-center gap-6 border border-gray-500 max-w-60 py-3 px-8 rounded-full mx-auto">
+        <div className="flex justify-center items-center gap-6 border border-gray-500 max-w-60 py-3 px-6 rounded-full mx-auto">
           <Link
             to={"/"}
             className="hover:text-red-600 transition-all duration-500 font-bold"

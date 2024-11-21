@@ -184,11 +184,11 @@ const Navbar = () => {
 
       {/* MOBILE NAVBAR */}
 
-      <nav className="mobile-nav hidden fixed top-0 z-30 w-full h-16 justify-between px-4 items-center bg-[#010C29] text-white">
+      <div className="mobile-nav hidden fixed z-40 top-0 w-full h-16 justify-between px-4 items-center bg-[#010C29] text-white">
         <div className="logo">
           <Link to="/">Logo</Link>
         </div>
-        <div className="dropdown relative ">
+        <div className="dropdown relative">
           <span onClick={handleMobileNav}>
             {mobilenav ? (
               <IoCloseSharp className="text-3xl" />
@@ -198,11 +198,11 @@ const Navbar = () => {
           </span>
           {/* DROPDOWN MENU */}
           <div
-            className={`absolute top-11 -right-4 w-[100vw] h-[51vh] bg-white text-gray-500 overflow-y-auto hide-scrollbar ${
+            className={`dropdown-menu absolute z-30 top-11 -right-4 w-[100vw] h-[51vh] bg-white text-gray-500 overflow-y-auto hide-scrollbar ${
               mobilenav ? "block" : "hidden"
             }`}
           >
-            <ul className="flex flex-col justify-center gap-[15px] mt-3">
+            <ul className="flex flex-col justify-center gap-[15px] mt-4">
               <li
                 className="flex items-center justify-between px-8"
                 onClick={() => setMobilenav(!mobilenav)}
@@ -273,7 +273,7 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-      </nav>
+      </div>
     </>
   );
 };
