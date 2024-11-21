@@ -39,6 +39,7 @@ import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
 import HrPage from "./Pages/Hr_Dashboard/HrPage";
 import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
+// import JobApplicationManagement from "./Pages/Hr_Dashboard/Pages/JobApplicationMangement/JobApplicationManagement";
 
 // import PostJobNotification from "./Pages/Hr_Dashboard/Pages/job/PostJobNotification";
 
@@ -108,6 +109,7 @@ const App = () => {
               element={<NotificationSettings />}
             />
             <Route path="/job-notification" element={<JobNotification />} />
+            {/* <Route path="/jobapp" element={<JobApplicationManagement/>}  /> */}
           </Route>
         </Routes>
       </BrowserRouter>

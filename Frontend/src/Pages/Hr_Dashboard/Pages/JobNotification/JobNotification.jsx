@@ -1,13 +1,21 @@
 import React, { useState } from "react";
+import { FaPlus, FaSpinner } from "react-icons/fa";
 import NotificationService from "./NotificationService";
+import SkillInput from "./SkillInput";
+import ExperienceInput from "./ExperienceInput";
+import JobTypeSelector from "./JobTypeSelector";
 
-const JobNotification = () => {
+const JobNotification = ({ addRecentJob }) => {
   const [jobDetails, setJobDetails] = useState({
     title: "",
     department: "",
     location: "",
     description: "",
+    experience: "",
+    skills: [],
+    jobType: "",
   });
+
   const [isSending, setIsSending] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,6 +25,22 @@ const JobNotification = () => {
     setJobDetails((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSkillAdd = (skill) => {
+    if (!jobDetails.skills.includes(skill)) {
+      setJobDetails((prev) => ({
+        ...prev,
+        skills: [...prev.skills, skill],
+      }));
+    }
+  };
+
+  const handleSkillRemove = (skill) => {
+    setJobDetails((prev) => ({
+      ...prev,
+      skills: prev.skills.filter((s) => s !== skill),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
@@ -24,16 +48,13 @@ const JobNotification = () => {
     setErrorMessage("");
 
     try {
-      // Trigger notifications to related users
-      const response = await NotificationService.sendNotifications(jobDetails);
+      // Placeholder for backend integration
+      await NotificationService.sendNotifications(jobDetails);
 
-      if (response.success) {
-        setSuccessMessage("Job posted and notifications sent to related users!");
-      } else {
-        setErrorMessage("Failed to send notifications. Please try again.");
-      }
+      setSuccessMessage("Job posted successfully!");
+      addRecentJob(jobDetails); // Update User Dashboard
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again later.");
+      setErrorMessage("An error occurred. Please try again.");
     } finally {
       setIsSending(false);
     }
@@ -41,10 +62,10 @@ const JobNotification = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Post Job and Notify Users</h2>
+      <h2 className="text-2xl font-bold mb-6">Post a New Job</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-gray-700 font-medium mb-2">
+          <label htmlFor="title" className="block font-medium text-gray-700">
             Job Title
           </label>
           <input
@@ -57,8 +78,9 @@ const JobNotification = () => {
             className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
         <div>
-          <label htmlFor="department" className="block text-gray-700 font-medium mb-2">
+          <label htmlFor="department" className="block font-medium text-gray-700">
             Department
           </label>
           <input
@@ -71,8 +93,9 @@ const JobNotification = () => {
             className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
         <div>
-          <label htmlFor="location" className="block text-gray-700 font-medium mb-2">
+          <label htmlFor="location" className="block font-medium text-gray-700">
             Location
           </label>
           <input
@@ -85,8 +108,9 @@ const JobNotification = () => {
             className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
         <div>
-          <label htmlFor="description" className="block text-gray-700 font-medium mb-2">
+          <label htmlFor="description" className="block font-medium text-gray-700">
             Job Description
           </label>
           <textarea
@@ -95,17 +119,29 @@ const JobNotification = () => {
             value={jobDetails.description}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500"
             rows="5"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        {successMessage && (
-          <p className="text-green-500 font-medium">{successMessage}</p>
-        )}
-        {errorMessage && (
-          <p className="text-red-500 font-medium">{errorMessage}</p>
-        )}
+        <ExperienceInput
+          value={jobDetails.experience}
+          onChange={(value) => setJobDetails((prev) => ({ ...prev, experience: value }))}
+        />
+
+        <JobTypeSelector
+          value={jobDetails.jobType}
+          onChange={(value) => setJobDetails((prev) => ({ ...prev, jobType: value }))}
+        />
+
+        <SkillInput
+          skills={jobDetails.skills}
+          onAdd={handleSkillAdd}
+          onRemove={handleSkillRemove}
+        />
+
+        {successMessage && <p className="text-green-500 font-medium">{successMessage}</p>}
+        {errorMessage && <p className="text-red-500 font-medium">{errorMessage}</p>}
 
         <button
           type="submit"
@@ -114,7 +150,8 @@ const JobNotification = () => {
             isSending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {isSending ? "Sending Notifications..." : "Post Job"}
+          {isSending ? <FaSpinner className="animate-spin inline-block mr-2" /> : <FaPlus />}
+          Post Job
         </button>
       </form>
     </div>
