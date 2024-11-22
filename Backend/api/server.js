@@ -18,6 +18,8 @@ app.use(express.json());
 //routes
 
 import authRoute from "../Routes/Auth.route.js";
+import jobpost from "../Routes/JobPost.js"
+
 
 // {
 //     origin: process.env.CLIENT_URL || "http://localhost:5173/", // Your frontend URL
@@ -40,6 +42,7 @@ app.get("/", (req, res) => {
 // routes
 
 app.use("/api/auth", authRoute);
+app.use("/api/jobposts"  ,jobpost )
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
