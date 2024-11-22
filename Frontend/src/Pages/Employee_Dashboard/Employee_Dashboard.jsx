@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Employee_Sidebar from "./Component/Employee_Sidebar";
 import Employee_Profile from "./Component/Employee_Profile";
-import Theme from "../../Components/Theme";
-import heroImg from "../../assets/Images/Employee Dashboard/Hero.jpg";
 import Employee_saved_jobs from "./Component/Employee_saved_jobs";
 import Employee_Applied_Jobs from "./Component/Employee_Applied_Jobs";
 import Employee_Messages from "./Component/Employee_Messages";
@@ -27,7 +25,7 @@ const Employee_Dashboard = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center md:items-start gap-8 md:flex-row my-16 md:mt-32">
-        <div className="w-80 md:w-96">
+        <div className="w-full max-w-96">
           {/* SideBar */}
           <Employee_Sidebar />
         </div>
