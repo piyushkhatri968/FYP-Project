@@ -16,9 +16,12 @@ app.use(
 app.use(express.json());
 
 //routes
-
 import authRoute from "../Routes/Auth.route.js";
+
 import jobpost from "../Routes/JobPost.js"
+
+
+import employeeRoute from "../Routes/Employee.route.js";
 
 
 // {
@@ -41,8 +44,12 @@ app.get("/", (req, res) => {
 
 // routes
 
+// AUTHENTICATION ROUTES
 app.use("/api/auth", authRoute);
 app.use("/api/jobposts"  ,jobpost )
+
+// EMPLOYEE DETAILS ROUTES
+app.use("/api/employee", employeeRoute);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
