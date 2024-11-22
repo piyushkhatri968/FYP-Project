@@ -22,9 +22,9 @@ import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 
 import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
-import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
 
-// Main App Component
+import HrRoutes from './Pages/Hr_Dashboard/Routes/HrRoutes';
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -43,8 +43,7 @@ const App = () => {
           <Route path="dashboard/employee" element={<Employee_Dashboard />} />
           <Route path="resume" element={<Resume />} />
 
-          {/* HR Routes */}
-          {HrRoutes}
+         {HrRoutes}
         </Routes>
       </ConditionalWrapper>
     </BrowserRouter>

@@ -38,15 +38,15 @@ const HrSidebar = () => {
           </h1>
           <ul className="space-y-4">
             {[
-              { name: "Dashboard", path: "/hr-home" },
-              { name: "Post a Job", path: "/job-notification" },
-              { name: "Manage Jobs", path: "/manage-jobs" },
-              { name: "View Applications", path: "/candidate-profiles" },
-              { name: "Application Tracking", path: "/application-tracking" },
-              { name: "Shortlist Candidates", path: "/shortlisted-candidates" },
-              { name: "Job Analytics", path: "/job-analytics" },
-              { name: "Notification Settings", path: "/notification-settings" },
-              { name: "Announcements", path: "/employment-announcements" },
+              { name: "Dashboard", path: "/hr/dashboard" },
+              { name: "Post a Job", path: "/hr/job-notification" },
+              { name: "Manage Jobs", path: "/hr/manage-jobs" },
+              { name: "View Applications", path: "/hr/candidate-profiles" },
+              { name: "Application Tracking", path: "/hr/application-tracking" },
+              { name: "Shortlist Candidates", path: "/hr/shortlisted-candidates" },
+              { name: "Job Analytics", path: "/hr/job-analytics" },
+              { name: "Notification Settings", path: "/hr/notification-settings" },
+              { name: "Announcements", path: "/hr/employment-announcements" },
             ].map((item, index) => (
               <motion.li
                 key={item.path}

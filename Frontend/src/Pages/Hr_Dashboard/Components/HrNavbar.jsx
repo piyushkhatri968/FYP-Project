@@ -26,13 +26,13 @@ const HRNavbar = () => {
         {/* Navbar Links for Larger Screens */}
         <ul className="hidden md:flex gap-10 items-center">
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr-home" className="font-semibold">
+            <Link to="/hr/dashboard" className="font-semibold">
               Dashboard
             </Link>
           </li>
          
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/account-settings" className="font-semibold">
+            <Link to="/hr/account-settings" className="font-semibold">
               Profile Settings
             </Link>
           </li>
@@ -51,17 +51,17 @@ const HRNavbar = () => {
       {isMenuOpen && (
         <ul className="flex flex-col gap-4 bg-[#010C29] px-4 py-6 md:hidden">
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr-home" className="font-semibold">
+            <Link to="/hr/dashboard" className="font-semibold">
               Dashboard
             </Link>
           </li>
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr-home" className="font-semibold">
+            <Link to="/hr/dashboard" className="font-semibold">
              Logo
             </Link>
           </li>
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/account-settings" className="font-semibold">
+            <Link to="/hr/account-settings" className="font-semibold">
               Profile Settings
             </Link>
           </li>
