@@ -4,7 +4,7 @@ import "./index.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import PrivateRoute from "./Components/PrivateRoute";
 import ScrollToTop from "./Components/ScrollToTop";
 import Footer from "./Components/Footer/Footer";
@@ -24,18 +24,15 @@ import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
 import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
 
+// Main App Component
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ConditionalWrapper>
         <OrangeButton />
         <ScrollToTop />
-        <Navbar />
-
         <Routes>
-          {/* <Route element={<PrivateRoute />}>
-              <Route path="/" element={<Home />} />
-            </Route> */}
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
@@ -46,10 +43,25 @@ const App = () => {
           <Route path="dashboard/employee" element={<Employee_Dashboard />} />
           <Route path="resume" element={<Resume />} />
 
-          <Route>{HrRoutes}</Route>
+          {/* HR Routes */}
+          {HrRoutes}
         </Routes>
-          {/* <Footer /> */}
-      </BrowserRouter>
+      </ConditionalWrapper>
+    </BrowserRouter>
+  );
+};
+
+// Conditional Wrapper Component
+const ConditionalWrapper = ({ children }) => {
+  const location = useLocation();
+  const isHRRoute = location.pathname.startsWith("/hr");
+
+  return (
+    <div>
+      {/* Conditionally render Navbar and Footer */}
+      {!isHRRoute && <Navbar />}
+      {children}
+      {!isHRRoute && <Footer />}
     </div>
   );
 };

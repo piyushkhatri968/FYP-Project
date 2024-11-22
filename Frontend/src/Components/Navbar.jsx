@@ -115,7 +115,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/hr-home"
+                to="/hr/dashboard"
                 className={`font-semibold ${
                   location.pathname === "/hr-home" ? "text-red-600" : ""
                 }`}
@@ -145,7 +145,7 @@ const Navbar = () => {
                     onClick={() => setOpenProfileModal(false)}
                     to={
                       currentUser.userType === "recruiter"
-                        ? "/hr-home"
+                        ? "/hr/dashboard"
                         : currentUser.userType === "employee"
                         ? "dashboard/employee?tab=profile"
                         : currentUser.userType === "admin"

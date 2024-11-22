@@ -19,18 +19,19 @@ import EmployeeAnnouncement from "../Pages/job/EmployeeAnnouncement";
 // HR-specific routes
 const HrRoutes = (
    <Route element={<HRLayout />}>
-      <Route path="hr-home" element={<HrPage />} />
-      <Route path="/manage-jobs" element={<JobsPage />} />
-      <Route path="/application-tracking" element={<ApplicationTracking />} />
-      <Route path="/shortlisted-candidates" element={<ShortlistCandidates />} />
-      <Route path="/candidate-profiles" element={<CandidateApplications />} />
-      <Route path="/job-analytics" element={<JobAnalytics />} />
-      <Route path="/account-settings" element={<AccountSetting />} />
-      <Route path="/notification-settings" element={<NotificationSettings />} />
-      <Route path="/job-notification" element={<JobNotification />} />
-      <Route path="/schedule-interview" element={<InterviewScheduling />} />
-      <Route path="/employment-announcements" element={<EmployeeAnnouncement />} />
+      <Route path="/hr/dashboard" element={<HrPage />} />
+      <Route path="/hr/manage-jobs" element={<JobsPage />} />
+      <Route path="/hr/application-tracking" element={<ApplicationTracking />} />
+      <Route path="/hr/shortlisted-candidates" element={<ShortlistCandidates />} />
+      <Route path="/hr/candidate-profiles" element={<CandidateApplications />} />
+      <Route path="/hr/job-analytics" element={<JobAnalytics />} />
+      <Route path="/hr/account-settings" element={<AccountSetting />} />
+      <Route path="/hr/notification-settings" element={<NotificationSettings />} />
+      <Route path="/hr/job-notification" element={<JobNotification />} />
+      <Route path="/hr/schedule-interview" element={<InterviewScheduling />} />
+      <Route path="/hr/employment-announcements" element={<EmployeeAnnouncement />} />
    </Route>
 );
+
 
 export default HrRoutes;
