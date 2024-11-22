@@ -27,7 +27,7 @@ const HrPage = () => {
           <div className="flex items-center gap-4">
             <button
               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:from-blue-600 hover:to-blue-700 transition"
-              onClick={() => navigate("/account-settings")}
+              onClick={() => navigate("/hr/account-settings")}
             >
               Profile Settings
             </button>
@@ -40,21 +40,21 @@ const HrPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <button
               className="bg-gradient-to-r from-blue-400 to-blue-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
-              onClick={() => navigate("/job-notification")}
+              onClick={() => navigate("/hr/job-notification")}
             >
               <FaBriefcase size={32} className="mb-3" />
               <span className="font-semibold">Post a Job</span>
             </button>
             <button
               className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
-              onClick={() => navigate("/manage-jobs")}
+              onClick={() => navigate("/hr/manage-jobs")}
             >
               <FaClipboardList size={32} className="mb-3" />
               <span className="font-semibold">Manage Jobs</span>
             </button>
             <button
               className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
-              onClick={() => navigate("/candidate-profiles")}
+              onClick={() => navigate("/hr/candidate-profiles")}
             >
               <FaUserCheck size={32} className="mb-3" />
               <span className="font-semibold">View Applications</span>
