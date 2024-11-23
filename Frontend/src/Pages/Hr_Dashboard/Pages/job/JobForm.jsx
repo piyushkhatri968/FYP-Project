@@ -1,31 +1,67 @@
-// JobForm.js
 import React, { useState } from 'react';
 
 const JobForm = ({ job, onSave }) => {
+  
   const [title, setTitle] = useState(job ? job.title : '');
   const [department, setDepartment] = useState(job ? job.department : '');
   const [location, setLocation] = useState(job ? job.location : '');
-  const [status, setStatus] = useState(job ? job.status : true);
+  const [status, setStatus] = useState(job ? job.status : false);
   const [description, setDescription] = useState(job ? job.description : '');
-  const [requirements, setRequirements] = useState(job ? job.requirements.join('\n') : '');
+  const [jobType, setJobType] = useState(job ? job.jobType : '');
+  const [skills, setSkills] = useState(job ? job.skills.join(', ') : ''); // Use comma-separated input
+  const [experience, setExperience] = useState(job ? job.experience : '');
 
-  const handleSave = () => {
+  console.log('Job prop:', job); //  to see the job data
+
+
+  const handleSave = async () => {
+    if (!job || !job._id) {
+      console.error("Job ID is missing!");
+      alert("Job ID is missing!");
+      return;
+    }
+  
     const updatedJob = {
-      ...job,
       title,
       department,
       location,
       status,
       description,
-      requirements: requirements.split('\n').filter((req) => req),
+      jobType,
+      skills: skills.split(',').map((skill) => skill.trim()),
+      experience,
     };
-    onSave(updatedJob);
+
+    
+  
+    try {
+      const response = await fetch(`http://localhost:8080/api/jobs/${job._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedJob),
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        alert('Job updated successfully!');
+        onSave(result.data); // Pass updated job to parent component
+      } else {
+        alert(`Error updating job: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error saving job:', error);
+      alert('Error updating job.');
+    }
   };
+  
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
       <h3 className="text-2xl font-bold mb-6">{job ? 'Edit Job' : 'Create New Job'}</h3>
-      
+
       <div className="mb-4">
         <label className="block text-gray-700 font-semibold mb-2">Job Title</label>
         <input
@@ -55,7 +91,7 @@ const JobForm = ({ job, onSave }) => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded"
-          placeholder="Enter job location"
+          placeholder="Enter location"
         />
       </div>
 
@@ -66,8 +102,8 @@ const JobForm = ({ job, onSave }) => {
           onChange={(e) => setStatus(e.target.value === 'true')}
           className="w-full p-2 border border-gray-300 rounded"
         >
-          <option value="true">Open</option>
-          <option value="false">Closed</option>
+          <option value="false">Open</option>
+          <option value="true">Closed</option>
         </select>
       </div>
 
@@ -82,14 +118,36 @@ const JobForm = ({ job, onSave }) => {
         />
       </div>
 
-      <div className="mb-6">
-        <label className="block text-gray-700 font-semibold mb-2">Requirements</label>
-        <textarea
-          value={requirements}
-          onChange={(e) => setRequirements(e.target.value)}
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Job Type</label>
+        <input
+          type="text"
+          value={jobType}
+          onChange={(e) => setJobType(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded"
-          placeholder="List requirements, one per line"
-          rows="4"
+          placeholder="Enter job type"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Skills</label>
+        <input
+          type="text"
+          value={skills}
+          onChange={(e) => setSkills(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter skills, separated by commas"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Experience</label>
+        <input
+          type="text"
+          value={experience}
+          onChange={(e) => setExperience(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter experience requirements"
         />
       </div>
 
@@ -97,7 +155,7 @@ const JobForm = ({ job, onSave }) => {
         onClick={handleSave}
         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
       >
-        {job ? 'Save Changes' : 'Create Job'}
+        Save Changes
       </button>
     </div>
   );

@@ -1,8 +1,13 @@
 import axios from "axios";
 
+
+
 const NotificationService = {
+
+  
   // send notifications after posting the job
   async sendNotifications(jobDetails) {
+    
     try {
       console.log("Sending notifications for job:", jobDetails);
 
@@ -16,6 +21,8 @@ const NotificationService = {
       if (response.data.success) {
         console.log("Job successfully posted and notifications sent");
         return { success: true };
+        
+    
       } else {
         console.error("Failed to send notifications");
         return { success: false };

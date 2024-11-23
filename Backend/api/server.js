@@ -42,6 +42,8 @@ app.get("/", (req, res) => {
 // AUTHENTICATION ROUTES
 app.use("/api/auth", authRoute);
 
+
+// jobs Routes
 app.use("/api/jobs", jobRoute);
 
 

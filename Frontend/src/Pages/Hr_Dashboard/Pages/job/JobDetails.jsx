@@ -1,6 +1,6 @@
 import React from 'react';
 
-const JobDetails = ({ job, onEdit, onAnalytics, onCandidates, onTracking }) => {
+const JobDetails = ({ job, onEdit, onAnalytics, onCandidates, onTracking, onDelete }) => {
   if (!job) return null; // Return null if no job is passed as prop
 
   return (
@@ -10,7 +10,7 @@ const JobDetails = ({ job, onEdit, onAnalytics, onCandidates, onTracking }) => {
       <div className="text-gray-600 mb-6">
         <p><strong>Department:</strong> {job.department}</p>
         <p><strong>Location:</strong> {job.location}</p>
-        <p><strong>Status:</strong> {job.status ? 'closed' : 'Open'}</p>
+        <p><strong>Status:</strong> {job.status ? 'Closed' : 'Open'}</p>
       </div>
 
       <div className="mb-6">
@@ -51,6 +51,12 @@ const JobDetails = ({ job, onEdit, onAnalytics, onCandidates, onTracking }) => {
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           View Application Tracking
+        </button>
+        <button
+          onClick={() => onDelete(job._id)}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Delete Job
         </button>
       </div>
     </div>

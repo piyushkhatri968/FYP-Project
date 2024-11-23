@@ -4,6 +4,7 @@ import NotificationService from "./NotificationService";
 import SkillInput from "./SkillInput";
 import ExperienceInput from "./ExperienceInput";
 import JobTypeSelector from "./JobTypeSelector";
+import { useNavigate } from "react-router-dom";
 
 const JobNotification = ({ addRecentJob }) => {
   const [jobDetails, setJobDetails] = useState({
@@ -15,7 +16,8 @@ const JobNotification = ({ addRecentJob }) => {
     skills: [],
     jobType: "",
   });
-
+ 
+const navigate=useNavigate()
   const [isSending, setIsSending] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,19 +48,26 @@ const JobNotification = ({ addRecentJob }) => {
     setIsSending(true);
     setSuccessMessage("");
     setErrorMessage("");
-
+  
     try {
-      // Placeholder for backend integration
-      await NotificationService.sendNotifications(jobDetails);
-
-      setSuccessMessage("Job posted successfully!");
-      addRecentJob(jobDetails); // Update User Dashboard
+      // Send job details to the backend
+      const response = await NotificationService.sendNotifications(jobDetails);
+      
+      // Check if response.success exists
+      if (response && response.success) {
+        setSuccessMessage("Job posted successfully!");
+        addRecentJob(jobDetails); // Update User Dashboard
+        navigate("/hr/dashboard"); // Redirect to dashboard after successful post
+      } else {
+        setErrorMessage("Failed to post the job. Please try again.");
+      }
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
     } finally {
       setIsSending(false);
     }
   };
+
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">

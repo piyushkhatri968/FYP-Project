@@ -23,9 +23,7 @@ const JobsPage = () => {
         const response = await fetch("http://localhost:8080/api/jobs/getJobPosts"); // API endpoint
         const data = await response.json();
         console.log("Fetched jobs data:", data); // Log response for debugging
-        // console.log("Fetched jobs data:", data.success);
         if (data.success) {
-         
           setJobs(data.data); // Save fetched jobs to state
         } else {
           console.error("Failed to fetch jobs:", data.message);
@@ -36,7 +34,6 @@ const JobsPage = () => {
     };
     fetchJobs();
   }, []);
-
 
   const handleJobSelect = (job) => {
     setSelectedJob(job);
@@ -85,13 +82,34 @@ const JobsPage = () => {
     setShowShortlisted(false);
   };
 
-  console.log("Jobs state in JobsPage:", jobs);
+  const handleDeleteJob = async (jobId) => {
+    if (window.confirm("Are you sure you want to delete this job?")) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/jobs/${jobId}`, {
+          method: "DELETE",
+        });
 
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Job deleted successfully!");
+          setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+          setSelectedJob(null);
+        } else {
+          alert(`Error deleting job: ${result.message}`);
+        }
+      } catch (error) {
+        console.error("Error deleting job:", error);
+        alert("Error deleting job.");
+      }
+    }
+  };
+
+  console.log("Jobs state in JobsPage:", jobs);
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold mb-6">Job Management</h2>
-      
 
       {!selectedJob &&
         !isEditing &&
@@ -119,6 +137,7 @@ const JobsPage = () => {
             onAnalytics={() => handleJobAnalytics(selectedJob)}
             onCandidates={() => handleJobCandidates(selectedJob)}
             onTracking={handleViewTracking} // Pass the handler to view tracking
+            onDelete={handleDeleteJob} // Pass delete handler
           />
         )}
 
@@ -127,7 +146,10 @@ const JobsPage = () => {
       {isEditing && (
         <JobForm
           job={selectedJob}
-          onSave={() => {
+          onSave={(updatedJob) => {
+            setJobs((prevJobs) =>
+              prevJobs.map((j) => (j._id === updatedJob._id ? updatedJob : j))
+            );
             setSelectedJob(null);
             setIsEditing(false);
           }}
@@ -150,9 +172,7 @@ const JobsPage = () => {
         />
       )}
 
-      {isViewingTracking && (
-        <ApplicationTracking applications={[]} /> // Placeholder
-      )}
+      {isViewingTracking && <ApplicationTracking applications={[]} />}
     </div>
   );
 };
