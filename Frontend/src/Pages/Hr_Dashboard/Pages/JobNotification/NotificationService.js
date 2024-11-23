@@ -8,7 +8,7 @@ const NotificationService = {
 
       // Make a POST request to the backend to create the job post
       const response = await axios.post(
-        "http://localhost:8080/api/jobposts",
+        "http://localhost:8080/api/jobs/createJobPost",
         jobDetails
       );
 

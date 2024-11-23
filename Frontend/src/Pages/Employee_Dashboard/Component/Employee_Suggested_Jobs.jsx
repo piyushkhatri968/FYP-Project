@@ -1,38 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaBookmark, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 
-const jobs = [
-  {
-    id: 1,
-    company_logo:
-      "https://ilcdnstatic.investorslounge.com//ResearchImages/FullImage//928341dd-c69f-454a-92ac-c9e75c073f31.png",
-    title: "Backend Developer",
-    company: "Systems Limited",
-    location: "Karachi, Pakistan",
-    postedTime: "3 days ago",
-    description:
-      "Systems Limited is seeking a Backend Developer to design and maintain server-side logic, databases, and APIs. Join our team in Karachi, Pakistan, and collaborate with front-end developers to create scalable and efficient solutions.",
-    skills: ["PHP", "Laravel", "CSS", "React"],
-    salary: "$15k-20k/month",
-    experience: "2-3 years",
-  },
-  {
-    id: 2,
-    company_logo:
-      "https://ilcdnstatic.investorslounge.com//ResearchImages/FullImage//928341dd-c69f-454a-92ac-c9e75c073f31.png",
-    title: "Frontend Developer",
-    company: "TechSoft Solutions",
-    location: "New York, USA",
-    postedTime: "5 days ago",
-    description:
-      "TechSoft Solutions is seeking a Frontend Developer who is skilled in React and CSS frameworks. Join our innovative team to build user-friendly and performant web applications.",
-    skills: ["HTML", "CSS", "JavaScript", "React"],
-    salary: "$10k-15k/month",
-    experience: "1-2 years",
-  },
-];
-
 const JobList = () => {
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        const jobs = await axios.get(
+          "http://localhost:8080/api/jobs/getJobPosts"
+        );
+        setJobs(jobs.data);
+        console.log(jobs.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getJobs();
+  }, []);
+
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
       <h1 className="text-2xl font-bold mb-6">
@@ -50,7 +37,10 @@ const JobList = () => {
               <div className="flex items-center gap-4">
                 <div className="bg-gray-200 w-28 h-20 rounded-md flex justify-center items-center">
                   <img
-                    src={job.company_logo}
+                    src={
+                      job.company_logo ||
+                      "https://c8.alamy.com/comp/2AH6RFF/real-estate-company-logo-design-template-blue-house-and-building-concept-construction-architecture-element-apartment-condo-rouded-window-shape-2AH6RFF.jpg"
+                    }
                     alt=""
                     className="w-24 h-16 rounded-md object-contain"
                   />
@@ -62,7 +52,7 @@ const JobList = () => {
                     <FaMapMarkerAlt className="inline text-red-500" />{" "}
                     {job.location} •{" "}
                     <FaClock className="inline text-yellow-500" />{" "}
-                    {job.postedTime}
+                    {job.createdAt}
                   </p>
                 </div>
               </div>
