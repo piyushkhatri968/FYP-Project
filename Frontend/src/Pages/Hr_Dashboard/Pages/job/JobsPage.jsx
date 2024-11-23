@@ -85,7 +85,7 @@ const JobsPage = () => {
     setShowShortlisted(false);
   };
 
-  // console.log("Jobs state in JobsPage:", jobs);
+  console.log("Jobs state in JobsPage:", jobs);
 
 
   return (
