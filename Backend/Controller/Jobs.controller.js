@@ -1,4 +1,4 @@
-import JobPost from "../Models/Hr_Models/JobPost.js";
+import JobPost from "../Models/Hr_Models/Jobs.model.js";
 export const createJobPost = async (req, res) => {
   try {
     const newJobPost = new JobPost(req.body); // Destructuring the request body to create a new job post

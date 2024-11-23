@@ -1,5 +1,4 @@
-// models/JobPost.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const jobPostSchema = new mongoose.Schema(
   {
@@ -30,7 +29,7 @@ const jobPostSchema = new mongoose.Schema(
     jobType: {
       type: String,
       required: true,
-      enum: ['Full-Time', 'Part-Time', 'Contract','Remote'], 
+      enum: ["Full-Time", "Part-Time", "Contract", "Remote"],
     },
   },
   {
@@ -38,7 +37,6 @@ const jobPostSchema = new mongoose.Schema(
   }
 );
 
-const JobPost= mongoose.model('JobPost', jobPostSchema);
+const JobPost = mongoose.model("JobPost", jobPostSchema);
 
-
-export default JobPost
+export default JobPost;

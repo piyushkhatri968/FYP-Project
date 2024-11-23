@@ -1,5 +1,4 @@
 import User from "../Models/user.model.js";
-import Employee from "../Models/employee.model.js";
 import { errorHandler } from "../utils/Error.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -30,51 +29,6 @@ export const signup = async (req, res, next) => {
     });
 
     await newUser.save();
-
-    // If userType is "Job Seeker", create a corresponding Employee record
-    if (userType === "employee") {
-      const newEmployee = new Employee({
-        _id: newUser._id, // Use the same ID as the user
-        userType: newUser.userType,
-        phone: null,
-        age: null,
-        location: {},
-        skills: [],
-        desiredRole: "",
-        resume: "",
-        preferredLocations: [],
-        salaryExpectations: "",
-        availability: [],
-        languages: [],
-        education: [],
-        experience: [],
-        certifications: [],
-        socialLinks: {},
-      });
-      await newEmployee.save();
-    }
-
-    // If userType is "Recruiter", create a corresponding Recruiter record
-    // if (userType === "employee") {
-    //   const newEmployee = new Employee({
-    //     _id: newUser._id, // Use the same ID as the user
-    //     phone: null,
-    //     age: null,
-    //     location: {},
-    //     skills: [],
-    //     desiredRole: "",
-    //     resume: "",
-    //     preferredLocations: [],
-    //     salaryExpectations: "",
-    //     availability: [],
-    //     languages: [],
-    //     education: [],
-    //     experience: [],
-    //     certifications: [],
-    //     socialLinks: {},
-    //   });
-    //   await newEmployee.save();
-    // }
 
     // Generate JWT token
     const token = jwt.sign(
