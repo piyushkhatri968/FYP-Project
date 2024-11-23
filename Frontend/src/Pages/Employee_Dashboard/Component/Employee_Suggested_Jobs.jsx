@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaBookmark, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import moment from "moment";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
@@ -52,7 +53,7 @@ const JobList = () => {
                     <FaMapMarkerAlt className="inline text-red-500" />{" "}
                     {job.location} •{" "}
                     <FaClock className="inline text-yellow-500" />{" "}
-                    {job.createdAt}
+                    {moment(job.createdAt).fromNow()}
                   </p>
                 </div>
               </div>
