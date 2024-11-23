@@ -14,10 +14,15 @@ export const createJobPost = async (req, res) => {
 export const getJobPosts = async (req, res) => {
   try {
     const jobPosts = await JobPost.find({}); // Fetch all job posts from the database
-    res.status(200).json(jobPosts);
+    res.status(200).json({
+      success: true,
+      data: jobPosts,   
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching job posts", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching job posts",
+      error: error.message,
+    });
   }
 };
