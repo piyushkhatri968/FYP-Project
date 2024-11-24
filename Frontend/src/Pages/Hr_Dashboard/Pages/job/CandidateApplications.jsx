@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaSearch, FaFilter, FaCheck, FaEnvelope, FaClipboardList, FaTimes } from "react-icons/fa";
 
+
 const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPosition, setFilterPosition] = useState("");
@@ -9,12 +10,53 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [modalCandidate, setModalCandidate] = useState(null);
 
   const candidates = [
-    { id: 1, name: "Babar Hanif", position: "Frontend Developer", experience: 3, status: "Applied" },
-    { id: 2, name: "Jagdesh kumar", position: "Backend Developer", experience: 1, status: "Applied" },
-    { id: 3, name: "Yousaf Khan", position: "Data Scientist", experience: 0, status: "Shortlisted" },
-    { id: 4, name: "Mubarak sharif", position: "Frontend Developer", experience: 2, status: "Applied" },
-    { id: 4, name: "Jatin Kumar", position: "Frontend Developer", experience: 0, status: "Applied" },
+    {
+      id: 1,
+      name: "Babar Hanif",
+      position: "Frontend Developer",
+      experience: 3,
+      status: "Applied",
+      email: "babar@example.com",
+      phone: "123-456-7890",
+      skills: ["React", "JavaScript", "HTML", "CSS"],
+      resumeUrl: "https://example.com/resume/babar",
+    },
+    {
+      id: 2,
+      name: "Jagdesh Kumar",
+      position: "Backend Developer",
+      experience: 1,
+      status: "Applied",
+      email: "jagdesh@example.com",
+      phone: "987-654-3210",
+      skills: ["Node.js", "Express", "MongoDB"],
+      resumeUrl: "https://example.com/resume/jagdesh",
+    },
+    {
+      id: 3,
+      name: "Pawan Kumar",
+      position: "Backend Developer",
+      experience: 2,
+      status: "Applied",
+      email: "Pawan@example.com",
+      phone: "987-6000-3210",
+      skills: ["Node.js", "Express", "MongoDB", "Mysql", "React Js"],
+      resumeUrl: "https://example.com/resume/Pawan",
+    },
+    {
+      id: 4,
+      name: "Mubarak Sharif",
+      position: "Wordpress Developer",
+      experience: 5,
+      status: "Applied",
+      email: "Sharif@example.com",
+      phone: "006-234-3210",
+      skills: ["Node.js", "Express", "MongoDB"],
+      resumeUrl: "https://example.com/resume/Mubark",
+    },
+   
   ];
+  
 
   const positions = ["Frontend Developer", "Backend Developer", "Data Scientist"];
   const experienceCategories = [
@@ -41,10 +83,16 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const handleBulkEmail = () => alert("Bulk email sent to selected candidates.");
   const handleBulkShortlist = () => alert("Selected candidates have been shortlisted.");
+  // const handleRejectCandidate = (candidate) => {
+  //   alert(`${candidate.name} has been rejected.`);
+  //   // Notify the user about rejection (Backend integration)
+  //   onReject(candidate.id);
+  // };
+
   const handleRejectCandidate = (candidate) => {
     alert(`${candidate.name} has been rejected.`);
-    // Notify the user about rejection (Backend integration)
-    onReject(candidate.id);
+    candidate.status = "Rejected"; // Simulate status change locally
+    onReject(candidate); // Notify backend for actual update
   };
 
   const openModal = (candidate) => setModalCandidate(candidate);
@@ -169,22 +217,35 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       )}
 
       {/* Profile Modal */}
-      {modalCandidate && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
-            <h4 className="text-xl font-bold">{modalCandidate.name}</h4>
-            <p>Position: {modalCandidate.position}</p>
-            <p>Experience: {modalCandidate.experience} years</p>
-            <p className="text-green-600 font-semibold">Status: {modalCandidate.status}</p>
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+{modalCandidate && (
+  <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
+      <h4 className="text-xl font-bold mb-4">{modalCandidate.name}</h4>
+      <p><strong>Position:</strong> {modalCandidate.position}</p>
+      <p><strong>Experience:</strong> {modalCandidate.experience} years</p>
+      <p><strong>Email:</strong> {modalCandidate.email || "N/A"}</p>
+      <p><strong>Phone:</strong> {modalCandidate.phone || "N/A"}</p>
+      <p><strong>Skills:</strong> {modalCandidate.skills?.join(", ") || "N/A"}</p>
+      <a
+        href={modalCandidate.resumeUrl || "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 hover:underline mt-2 inline-block"
+      >
+        View Resume
+      </a>
+      <div className="mt-6">
+        <button
+          onClick={closeModal}
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
