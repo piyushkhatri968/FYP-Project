@@ -22,7 +22,7 @@ export const getJobPosts = async (req, res) => {
     const jobPosts = await JobPost.find({}); // Fetch all job posts from the database
     res.status(200).json({
       success: true,
-      data: jobPosts,   
+      data: jobPosts,
     });
   } catch (error) {
     res.status(500).json({
@@ -32,7 +32,6 @@ export const getJobPosts = async (req, res) => {
     });
   }
 };
-
 
 // edit jobs:
 export const editJobPost = async (req, res) => {
@@ -46,7 +45,7 @@ export const editJobPost = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         success: false,
-        message: 'Job not found',
+        message: "Job not found",
       });
     }
 
@@ -58,15 +57,13 @@ export const editJobPost = async (req, res) => {
     console.error("Error updating job:", error);
     res.status(500).json({
       success: false,
-      message: 'Error updating job',
+      message: "Error updating job",
       error: error.message,
     });
   }
 };
 
-
-
-// delete the job. 
+// delete the job.
 
 export const deleteJobPost = async (req, res) => {
   const { id } = req.params;
@@ -75,11 +72,11 @@ export const deleteJobPost = async (req, res) => {
     if (!job) {
       return res.status(404).json({ success: false, message: "Job not found" });
     }
-    res.status(200).json({ success: true, message: "Job deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Job deleted successfully" });
   } catch (error) {
     console.error("Error deleting job:", error);
     res.status(500).json({ success: false, message: "Error deleting job" });
   }
 };
-
-

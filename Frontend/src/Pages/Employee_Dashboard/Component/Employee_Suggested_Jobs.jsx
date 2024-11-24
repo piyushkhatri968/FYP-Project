@@ -12,8 +12,8 @@ const JobList = () => {
         const jobs = await axios.get(
           "http://localhost:8080/api/jobs/getJobPosts"
         );
-        setJobs(jobs.data);
-        console.log(jobs.data);
+        setJobs(jobs.data.data);
+        console.log(jobs.data.data);
       } catch (error) {
         console.log(error);
       }
