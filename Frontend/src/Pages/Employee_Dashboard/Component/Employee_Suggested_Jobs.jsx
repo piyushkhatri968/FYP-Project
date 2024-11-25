@@ -17,6 +17,7 @@ const JobList = () => {
           "http://localhost:8080/api/jobs/getJobPosts"
         );
         setJobs(jobs.data.data);
+        console.log(jobs.data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -37,8 +38,7 @@ const JobList = () => {
             <Spinner size="xl" color="warning" />
           </div>
         ) : (
-          <>
-            {" "}
+          <div>
             {jobs.map((job) => (
               <div
                 key={job.id}
@@ -91,7 +91,7 @@ const JobList = () => {
                 {/* Footer Section */}
                 <div className="flex justify-between items-center">
                   <div className="flex gap-2 justify-center items-center flex-wrap">
-                    <p className="text-gray-700 font-bold">{job.salary}</p>
+                    <p className="text-gray-500 text-sm">{job.jobType}</p>
                     <p className="text-gray-500 text-sm">
                       {job.experience} experience
                     </p>
@@ -107,7 +107,7 @@ const JobList = () => {
                 </div>
               </div>
             ))}
-          </>
+          </div>
         )}
       </div>
     </div>

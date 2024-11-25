@@ -32,39 +32,37 @@ const Employee_Profile = () => {
   }, []);
 
   return (
-    <>
-      <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-lg rounded-xl">
-        {loading ? (
-          <div className="flex justify-center items-center">
-            <Spinner size="xl" color="warning" />
-          </div>
-        ) : (
-          <div>
-            {/* BASIC INFORMATION */}
+    <div>
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Spinner size="xl" color="warning" />
+        </div>
+      ) : (
+        <div className="mx-auto p-3 w-full text-gray-500 px-12 shadow-lg rounded-xl">
+          {/* BASIC INFORMATION */}
 
-            <Basic_Info userData={currentUserData} />
+          <Basic_Info userData={currentUserData} />
 
-            <hr className="my-8" />
+          <hr className="my-8" />
 
-            {/* ADDRESS */}
+          {/* ADDRESS */}
 
-            <Address />
+          <Address />
 
-            <hr className="my-8" />
+          <hr className="my-8" />
 
-            {/* OTHER INFORMATION */}
+          {/* OTHER INFORMATION */}
 
-            <Other_Info />
+          <Other_Info />
 
-            <hr className="my-8" />
+          <hr className="my-8" />
 
-            {/* SOCIAL LINKS */}
+          {/* SOCIAL LINKS */}
 
-            <Social_Links />
-          </div>
-        )}
-      </div>
-    </>
+          <Social_Links />
+        </div>
+      )}
+    </div>
   );
 };
 
