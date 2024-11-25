@@ -5,8 +5,10 @@ import SkillInput from "./SkillInput";
 import ExperienceInput from "./ExperienceInput";
 import JobTypeSelector from "./JobTypeSelector";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const JobNotification = ({ addRecentJob }) => {
+  const currentUser = useSelector((state) => state.user.currentUser);
+  // console.log("Current User from Redux:", currentUser); //debuging
   const [jobDetails, setJobDetails] = useState({
     title: "",
     department: "",
@@ -15,6 +17,7 @@ const JobNotification = ({ addRecentJob }) => {
     experience: "",
     skills: [],
     jobType: "",
+    postedBy: currentUser?._id || "", // Set postedBy with the user ID from Redux state
   });
  
 const navigate=useNavigate()
