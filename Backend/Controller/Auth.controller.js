@@ -1,4 +1,5 @@
 import User from "../Models/user.model.js";
+import Candidate from "../Models/candidate.model.js";
 import { errorHandler } from "../utils/Error.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -29,6 +30,14 @@ export const signup = async (req, res, next) => {
     });
 
     await newUser.save();
+
+    // If userType is employee, create a Candidate record
+    if (userType === "employee") {
+      const newCandidate = new Candidate({
+        userId: newUser._id, // Link the User's ID
+      });
+      await newCandidate.save();
+    }
 
     // Generate JWT token
     const token = jwt.sign(

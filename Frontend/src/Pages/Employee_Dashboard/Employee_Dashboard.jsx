@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Employee_Sidebar from "./Component/Employee_Sidebar";
-import Employee_Profile from "./Component/Employee_Profile";
+import Employee_Profile from "./Component/Employee_Profile/Employee_Profile";
 import Employee_saved_jobs from "./Component/Employee_saved_jobs";
 import Employee_Applied_Jobs from "./Component/Employee_Applied_Jobs";
 import Employee_Messages from "./Component/Employee_Messages";

@@ -29,7 +29,7 @@ const JobList = () => {
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
       <h1 className="text-2xl font-bold mb-6">
-        Job's That Matches Your Profile
+        Jobs That Matches Your Profile
       </h1>
       <div className="space-y-6">
         {loading ? (
@@ -70,7 +70,7 @@ const JobList = () => {
                     </div>
                   </div>
                   {/* Save Job Icon */}
-                  <FaBookmark className="text-gray-400 hover:text-blue-500 cursor-pointer text-2xl" />
+                  <FaBookmark className="text-gray-400 cursor-pointer text-2xl" />
                 </div>
 
                 {/* Description */}
