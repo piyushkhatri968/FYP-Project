@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Spinner } from "flowbite-react";
 
 const Basic_Info = ({ userData }) => {
   const [formData, setFormData] = useState({});
@@ -43,7 +44,7 @@ const Basic_Info = ({ userData }) => {
               placeholder="Your Phone"
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold "
               id="phone"
-              value={userData.phone}
+              value={userData.candidateDetails?.phone}
               onChange={handleChangeFormInputs}
             />
           </div>
