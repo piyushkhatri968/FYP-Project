@@ -52,7 +52,7 @@ app.use("/api/user", userRoute);
 
 app.use("/api/candidate", candidateRoute);
 
-app.use("/api/application/candidate", applicationRoute )
+app.use("/api/application/candidate", applicationRoute)
 
 // jobs Routes
 app.use("/api/jobs", jobRoute);

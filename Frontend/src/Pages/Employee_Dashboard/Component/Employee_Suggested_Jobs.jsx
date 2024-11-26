@@ -53,6 +53,30 @@ const JobList = () => {
     }
   };
 
+  const handleApply = async (jobId) => {
+    try {
+      const userId = currentUser.candidateDetails;
+      const response = await axios.post(
+        "http://localhost:8080/api/application/candidate/applyJob",
+        {
+          userId,
+          jobId,
+        }
+      );
+      // Update the jobs list by toggling the applied status locally
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job._id === jobId
+            ? { ...job, isApplied: !job.isApplied } // Toggle applied status
+            : job
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Failed to apply for job");
+    }
+  };
+
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
       <h1 className="text-2xl font-bold mb-6">
@@ -128,7 +152,10 @@ const JobList = () => {
                   </p>
                 </div>
                 <div className="flex gap-4">
-                  <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                  <button
+                    onClick={() => handleApply(job._id)}
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                  >
                     Apply Now
                   </button>
                 </div>
