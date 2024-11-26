@@ -6,7 +6,9 @@ import {
   applyJobApplication,
 } from "../Controller/Application.controller.js";
 
-router.get("/getData", getApplications);
+
+// fetching application
+router.get("/get", getApplications);
 
 router.post("/applyJob", applyJobApplication);
 

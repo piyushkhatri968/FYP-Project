@@ -1,64 +1,31 @@
-import React, { useState } from "react";
-import { FaUser, FaSearch, FaFilter, FaCheck, FaEnvelope, FaClipboardList, FaTimes } from "react-icons/fa";
-
+import React, { useState, useEffect } from "react";
+import {
+  FaUser,
+  FaSearch,
+  FaFilter,
+  FaCheck,
+  FaEnvelope,
+  FaClipboardList,
+  FaTimes,
+} from "react-icons/fa";
+import axios from "axios";
 
 const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
+  const [candidates, setCandidates] = useState([]);
+  const [filteredCandidates, setFilteredCandidates] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPosition, setFilterPosition] = useState("");
   const [filterExperience, setFilterExperience] = useState("");
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [modalCandidate, setModalCandidate] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const candidates = [
-    {
-      id: 1,
-      name: "Babar Hanif",
-      position: "Frontend Developer",
-      experience: 3,
-      status: "Applied",
-      email: "babar@example.com",
-      phone: "123-456-7890",
-      skills: ["React", "JavaScript", "HTML", "CSS"],
-      resumeUrl: "https://example.com/resume/babar",
-    },
-    {
-      id: 2,
-      name: "Jagdesh Kumar",
-      position: "Backend Developer",
-      experience: 1,
-      status: "Applied",
-      email: "jagdesh@example.com",
-      phone: "987-654-3210",
-      skills: ["Node.js", "Express", "MongoDB"],
-      resumeUrl: "https://example.com/resume/jagdesh",
-    },
-    {
-      id: 3,
-      name: "Pawan Kumar",
-      position: "Backend Developer",
-      experience: 2,
-      status: "Applied",
-      email: "Pawan@example.com",
-      phone: "987-6000-3210",
-      skills: ["Node.js", "Express", "MongoDB", "Mysql", "React Js"],
-      resumeUrl: "https://example.com/resume/Pawan",
-    },
-    {
-      id: 4,
-      name: "Mubarak Sharif",
-      position: "Wordpress Developer",
-      experience: 5,
-      status: "Applied",
-      email: "Sharif@example.com",
-      phone: "006-234-3210",
-      skills: ["Node.js", "Express", "MongoDB"],
-      resumeUrl: "https://example.com/resume/Mubark",
-    },
-   
+  const positions = [
+    "Frontend Developer",
+    "Backend Developer",
+    "Data Scientist",
   ];
-  
-
-  const positions = ["Frontend Developer", "Backend Developer", "Data Scientist"];
   const experienceCategories = [
     { label: "Fresh Graduates", value: 0 },
     { label: "1 Year", value: 1 },
@@ -67,32 +34,95 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     { label: "4+ Years", value: 4 },
   ];
 
-  // Filter logic
-  const filteredCandidates = candidates.filter(
-    (candidate) =>
-      candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (filterPosition === "" || candidate.position === filterPosition) &&
-      (filterExperience === "" || candidate.experience === parseInt(filterExperience))
-  );
+  // Fetch candidates from the backend
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          "http://localhost:8080/api/application/candidate/get"
+        );
+        console.log("Response:", response);
+        setCandidates(response.data.data || []);
+        setFilteredCandidates(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+        setErrorMessage("Failed to load candidate data. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCandidates();
+  }, []);
+
+  console.log("candidates are :", candidates);
+
+  // Handle filtering based on search, position, and experience
+  useEffect(() => {
+    const applyFilters = () => {
+      const filtered = candidates.filter(
+        (candidate) =>
+          (searchQuery === "" ||
+            candidate.userId?.userId?.name
+              ?.toLowerCase()
+              .includes(searchQuery.toLowerCase())) && // Apply search filter
+          (filterPosition === "" ||
+            candidate.userId?.position?.toLowerCase() ===
+              filterPosition.toLowerCase()) && // Apply position filter
+          (filterExperience === "" ||
+            parseInt(candidate.userId?.experience || 0) ===
+              parseInt(filterExperience)) // Apply experience filter
+      );
+      setFilteredCandidates(filtered);
+    };
+    applyFilters();
+  }, [searchQuery, filterPosition, filterExperience, candidates]);
 
   const toggleSelection = (id) => {
     setSelectedCandidates((prevSelected) =>
-      prevSelected.includes(id) ? prevSelected.filter((cid) => cid !== id) : [...prevSelected, id]
+      prevSelected.includes(id)
+        ? prevSelected.filter((cid) => cid !== id)
+        : [...prevSelected, id]
     );
   };
 
-  const handleBulkEmail = () => alert("Bulk email sent to selected candidates.");
-  const handleBulkShortlist = () => alert("Selected candidates have been shortlisted.");
-  // const handleRejectCandidate = (candidate) => {
-  //   alert(`${candidate.name} has been rejected.`);
-  //   // Notify the user about rejection (Backend integration)
-  //   onReject(candidate.id);
-  // };
+  const handleBulkEmail = async () => {
+    try {
+      await axios.post("http://localhost:8080/api/candidates/bulk-email", {
+        candidateIds: selectedCandidates,
+      });
+      alert("Bulk email sent successfully.");
+    } catch (error) {
+      alert("Failed to send bulk email.");
+    }
+  };
 
-  const handleRejectCandidate = (candidate) => {
-    alert(`${candidate.name} has been rejected.`);
-    candidate.status = "Rejected"; // Simulate status change locally
-    onReject(candidate); // Notify backend for actual update
+  const handleBulkShortlist = async () => {
+    try {
+      await axios.post("http://localhost:8080/api/candidates/bulk-shortlist", {
+        candidateIds: selectedCandidates,
+      });
+      alert("Selected candidates have been shortlisted.");
+      setSelectedCandidates([]);
+    } catch (error) {
+      alert("Failed to shortlist candidates.");
+    }
+  };
+
+  const handleRejectCandidate = async (candidate) => {
+    try {
+      await axios.post(
+        `http://localhost:8080/api/candidates/${candidate._id}/reject`
+      );
+      alert(`${candidate.name} has been rejected.`);
+      setCandidates((prev) =>
+        prev.map((c) =>
+          c._id === candidate._id ? { ...c, status: "Rejected" } : c
+        )
+      );
+    } catch (error) {
+      alert("Failed to reject candidate.");
+    }
   };
 
   const openModal = (candidate) => setModalCandidate(candidate);
@@ -116,7 +146,11 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         </div>
         <div className="flex items-center gap-2 bg-white p-2 rounded shadow-md w-full sm:w-auto">
           <FaFilter className="text-gray-500" />
-          <select value={filterPosition} onChange={(e) => setFilterPosition(e.target.value)} className="outline-none w-full">
+          <select
+            value={filterPosition}
+            onChange={(e) => setFilterPosition(e.target.value)}
+            className="outline-none w-full"
+          >
             <option value="">Filter by Position</option>
             {positions.map((position) => (
               <option key={position} value={position}>
@@ -143,60 +177,78 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       </div>
 
       {/* Candidates List */}
-      <div className="space-y-4">
-        {filteredCandidates.map((candidate) => (
-          <div
-            key={candidate.id}
-            className="flex items-center justify-between p-4 bg-white rounded shadow-md"
-          >
-            <div className="flex items-center gap-4">
-              <FaUser className="text-blue-500 text-2xl" />
-              <div>
-                <h4 className="font-bold">{candidate.name}</h4>
-                <p className="text-gray-600">Position: {candidate.position}</p>
-                <p className="text-gray-600">Experience: {candidate.experience} years</p>
-                <p
-                  className={`text-sm font-semibold ${
-                    candidate.status === "Shortlisted" ? "text-green-600" : "text-gray-500"
-                  }`}
-                >
-                  {candidate.status}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => openModal(candidate)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                View Profile
-              </button>
-              <button
-                onClick={() => onShortlist(candidate)}
-                className={`px-4 py-2 ${
-                  candidate.status === "Shortlisted"
-                    ? "bg-green-500 text-white hover:bg-green-600"
-                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                }`}
-              >
-                {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
-              </button>
-              <button
-                onClick={() => handleRejectCandidate(candidate)}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Reject
-              </button>
-              <input
-                type="checkbox"
-                checked={selectedCandidates.includes(candidate.id)}
-                onChange={() => toggleSelection(candidate.id)}
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-            </div>
-          </div>
-        ))}
+      {isLoading ? (
+        <p>Loading candidates...</p>
+      ) : errorMessage ? (
+        <p className="text-red-500">{errorMessage}</p>
+      ) : filteredCandidates.length === 0 ? (
+        <p>No candidates match the criteria.</p>
+      ) : (
+        <div className="space-y-4">
+         {filteredCandidates.map((candidate) => (
+  <div
+    key={candidate._id}
+    className="flex items-center justify-between p-4 bg-white rounded shadow-md"
+  >
+    <div className="flex items-center gap-4">
+      <FaUser className="text-blue-500 text-2xl" />
+      <div>
+        {/* Display User's Name */}
+        <h4 className="font-bold"> {candidate.userId.userId?.name || "N/A"}</h4>
+
+        {/* Other candidate details */}
+        <p className="text-gray-600">Position: {candidate.userId.position}</p>
+        <p className="text-gray-600">
+          Experience: {candidate.userId.experience} years
+        </p>
+        <p
+          className={`text-sm font-semibold ${
+            candidate.status === "Shortlisted"
+              ? "text-green-600"
+              : "text-gray-500"
+          }`}
+        >
+          {candidate.status}
+        </p>
       </div>
+    </div>
+    {/* Actions */}
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => openModal(candidate)}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        View Profile
+      </button>
+      <button
+        onClick={() => onShortlist(candidate)}
+        className={`px-4 py-2 ${
+          candidate.status === "Shortlisted"
+            ? "bg-green-500 text-white hover:bg-green-600"
+            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+        }`}
+      >
+        {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
+      </button>
+      <button
+        onClick={() => handleRejectCandidate(candidate)}
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        Reject
+      </button>
+      <input
+        type="checkbox"
+        checked={selectedCandidates.includes(candidate._id)}
+        onChange={() => toggleSelection(candidate._id)}
+        className="form-checkbox h-5 w-5 text-blue-600"
+      />
+    </div>
+  </div>
+))}
+
+
+        </div>
+      )}
 
       {/* Bulk Actions */}
       {selectedCandidates.length > 0 && (
@@ -217,35 +269,49 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       )}
 
       {/* Profile Modal */}
-{modalCandidate && (
-  <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
-      <h4 className="text-xl font-bold mb-4">{modalCandidate.name}</h4>
-      <p><strong>Position:</strong> {modalCandidate.position}</p>
-      <p><strong>Experience:</strong> {modalCandidate.experience} years</p>
-      <p><strong>Email:</strong> {modalCandidate.email || "N/A"}</p>
-      <p><strong>Phone:</strong> {modalCandidate.phone || "N/A"}</p>
-      <p><strong>Skills:</strong> {modalCandidate.skills?.join(", ") || "N/A"}</p>
-      <a
-        href={modalCandidate.resumeUrl || "#"}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 hover:underline mt-2 inline-block"
-      >
-        View Resume
-      </a>
-      <div className="mt-6">
-        <button
-          onClick={closeModal}
-          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {modalCandidate && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
+            <h4 className="text-xl font-bold mb-4">{modalCandidate.userId.userId?.name}</h4>
+           
+            <p>
+              <strong>Position:</strong>{" "}
+              {modalCandidate.userId?.position || "N/A"}
+            </p>
+            <p>
+              <strong>Experience:</strong>{" "}
+              {modalCandidate.userId?.experience || "N/A"} years
+            </p>
+            <p>
+              <strong>Email:</strong> {modalCandidate.userId.userId?.email || "N/A"}
+            </p>
+            <p>
+              <strong>Phone:</strong> {modalCandidate.userId?.phone || "N/A"}
+            </p>
+            <p>
+              <strong>Skills:</strong>{" "}
+              {modalCandidate.userId?.skills?.join(", ") || "N/A"}
+            </p>
 
+            <a
+              href={modalCandidate.resumeUrl || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline mt-2 inline-block"
+            >
+              View Resume
+            </a>
+            <div className="mt-6">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

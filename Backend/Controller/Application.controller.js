@@ -3,19 +3,43 @@ import { errorHandler } from "../utils/Error.js";
 import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
 
+
 export const getApplications = async (req, res, next) => {
   try {
-    const applications = await Application.find({ jobId: req.params.jobId })
-      .populate("userId", "name email skills") // Populate user details
-      .populate("jobId", "title"); // Optional: Populate job details
-    if (!applications) {
-      return next(errorHandler(404, "Application not found"));
+    const { status, jobTitle, candidateName } = req.query; // Get filters from query params
+
+    // Build dynamic query object
+    const query = {};
+    if (status) query.status = status; // Filter by application status
+    if (jobTitle) query['jobId.title'] = { $regex: jobTitle, $options: "i" }; // Case-insensitive title search
+    if (candidateName) {
+      query['userId.userId.name'] = { $regex: candidateName, $options: "i" }; // Search candidate name
     }
-    res.status(200).json(applications);
+
+    // Fetch applications with filters applied
+    const applications = await Application.find(query)
+      .populate({
+        path: "userId", 
+        populate: {
+          path: "userId",
+          select: "name email",
+        },
+      })
+      .populate("jobId", "title description requirements");
+
+    res.status(200).json({
+      success: true,
+      message: "Filtered job applications retrieved successfully",
+      data: applications,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch applications" });
+    next(error); // Pass errors to middleware
   }
 };
+
+
+
+
 
 export const applyJobApplication = async (req, res, next) => {
   const { userId, jobId } = req.body;
@@ -51,3 +75,7 @@ export const applyJobApplication = async (req, res, next) => {
     next(error); // Pass errors to error-handling middleware
   }
 };
+
+
+
+
