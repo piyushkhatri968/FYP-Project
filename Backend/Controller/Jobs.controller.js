@@ -19,19 +19,27 @@ export const createJobPost = async (req, res) => {
     });
   }
 };
-export const getJobPosts = async (req, res) => {
+
+export const getJobPosts = async (req, res, next) => {
+  const { userId } = req.query;
+
   try {
-    const jobPosts = await JobPost.find({}).populate("postedBy");
+    let appliedJobs = [];
+    if (userId) {
+      const user = await Candidate.findById(userId).select("appliedJobs");
+      if (user) appliedJobs = user.appliedJobs;
+    }
+
+    const jobs = await JobPost.find({
+      _id: { $nin: appliedJobs }, // Exclude applied jobs
+    });
+
     res.status(200).json({
       success: true,
-      data: jobPosts,
+      data: jobs,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching job posts",
-      error: error.message,
-    });
+    next(error);
   }
 };
 
@@ -83,43 +91,4 @@ export const deleteJobPost = async (req, res) => {
   }
 };
 
-// add the job as favorites
-export const favoriteJob = async (req, res, next) => {
-  const { userId, jobId } = req.body;
-  try {
-    const candidate = await Candidate.findById(userId);
-    if (!candidate) return res.status(404).json({ message: "User not found" });
 
-    // Check if the job is already in favorites
-    const isFavorite = candidate.favorites.includes(jobId);
-
-    if (isFavorite) {
-      // If it's already in favorites, remove it
-      candidate.favorites = candidate.favorites.filter(
-        (job) => job.toString() !== jobId
-      );
-      await candidate.save();
-      return res.status(200).json({ message: "Job removed from favorites" });
-    } else {
-      // If it's not in favorites, add it
-      candidate.favorites.push(jobId);
-      await candidate.save();
-      return res.status(200).json({ message: "Job added to favorites" });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
-// get all the favorites jobs
-
-export const getFavoriteJobs = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const candidate = await Candidate.findById(id).populate("favorites");
-    if (!candidate) return res.status(404).json({ message: "User not found" });
-    res.status(200).json({ favorites: candidate.favorites });
-  } catch (error) {
-    next(error);
-  }
-};

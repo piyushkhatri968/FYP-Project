@@ -37,11 +37,11 @@ const Employee_Dashboard = () => {
           {/* MY PROFILE */}
           {tab === "profile" && <Employee_Profile />}
 
-          {/* APPLIED JOBS */}
-          {tab === "appliedjobs" && <Employee_Applied_Jobs />}
-
           {/* SUGGESTED JOBS */}
           {tab === "suggestedjobs" && <Employee_Suggested_Jobs />}
+
+          {/* APPLIED JOBS */}
+          {tab === "appliedjobs" && <Employee_Applied_Jobs />}
 
           {/* MESSAGES */}
           {tab === "messages" && <Employee_Messages />}
