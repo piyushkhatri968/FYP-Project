@@ -29,6 +29,7 @@ export const applyJobApplication = async (req, res, next) => {
     if (!job) {
       return next(errorHandler(404, "Job not found"));
     }
+
     const user = await Candidate.findById(userId);
     if (!user) {
       return next(errorHandler(404, "User not found"));
@@ -42,6 +43,14 @@ export const applyJobApplication = async (req, res, next) => {
 
     const applyJob = new Application({ userId, jobId });
     await applyJob.save();
+
+    // Update Candidate's appliedJobs array
+    await Candidate.findByIdAndUpdate(
+      userId,
+      { $addToSet: { appliedJobs: jobId } }, // Prevent duplicates
+      { new: true }
+    );
+
     res.status(201).json({
       success: true,
       message: "Application Submitted",

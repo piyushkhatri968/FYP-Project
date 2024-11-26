@@ -13,6 +13,12 @@ const candidateSchema = new mongoose.Schema(
         ref: "JobPost", // Referencing the JobPost model
       },
     ],
+    appliedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "JobPost", // Referencing the JobPost model
+      },
+    ],
     position: {
       type: String,
     },

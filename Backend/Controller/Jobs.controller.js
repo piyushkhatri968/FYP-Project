@@ -19,19 +19,27 @@ export const createJobPost = async (req, res) => {
     });
   }
 };
-export const getJobPosts = async (req, res) => {
+
+export const getJobPosts = async (req, res, next) => {
+  const { userId } = req.query;
+
   try {
-    const jobPosts = await JobPost.find({}).populate("postedBy");
+    let appliedJobs = [];
+    if (userId) {
+      const user = await Candidate.findById(userId).select("appliedJobs");
+      if (user) appliedJobs = user.appliedJobs;
+    }
+
+    const jobs = await JobPost.find({
+      _id: { $nin: appliedJobs }, // Exclude applied jobs
+    });
+
     res.status(200).json({
       success: true,
-      data: jobPosts,
+      data: jobs,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching job posts",
-      error: error.message,
-    });
+    next(error);
   }
 };
 

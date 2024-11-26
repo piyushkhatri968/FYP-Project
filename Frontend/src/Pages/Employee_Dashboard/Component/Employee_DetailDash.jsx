@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBriefcase, FaCheckCircle } from "react-icons/fa";
 import { FaClipboardList } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const Employee_DetailDash = () => {
   const [totalJobs, setTotalJobs] = useState();
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
 
   // fetching total jobs
   useEffect(() => {
@@ -15,7 +17,7 @@ const Employee_DetailDash = () => {
       try {
         setLoading(true);
         const jobs = await axios.get(
-          "http://localhost:8080/api/jobs/getJobPosts"
+          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
         );
         setTotalJobs(jobs.data.data.length);
         setLoading(false);

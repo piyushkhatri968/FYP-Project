@@ -11,51 +11,25 @@ const JobList = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(false);
     const getJobs = async () => {
       try {
         setLoading(true);
-        const jobs = await axios.get(
-          "http://localhost:8080/api/jobs/getJobPosts"
+        const response = await axios.get(
+          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
         );
-        setJobs(jobs.data.data);
-        console.log(jobs.data.data);
+        setJobs(response.data.data);
         setLoading(false);
       } catch (error) {
-        setLoading(false);
         console.log(error);
+        setLoading(false);
       }
     };
     getJobs();
-  }, []);
-
-  const handleFavorite = async (jobId) => {
-    try {
-      const userId = currentUser.candidateDetails;
-      const response = await axios.post(
-        "http://localhost:8080/api/jobs/favoriteJob",
-        {
-          userId,
-          jobId,
-        }
-      );
-      // Update the jobs list by toggling the favorite status locally
-      setJobs((prevJobs) =>
-        prevJobs.map((job) =>
-          job._id === jobId
-            ? { ...job, isFavorite: !job.isFavorite } // Toggle favorite status
-            : job
-        )
-      );
-    } catch (error) {
-      console.error(error);
-      alert("Failed to update favorite");
-    }
-  };
+  }, [currentUser.candidateDetails]);
 
   const handleApply = async (jobId) => {
     try {
-      const userId = currentUser.candidateDetails;
+      const userId = currentUser.candidateDetails; // Get the user's ID
       const response = await axios.post(
         "http://localhost:8080/api/application/candidate/applyJob",
         {
@@ -63,14 +37,9 @@ const JobList = () => {
           jobId,
         }
       );
-      // Update the jobs list by toggling the applied status locally
-      setJobs((prevJobs) =>
-        prevJobs.map((job) =>
-          job._id === jobId
-            ? { ...job, isApplied: !job.isApplied } // Toggle applied status
-            : job
-        )
-      );
+
+      // Remove applied job from the local state
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
     } catch (error) {
       console.error(error);
       alert("Failed to apply for job");
@@ -110,7 +79,7 @@ const JobList = () => {
                   <div>
                     <h2 className="text-xl font-semibold">{job.title}</h2>
                     <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job?.postedBy.name.toUpperCase()} •{" "}
+                      {job?.postedBy.name} •{" "}
                       <FaMapMarkerAlt className="inline text-red-500" />{" "}
                       {job.location} •{" "}
                       <FaClock className="inline text-yellow-500" />{" "}
@@ -121,9 +90,7 @@ const JobList = () => {
                 {/* Save Job Icon */}
                 <button onClick={() => handleFavorite(job._id)}>
                   <FaBookmark
-                    className={`text-2xl cursor-pointer ${
-                      job.isFavorite ? "text-blue-500" : "text-gray-400"
-                    }`}
+                    className={`text-2xl cursor-pointer text-gray-400`}
                   />
                 </button>
               </div>
