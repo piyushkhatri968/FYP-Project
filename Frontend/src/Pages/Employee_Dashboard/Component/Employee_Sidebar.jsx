@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaLightbulb } from "react-icons/fa6";
+import axios from "axios";
 
 const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [currentUserData, setCurrentUserData] = useState([]);
   const location = useLocation();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userData = await axios.get(
+          `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
+        );
+        setCurrentUserData(userData.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, []);
+
   return (
     <div className="md:w-96 bg-white shadow-lg mx-auto rounded-xl py-6">
       {/* Profile Section */}
@@ -19,7 +36,7 @@ const Sidebar = () => {
         <h3 className="text-xl md:text-2xl font-bold mt-4">
           {currentUser.name}
         </h3>
-        <p className="text-gray-500">Web Developer</p>
+        <p className="text-gray-500">{currentUserData.position}</p>
       </div>
 
       {/* Navigation Links */}

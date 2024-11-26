@@ -19,6 +19,7 @@ app.use(express.json());
 import authRoute from "../Routes/Auth.route.js";
 import jobRoute from "../Routes/Jobs.route.js";
 import candidateRoute from "../Routes/candidate.route.js";
+import userRoute from "../Routes/user.route.js";
 
 // {
 //     origin: process.env.CLIENT_URL || "http://localhost:5173/", // Your frontend URL
@@ -42,6 +43,8 @@ app.get("/", (req, res) => {
 
 // AUTHENTICATION ROUTES
 app.use("/api/auth", authRoute);
+
+app.use("/api/user", userRoute);
 
 // CANDIDATE INFORMATION ROUTES
 

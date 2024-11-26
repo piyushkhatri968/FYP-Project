@@ -29,25 +29,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    candidateDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Candidate",
+    },
   },
   { timestamps: true }
 );
-
-// ----------------------------------------------------------------------------------------
-
-// Virtual field for candidateDetails
-userSchema.virtual("candidateDetails", {
-  ref: "Candidate", // Reference the Candidate model
-  localField: "_id", // User ID in the User model
-  foreignField: "userId", // Field in the Candidate model referencing the User ID
-  justOne: true, // Retrieve a single Candidate document
-});
-
-// Ensure virtuals are included in JSON and object responses
-userSchema.set("toJSON", { virtuals: true });
-userSchema.set("toObject", { virtuals: true });
-
-// ----------------------------------------------------------------------------------------
 
 const User = new mongoose.model("User", userSchema);
 

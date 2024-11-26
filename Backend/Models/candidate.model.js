@@ -4,13 +4,22 @@ const candidateSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Referencing the User model
+      ref: "User", // Refers to the User model
       required: true,
     },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "JobPost", // Referencing the JobPost model
+      },
+    ],
     position: {
       type: String,
     },
     phone: {
+      type: Number,
+    },
+    language: {
       type: String,
     },
     age: {
@@ -19,9 +28,13 @@ const candidateSchema = new mongoose.Schema(
     location: {
       country: { type: String },
       city: { type: String },
-      zipCode: { type: String },
+      zipCode: { type: Number },
+      province: { type: String },
     },
-    skills: [{ type: String }], // Optional field to list candidate skills
+
+    skills: {
+      type: [String], // An array of strings for skills
+    },
     education: [
       {
         qualification: { type: String },
@@ -29,12 +42,9 @@ const candidateSchema = new mongoose.Schema(
         institution: { type: String },
       },
     ],
-    experience: [
-      {
-        years: { type: Number },
-        role: { type: String },
-      },
-    ],
+    experience: {
+      type: String,
+    },
     resume: {
       type: String, // URL to the resume
     },

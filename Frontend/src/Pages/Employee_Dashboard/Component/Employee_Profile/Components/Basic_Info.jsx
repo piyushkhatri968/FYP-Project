@@ -1,12 +1,51 @@
-import React, { useState } from "react";
-import { Spinner } from "flowbite-react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Basic_Info = ({ userData }) => {
-  const [formData, setFormData] = useState({});
+  const { currentUser } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState(userData); // Initialize with userData
+  const [isEditing, setIsEditing] = useState(false); // Track editing state
+  const [originalData, setOriginalData] = useState(userData); // Store original data
 
+  // Handle input changes
   const handleChangeFormInputs = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
   };
+
+  // Handle Edit button click
+  const handleEditClick = () => {
+    setOriginalData(formData); // Save current state to allow cancel
+    setIsEditing(true);
+  };
+
+  // Handle Save button click
+  const handleSaveClick = async () => {
+    try {
+      // Make PUT request to update data
+      await axios.put(
+        `http://localhost:8080/api/candidate/postData/${currentUser.candidateDetails}`,
+        formData
+      );
+      setIsEditing(false); // Exit editing mode
+      console.log("Data saved successfully!");
+      // navigate("/dashboard/employee?tab=profile");
+    } catch (error) {
+      console.error("Error saving data:", error.message);
+    }
+  };
+
+  // Handle Cancel button click
+  const handleCancelClick = () => {
+    setFormData(originalData); // Revert to original data
+    setIsEditing(false); // Exit editing mode
+  };
+
+
 
   return (
     <div className="flex flex-col mt-3">
@@ -14,38 +53,17 @@ const Basic_Info = ({ userData }) => {
         Basic Information
       </h1>
       <form>
-        <div className="flex flex-col md:flex-row mt-3 md:mt-1 md:justify-center md:items-center gap-5">
-          <div className="flex flex-col gap-2 md:mt-4 w-full">
-            <label>Your Name</label>
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
-              id="name"
-              value={userData.name}
-            />
-          </div>
-          <div className="flex flex-col gap-2 md:mt-4 w-full">
-            <label>Your Email</label>
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
-              id="name"
-              value={userData.email}
-            />
-          </div>
-        </div>
         <div className="flex flex-col md:flex-row mt-3 md:justify-center md:items-center gap-5">
           <div className="flex flex-col gap-2 md:mt-4 w-full">
             <label>Your Phone</label>
             <input
               type="text"
               placeholder="Your Phone"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold "
+              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
               id="phone"
-              value={userData.candidateDetails?.phone}
+              value={formData.phone || ""}
               onChange={handleChangeFormInputs}
+              disabled={!isEditing} // Disable input when not editing
             />
           </div>
           <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -54,18 +72,40 @@ const Basic_Info = ({ userData }) => {
               type="text"
               placeholder="Job Title"
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
-              id="jobTitle"
+              id="position"
+              value={formData.position || ""}
               onChange={handleChangeFormInputs}
+              disabled={!isEditing} // Disable input when not editing
             />
           </div>
         </div>
         <div className="flex gap-3 mt-5">
-          <button className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500">
-            Edit
-          </button>
-          <button className="text-white bg-OrangeColor w-24 py-2 rounded-md hover:bg-BlueColor transition-all duration-500">
-            Save
-          </button>
+          {!isEditing ? (
+            <button
+              type="button"
+              className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500"
+              onClick={handleEditClick}
+            >
+              Edit
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500"
+                onClick={handleSaveClick}
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                className="text-white bg-gray-500 py-2 w-24 rounded-md hover:bg-gray-700 transition-all duration-500"
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </button>
+            </>
+          )}
         </div>
       </form>
     </div>

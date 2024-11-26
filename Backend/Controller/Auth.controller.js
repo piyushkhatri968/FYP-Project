@@ -29,14 +29,19 @@ export const signup = async (req, res, next) => {
       userType: userType,
     });
 
-    await newUser.save();
+    const savedUser = await newUser.save();
 
-    // If userType is employee, create a Candidate record
+    // Create candidate details if userType is 'employee'
+    let savedCandidate = null;
     if (userType === "employee") {
       const newCandidate = new Candidate({
-        userId: newUser._id, // Link the User's ID
+        userId: savedUser._id, // Link the User's ID
       });
-      await newCandidate.save();
+      savedCandidate = await newCandidate.save();
+
+      // Link candidate details to user
+      savedUser.candidateDetails = savedCandidate._id;
+      await savedUser.save();
     }
 
     // Generate JWT token

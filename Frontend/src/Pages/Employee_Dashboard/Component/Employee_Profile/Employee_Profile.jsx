@@ -18,10 +18,9 @@ const Employee_Profile = () => {
       setLoading(true);
       try {
         const userData = await axios.get(
-          `http://localhost:8080/api/candidate/userData/${currentUser._id}`
+          `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
         );
         setCurrentUserData(userData.data.data);
-        console.log(userData.data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -47,13 +46,13 @@ const Employee_Profile = () => {
 
           {/* ADDRESS */}
 
-          <Address />
+          <Address userData={currentUserData} />
 
           <hr className="my-8" />
 
           {/* OTHER INFORMATION */}
 
-          <Other_Info />
+          <Other_Info userData={currentUserData} />
 
           <hr className="my-8" />
 

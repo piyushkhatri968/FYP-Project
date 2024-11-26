@@ -1,19 +1,16 @@
-import User from "../Models/user.model.js";
 import Candidate from "../Models/candidate.model.js";
 import { errorHandler } from "../utils/Error.js";
 
 export const getCandidateDetails = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const candidate = await User.findById(id)
-      .lean()
-      .populate("candidateDetails");
-    if (!candidate) {
+    const data = await Candidate.findById(id);
+    if (!data) {
       return next(errorHandler(404, "User not found"));
     }
-    res.status(200).json({ success: true, data: candidate });
+    res.status(200).json({ success: true, data: data });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
