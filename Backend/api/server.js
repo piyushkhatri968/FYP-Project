@@ -3,6 +3,7 @@ dotenv.config();
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -20,6 +21,7 @@ import authRoute from "../Routes/Auth.route.js";
 import jobRoute from "../Routes/Jobs.route.js";
 import candidateRoute from "../Routes/candidate.route.js";
 import userRoute from "../Routes/user.route.js";
+import applicationRoute from "../Routes/Application.route.js";
 
 // {
 //     origin: process.env.CLIENT_URL || "http://localhost:5173/", // Your frontend URL
@@ -49,6 +51,8 @@ app.use("/api/user", userRoute);
 // CANDIDATE INFORMATION ROUTES
 
 app.use("/api/candidate", candidateRoute);
+
+app.use("/api/application/candidate", applicationRoute )
 
 // jobs Routes
 app.use("/api/jobs", jobRoute);
