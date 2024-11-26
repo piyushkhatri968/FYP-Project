@@ -8,45 +8,63 @@ import { useSelector } from "react-redux";
 const JobList = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [jobs, setJobs] = useState([]);
+  const [favorites, setFavorites] = useState([]); // Local state for favorites
   const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-  const getJobs = async () => {
+  // Fetch jobs and favorites when component loads
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
+        );
+        setJobs(response.data.data);
+
+        // Fetch favorites from localStorage
+        const savedFavorites =
+          JSON.parse(localStorage.getItem("favorites")) || [];
+        setFavorites(savedFavorites); // Set favorites state with the data from localStorage
+
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    getJobs();
+  }, [currentUser.candidateDetails]);
+
+  // Toggle favorite job
+  const toggleFavorite = async (jobId) => {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
+      const userId = currentUser.candidateDetails;
+      const response = await axios.post(
+        "http://localhost:8080/api/candidate/toggleFavoriteJob",
+        {
+          userId,
+          jobId,
+        }
       );
-      setJobs(response.data.data);
-      setLoading(false);
+
+      // Update favorites in localStorage
+      setFavorites((prevFavorites) => {
+        const updatedFavorites = prevFavorites || [];
+
+        const newFavorites = updatedFavorites.includes(jobId)
+          ? updatedFavorites.filter((id) => id !== jobId)
+          : [...updatedFavorites, jobId];
+
+        // Save updated favorites in localStorage
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+
+        return newFavorites;
+      });
     } catch (error) {
-      console.log(error);
-      setLoading(false);
+      console.error(error);
+      alert("Failed to update favorites");
     }
   };
-  getJobs();
-}, [currentUser.candidateDetails]);
-
-
-const handleApply = async (jobId) => {
-  try {
-    const userId = currentUser.candidateDetails; // Get the user's ID
-    const response = await axios.post(
-      "http://localhost:8080/api/application/candidate/applyJob",
-      {
-        userId,
-        jobId,
-      }
-    );
-
-    // Remove applied job from the local state
-    setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
-  } catch (error) {
-    console.error(error);
-    alert("Failed to apply for job");
-  }
-};
-
 
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
@@ -66,7 +84,6 @@ const handleApply = async (jobId) => {
             >
               {/* Header Section */}
               <div className="flex justify-between items-center mb-4">
-                {/* Logo and Title Section */}
                 <div className="flex items-center gap-4">
                   <div className="bg-gray-200 w-28 h-20 rounded-md flex justify-center items-center">
                     <img
@@ -89,10 +106,13 @@ const handleApply = async (jobId) => {
                     </p>
                   </div>
                 </div>
-                {/* Save Job Icon */}
-                <button onClick={() => handleFavorite(job._id)}>
+                <button onClick={() => toggleFavorite(job._id)}>
                   <FaBookmark
-                    className={`text-2xl cursor-pointer text-gray-400`}
+                    className={`text-2xl cursor-pointer ${
+                      favorites && favorites.includes(job._id)
+                        ? "text-gray-400"
+                        : "text-blue-400"
+                    }`}
                   />
                 </button>
               </div>

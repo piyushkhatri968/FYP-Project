@@ -68,7 +68,7 @@ const Employee_Applied_Jobs = () => {
                   </div>
                 </div>
                 {/* Save Job Icon */}
-                <button onClick={() => handleFavorite(job._id)}>
+                <button>
                   <FaBookmark
                     className={`text-2xl cursor-pointer text-gray-400`}
                   />

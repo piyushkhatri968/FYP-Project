@@ -91,43 +91,4 @@ export const deleteJobPost = async (req, res) => {
   }
 };
 
-// add the job as favorites
-export const favoriteJob = async (req, res, next) => {
-  const { userId, jobId } = req.body;
-  try {
-    const candidate = await Candidate.findById(userId);
-    if (!candidate) return res.status(404).json({ message: "User not found" });
 
-    // Check if the job is already in favorites
-    const isFavorite = candidate.favorites.includes(jobId);
-
-    if (isFavorite) {
-      // If it's already in favorites, remove it
-      candidate.favorites = candidate.favorites.filter(
-        (job) => job.toString() !== jobId
-      );
-      await candidate.save();
-      return res.status(200).json({ message: "Job removed from favorites" });
-    } else {
-      // If it's not in favorites, add it
-      candidate.favorites.push(jobId);
-      await candidate.save();
-      return res.status(200).json({ message: "Job added to favorites" });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
-// get all the favorites jobs
-
-export const getFavoriteJobs = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const candidate = await Candidate.findById(id).populate("favorites");
-    if (!candidate) return res.status(404).json({ message: "User not found" });
-    res.status(200).json({ favorites: candidate.favorites });
-  } catch (error) {
-    next(error);
-  }
-};
