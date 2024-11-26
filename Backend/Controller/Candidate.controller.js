@@ -28,3 +28,17 @@ export const postCandidateDetails = async (req, res, next) => {
     console.log(error);
   }
 };
+
+export const getAppliedJobs = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const candidate = await Candidate.findById(id)
+      .populate("appliedJobs")
+    if (!candidate) {
+      return next(errorHandler(404, "User not found"));
+    }
+    res.status(200).json({ success: true, data: candidate.appliedJobs });
+  } catch (error) {
+    next(error);
+  }
+};

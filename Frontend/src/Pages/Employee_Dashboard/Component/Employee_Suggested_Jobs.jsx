@@ -10,41 +10,43 @@ const JobList = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const getJobs = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
-        );
-        setJobs(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    };
-    getJobs();
-  }, [currentUser.candidateDetails]);
-
-  const handleApply = async (jobId) => {
+useEffect(() => {
+  const getJobs = async () => {
     try {
-      const userId = currentUser.candidateDetails; // Get the user's ID
-      const response = await axios.post(
-        "http://localhost:8080/api/application/candidate/applyJob",
-        {
-          userId,
-          jobId,
-        }
+      setLoading(true);
+      const response = await axios.get(
+        `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
       );
-
-      // Remove applied job from the local state
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+      setJobs(response.data.data);
+      setLoading(false);
     } catch (error) {
-      console.error(error);
-      alert("Failed to apply for job");
+      console.log(error);
+      setLoading(false);
     }
   };
+  getJobs();
+}, [currentUser.candidateDetails]);
+
+
+const handleApply = async (jobId) => {
+  try {
+    const userId = currentUser.candidateDetails; // Get the user's ID
+    const response = await axios.post(
+      "http://localhost:8080/api/application/candidate/applyJob",
+      {
+        userId,
+        jobId,
+      }
+    );
+
+    // Remove applied job from the local state
+    setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+  } catch (error) {
+    console.error(error);
+    alert("Failed to apply for job");
+  }
+};
+
 
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
