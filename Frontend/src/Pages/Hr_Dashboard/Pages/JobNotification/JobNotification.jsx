@@ -19,8 +19,10 @@ const JobNotification = ({ addRecentJob }) => {
     jobType: "",
     postedBy: currentUser?._id || "", // Set postedBy with the user ID from Redux state
   });
- 
-const navigate=useNavigate()
+
+  console.log(currentUser._id);
+
+  const navigate = useNavigate();
   const [isSending, setIsSending] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -51,11 +53,11 @@ const navigate=useNavigate()
     setIsSending(true);
     setSuccessMessage("");
     setErrorMessage("");
-  
+
     try {
       // Send job details to the backend
       const response = await NotificationService.sendNotifications(jobDetails);
-      
+
       // Check if response.success exists
       if (response && response.success) {
         setSuccessMessage("Job posted successfully!");
@@ -70,7 +72,6 @@ const navigate=useNavigate()
       setIsSending(false);
     }
   };
-
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
@@ -92,7 +93,10 @@ const navigate=useNavigate()
         </div>
 
         <div>
-          <label htmlFor="department" className="block font-medium text-gray-700">
+          <label
+            htmlFor="department"
+            className="block font-medium text-gray-700"
+          >
             Department
           </label>
           <input
@@ -122,7 +126,10 @@ const navigate=useNavigate()
         </div>
 
         <div>
-          <label htmlFor="description" className="block font-medium text-gray-700">
+          <label
+            htmlFor="description"
+            className="block font-medium text-gray-700"
+          >
             Job Description
           </label>
           <textarea
@@ -138,12 +145,16 @@ const navigate=useNavigate()
 
         <ExperienceInput
           value={jobDetails.experience}
-          onChange={(value) => setJobDetails((prev) => ({ ...prev, experience: value }))}
+          onChange={(value) =>
+            setJobDetails((prev) => ({ ...prev, experience: value }))
+          }
         />
 
         <JobTypeSelector
           value={jobDetails.jobType}
-          onChange={(value) => setJobDetails((prev) => ({ ...prev, jobType: value }))}
+          onChange={(value) =>
+            setJobDetails((prev) => ({ ...prev, jobType: value }))
+          }
         />
 
         <SkillInput
@@ -152,8 +163,12 @@ const navigate=useNavigate()
           onRemove={handleSkillRemove}
         />
 
-        {successMessage && <p className="text-green-500 font-medium">{successMessage}</p>}
-        {errorMessage && <p className="text-red-500 font-medium">{errorMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 font-medium">{successMessage}</p>
+        )}
+        {errorMessage && (
+          <p className="text-red-500 font-medium">{errorMessage}</p>
+        )}
 
         <button
           type="submit"
@@ -162,7 +177,11 @@ const navigate=useNavigate()
             isSending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {isSending ? <FaSpinner className="animate-spin inline-block mr-2" /> : <FaPlus />}
+          {isSending ? (
+            <FaSpinner className="animate-spin inline-block mr-2" />
+          ) : (
+            <FaPlus />
+          )}
           Post Job
         </button>
       </form>

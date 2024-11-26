@@ -43,22 +43,22 @@ const Employee_DetailDash = () => {
             <div className="text-3xl font-semibold">{totalJobs}</div>
           </Link>
           <Link
-            to="/dashboard/employee?tab=suggestedjobs"
+            to="/dashboard/employee?tab=saved-jobs"
             className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform hover:scale-105"
           >
             <div className="flex flex-col items-center">
               <FaClipboardList size={32} className="mb-3" />
-              <span className="font-semibold text-xl">Applied Jobs</span>
+              <span className="font-semibold text-xl">Saved Jobs</span>
             </div>
             <div className="text-3xl font-semibold">0</div>
           </Link>
           <Link
-            to="/dashboard/employee?tab=suggestedjobs"
+            to="/dashboard/employee?tab=appliedjobs"
             className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform hover:scale-105"
           >
             <div className="flex flex-col items-center">
               <FaCheckCircle size={32} className="mb-3" />
-              <span className="font-semibold text-xl">Short Listed</span>
+              <span className="font-semibold text-xl">Applied Jobs</span>
             </div>
             <div className="text-3xl font-semibold">0</div>
           </Link>

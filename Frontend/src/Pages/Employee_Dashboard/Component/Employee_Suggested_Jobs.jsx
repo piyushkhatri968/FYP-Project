@@ -19,6 +19,7 @@ const JobList = () => {
           "http://localhost:8080/api/jobs/getJobPosts"
         );
         setJobs(jobs.data.data);
+        console.log(jobs.data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -85,7 +86,7 @@ const JobList = () => {
                   <div>
                     <h2 className="text-xl font-semibold">{job.title}</h2>
                     <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job.department} •{" "}
+                      {job?.postedBy.name.toUpperCase()} •{" "}
                       <FaMapMarkerAlt className="inline text-red-500" />{" "}
                       {job.location} •{" "}
                       <FaClock className="inline text-yellow-500" />{" "}

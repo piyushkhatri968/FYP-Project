@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Candidate",
     },
+    recruiterDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Recruiter",
+    },
   },
   { timestamps: true }
 );

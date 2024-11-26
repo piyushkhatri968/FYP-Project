@@ -21,7 +21,7 @@ export const createJobPost = async (req, res) => {
 };
 export const getJobPosts = async (req, res) => {
   try {
-    const jobPosts = await JobPost.find({}); // Fetch all job posts from the database
+    const jobPosts = await JobPost.find({}).populate("postedBy");
     res.status(200).json({
       success: true,
       data: jobPosts,

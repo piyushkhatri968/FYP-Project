@@ -1,5 +1,6 @@
 import User from "../Models/user.model.js";
 import Candidate from "../Models/candidate.model.js";
+import Recruiter from "../Models/recruiter.model.js";
 import { errorHandler } from "../utils/Error.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -41,6 +42,16 @@ export const signup = async (req, res, next) => {
 
       // Link candidate details to user
       savedUser.candidateDetails = savedCandidate._id;
+      await savedUser.save();
+    }
+
+    let savedRecruiter = null;
+    if (userType === "recruiter") {
+      const newRecruiter = await Recruiter({
+        userId: savedUser._id,
+      });
+      savedRecruiter = await newRecruiter.save();
+      savedUser.recruiterDetails = savedRecruiter._id;
       await savedUser.save();
     }
 
