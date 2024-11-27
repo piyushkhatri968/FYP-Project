@@ -39,7 +39,7 @@ const JobList = () => {
   const toggleFavorite = async (jobId) => {
     try {
       const userId = currentUser.candidateDetails;
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8080/api/candidate/toggleFavoriteJob",
         {
           userId,
@@ -66,11 +66,30 @@ const JobList = () => {
     }
   };
 
+  // Handle applying for a job
+  const handleApply = async (jobId) => {
+    try {
+      const userId = currentUser.candidateDetails;
+      await axios.post(
+        "http://localhost:8080/api/application/candidate/applyJob",
+        {
+          userId,
+          jobId,
+        }
+      );
+
+      // Remove the applied job from the jobs list
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+      alert("Job application submitted successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to apply for the job.");
+    }
+  };
+
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
-      <h1 className="text-2xl font-bold mb-6">
-        Jobs That Matches Your Profile
-      </h1>
+      <h1 className="text-2xl font-bold mb-6">Jobs That Match Your Profile</h1>
       <div className="space-y-6">
         {loading ? (
           <div className="flex justify-center items-center">
@@ -110,8 +129,8 @@ const JobList = () => {
                   <FaBookmark
                     className={`text-2xl cursor-pointer ${
                       favorites && favorites.includes(job._id)
-                        ? "text-gray-400"
-                        : "text-blue-400"
+                        ? "text-blue-400"
+                        : "text-gray-400"
                     }`}
                   />
                 </button>
