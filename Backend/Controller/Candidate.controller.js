@@ -54,7 +54,7 @@ export const getSavedJobs = async (req, res, next) => {
     next(error);
   }
 };
-
+// aa
 export const toggleFavoriteJob = async (req, res, next) => {
   const { userId, jobId } = req.body;
 
