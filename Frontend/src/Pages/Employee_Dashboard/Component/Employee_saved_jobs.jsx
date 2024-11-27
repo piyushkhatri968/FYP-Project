@@ -15,9 +15,10 @@ const Employee_saved_jobs = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:8080/api/jobs/favoriteJob/${currentUser.candidateDetails}`
+          `http://localhost:8080/api/candidate/savedJobs/${currentUser.candidateDetails}`
         );
-        setFavorites(response.data.favorites);
+        setFavorites(response.data.data.favorites);
+        console.log(response.data.data.favorites);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching favorite jobs:", error);
