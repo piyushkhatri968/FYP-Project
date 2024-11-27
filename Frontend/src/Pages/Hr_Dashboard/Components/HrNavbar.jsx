@@ -41,7 +41,7 @@ const HRNavbar = () => {
               to="/"
               className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md hover:bg-[#b82828]"
             >
-              Sign up / Login
+              Logout
             </Link>
           </li>
         </ul>
@@ -70,7 +70,7 @@ const HRNavbar = () => {
               to="/"
               className="font-semibold bg-[#ce2f2f] py-2 px-4 rounded-md hover:bg-[#b82828]"
             >
-              Sign up / Login
+              Logout
             </Link>
           </li>
         </ul>

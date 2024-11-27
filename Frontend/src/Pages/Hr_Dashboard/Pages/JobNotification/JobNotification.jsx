@@ -63,12 +63,15 @@ const JobNotification = ({ addRecentJob }) => {
         setSuccessMessage("Job posted successfully!");
         addRecentJob(jobDetails); // Update User Dashboard
         navigate("/hr/dashboard"); // Redirect to dashboard after successful post
-      } else {
+      } 
+      else {
         setErrorMessage("Failed to post the job. Please try again.");
       }
-    } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
-    } finally {
+    } 
+    // catch (error) {
+    //   setErrorMessage("An error occurred. Please try again.");
+    // } 
+    finally {
       setIsSending(false);
     }
   };
