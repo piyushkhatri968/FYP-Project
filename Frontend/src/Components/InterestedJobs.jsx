@@ -86,8 +86,9 @@ const InterestedJobs = () => {
         Jobs You May Be Interested In
       </h1>
       <p className="text-center md:max-w-[50vw] mx-auto my-4 text-gray-600">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        Based on your skills and preferences, we've handpicked these job
+        opportunities just for you. Browse through and apply to roles that align
+        with your career aspirations and expertise.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-16 mx-4 sm:mx-12 md:mx-0 text-center md:text-left">

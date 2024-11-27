@@ -6,36 +6,36 @@ function TopCompanies() {
   const Company = [
     {
       img: compapnyImg,
-      name: "Trophy & Sans",
-      location: "Green Lanes, London",
-      vacancy: 25,
+      name: "TechNova Solutions",
+      location: "Silicon Valley, USA",
+      vacancy: 15,
     },
     {
       img: compapnyImg,
-      name: "Trophy & Sans",
-      location: "Green Lanes, London",
-      vacancy: 25,
+      name: "Green Horizons",
+      location: "Berlin, Germany",
+      vacancy: 10,
     },
     {
       img: compapnyImg,
-      name: "Trophy & Sans",
-      location: "Green Lanes, London",
-      vacancy: 25,
+      name: "InnovateX",
+      location: "Tokyo, Japan",
+      vacancy: 20,
     },
     {
       img: compapnyImg,
-      name: "Trophy & Sans",
-      location: "Green Lanes, London",
-      vacancy: 25,
+      name: "FutureWorks",
+      location: "Toronto, Canada",
+      vacancy: 12,
     },
   ];
   return (
     <div>
       <h1 className="text-4xl font-semibold text-center">Top Companies</h1>
       <p className="text-center w-full sm:w-[35rem] mx-auto px-4 my-4 text-gray-600">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-        suspendisse ultrices gravida.
+        Discover some of the top companies offering exciting career
+        opportunities across the globe. Connect with leading organizations to
+        take your career to the next level.
       </p>
       <div className="flex flex-wrap justify-center gap-6 my-12">
         {Company.map((item, index) => (

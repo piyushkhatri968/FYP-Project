@@ -1,6 +1,5 @@
 import React from "react";
-import { MdConstruction } from "react-icons/md";
-import { MdDocumentScanner } from "react-icons/md";
+import { MdAttachMoney, MdCampaign, MdComputer, MdConstruction, MdLocalHospital, MdRoomService, MdSchool, MdShoppingCart } from "react-icons/md";
 
 const PopularJobCategory = () => {
   const category = [
@@ -12,48 +11,50 @@ const PopularJobCategory = () => {
     {
       name: "Finance",
       jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      image: <MdAttachMoney />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Technology",
+      jobs: "12 new jobs",
+      image: <MdComputer />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Healthcare",
+      jobs: "15 new jobs",
+      image: <MdLocalHospital />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Education",
+      jobs: "10 new jobs",
+      image: <MdSchool />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Marketing",
+      jobs: "7 new jobs",
+      image: <MdCampaign />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Hospitality",
+      jobs: "9 new jobs",
+      image: <MdRoomService />,
     },
     {
-      name: "Finance",
-      jobs: "8 new jobs",
-      image: <MdDocumentScanner />,
+      name: "Retail",
+      jobs: "11 new jobs",
+      image: <MdShoppingCart />,
     },
   ];
+
   return (
     <div className="my-28">
       <h1 className="text-3xl md:text-4xl font-semibold text-center">
         Popular Jobs Category
       </h1>
       <p className="text-center w-full sm:w-[70vw] md:w-[55vw] mx-auto mt-4 text-gray-600 px-4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-        suspendisse ultrices gravida. Risus
+        Explore the most in-demand job categories tailored to a variety of
+        skills and industries. Whether you're a tech enthusiast, creative
+        professional, or skilled tradesperson, find the perfect role that aligns
+        with your expertise and interests.
       </p>
       <div className="my-16 mx-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {category.map((item, index) => (

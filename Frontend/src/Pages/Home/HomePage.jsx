@@ -26,7 +26,6 @@ function HomePage() {
           <img
             src={bannerImg2}
             alt=""
-
             style={{
               animation: "Flikker 6s ease-in-out infinite",
             }}
@@ -38,15 +37,15 @@ function HomePage() {
             Discover The Talented Designers In The World
           </h1>
           <p className="text-gray-800 text-base lg:w-[40rem]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-            accumsan lacus vel facilisis.
+            Explore the most in-demand job categories tailored to a variety of
+            skills and industries. Whether you're a tech enthusiast, creative
+            professional, or skilled tradesperson, find the perfect role that
+            aligns with your expertise and interests.
           </p>
           <p className="text-gray-800  text-base lg:w-[40rem]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis
-            ipsum suspendisse ultrices gravida.
+            Our curated categories make it simple to navigate the job market and
+            discover opportunities that suit your career goals. Start exploring
+            now and take the first step toward your dream job!
           </p>
           <Link
             to="/find-job"
@@ -60,7 +59,7 @@ function HomePage() {
       <TopCompanies />
       <Stats />
       <HowWebWorks />
-      <JobRecruitment/>
+      <JobRecruitment />
       <Reviews />
       <SubscribeBox />
     </>
