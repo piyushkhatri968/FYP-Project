@@ -114,14 +114,14 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link
+              {/* <Link
                 to="/hr/dashboard"
                 className={`font-semibold ${
                   location.pathname === "/hr-home" ? "text-red-600" : ""
                 }`}
               >
                 HR-Dashboard
-              </Link>
+              </Link> */}
             </li>
           </ul>
         </div>

@@ -55,7 +55,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     fetchCandidates();
   }, []);
 
-  console.log("candidates are :", candidates);
+  // console.log("candidates are :", candidates);
 
   // Handle filtering based on search, position, and experience
   useEffect(() => {
@@ -112,9 +112,10 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const handleRejectCandidate = async (candidate) => {
     try {
       await axios.post(
-        `http://localhost:8080/api/candidates/${candidate._id}/reject`
+        `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
+        { status: "Rejected" }
       );
-      alert(`${candidate.name} has been rejected.`);
+      alert(`${candidate.userId.userId?.name } has been rejected.`);
       setCandidates((prev) =>
         prev.map((c) =>
           c._id === candidate._id ? { ...c, status: "Rejected" } : c
@@ -123,6 +124,35 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     } catch (error) {
       alert("Failed to reject candidate.");
     }
+  };
+
+ 
+
+  const handleShortlistCandidate = async (candidate) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
+        { status: "Shortlisted" }
+      );
+      alert(`${candidate.userId.userId?.name || "Candidate"} has been shortlisted.`);
+      setCandidates((prev) =>
+        prev.map((c) =>
+          c._id === candidate._id ? { ...c, status: "Shortlisted" } : c
+        )
+      );
+    } catch (error) {
+      console.error("Error shortlisting candidate:", error);
+      alert("Failed to shortlist candidate.");
+    }
+  };
+  
+
+  const handleShortlist = (candidate) => {
+    if (candidate.status === "Shortlisted") {
+      alert(`${candidate.userId.userId?.name || "Candidate"} is already shortlisted.`);
+      return;
+    }
+    handleShortlistCandidate(candidate); // Call the API function
   };
 
   const openModal = (candidate) => setModalCandidate(candidate);
@@ -221,15 +251,17 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         View Profile
       </button>
       <button
-        onClick={() => onShortlist(candidate)}
-        className={`px-4 py-2 ${
-          candidate.status === "Shortlisted"
-            ? "bg-green-500 text-white hover:bg-green-600"
-            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-        }`}
-      >
-        {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
-      </button>
+  onClick={() => handleShortlist(candidate)}
+  disabled={candidate.status === "Shortlisted"}
+  className={`px-4 py-2 rounded ${
+    candidate.status === "Shortlisted"
+      ? "bg-green-500 text-white cursor-not-allowed"
+      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+  }`}
+>
+  {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
+</button>
+
       <button
         onClick={() => handleRejectCandidate(candidate)}
         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
