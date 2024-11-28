@@ -30,9 +30,10 @@ export const getJobPosts = async (req, res, next) => {
       if (user) appliedJobs = user.appliedJobs;
     }
 
+    // Fetch job posts excluding applied jobs, and sort by creation date (latest first)
     const jobs = await JobPost.find({
       _id: { $nin: appliedJobs }, // Exclude applied jobs
-    });
+    }).sort({ createdAt: -1 }).populate("postedBy")
 
     res.status(200).json({
       success: true,
@@ -42,6 +43,7 @@ export const getJobPosts = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // edit jobs:
 export const editJobPost = async (req, res) => {

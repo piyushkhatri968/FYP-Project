@@ -3,7 +3,6 @@ import { errorHandler } from "../utils/Error.js";
 import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
 
-
 export const getApplications = async (req, res, next) => {
   try {
     const { status, jobTitle, candidateName } = req.query; // Get filters from query params
@@ -11,15 +10,15 @@ export const getApplications = async (req, res, next) => {
     // Build dynamic query object
     const query = {};
     if (status) query.status = status; // Filter by application status
-    if (jobTitle) query['jobId.title'] = { $regex: jobTitle, $options: "i" }; // Case-insensitive title search
+    if (jobTitle) query["jobId.title"] = { $regex: jobTitle, $options: "i" }; // Case-insensitive title search
     if (candidateName) {
-      query['userId.userId.name'] = { $regex: candidateName, $options: "i" }; // Search candidate name
+      query["userId.userId.name"] = { $regex: candidateName, $options: "i" }; // Search candidate name
     }
 
     // Fetch applications with filters applied
     const applications = await Application.find(query)
       .populate({
-        path: "userId", 
+        path: "userId",
         populate: {
           path: "userId",
           select: "name email",
@@ -37,10 +36,8 @@ export const getApplications = async (req, res, next) => {
   }
 };
 
-
-
-// UpdateStatus: 
-export const updateStatus=  async (req, res,next) => {
+// UpdateStatus:
+export const updateStatus = async (req, res, next) => {
   const { id } = req.params; // Application ID
   const { status } = req.body; // New status: "Shortlisted" or "Rejected"
 
@@ -68,10 +65,9 @@ export const updateStatus=  async (req, res,next) => {
   } catch (error) {
     console.error("Error updating application status:", error);
     res.status(500).json({ error: "Internal server error." });
-    next(error)
+    next(error);
   }
-}     
-
+};
 
 export const applyJobApplication = async (req, res, next) => {
   const { userId, jobId } = req.body;
@@ -117,6 +113,26 @@ export const applyJobApplication = async (req, res, next) => {
   }
 };
 
+export const getJobStatus = async (req, res, next) => {
+  const { userId, jobId } = req.query;
+  try {
+    if (!userId || !jobId) {
+      return res
+        .status(400)
+        .json({ error: "Both userId and jobId are required" });
+    }
+    const jobStatus = await Application.findOne({ userId, jobId });
 
+    if (!jobStatus) {
+      return res.status(404).json({ error: "Job status not found" });
+    }
 
-
+    res.status(200).json({
+      success: true,
+      message: "Job status retrieved successfully",
+      data: jobStatus,
+    });
+  } catch (error) {
+    next(error); // Pass the error to the error handler
+  }
+};

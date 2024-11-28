@@ -16,15 +16,16 @@ const JobList = () => {
     const getJobs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
+        // Fetch jobs for the current user
+        const jobResponse = await axios.get(
           `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
         );
-        setJobs(response.data.data);
-
-        // Fetch favorites from localStorage
-        const savedFavorites =
-          JSON.parse(localStorage.getItem("favorites")) || [];
-        setFavorites(savedFavorites); // Set favorites state with the data from localStorage
+        setJobs(jobResponse.data.data);
+        // Fetch the user's favorites from the backend
+        const favoriteResponse = await axios.get(
+          `http://localhost:8080/api/candidate/getFavorites?userId=${currentUser.candidateDetails}`
+        );
+        setFavorites(favoriteResponse.data.favorites);
 
         setLoading(false);
       } catch (error) {
@@ -32,13 +33,16 @@ const JobList = () => {
         setLoading(false);
       }
     };
+
     getJobs();
   }, [currentUser.candidateDetails]);
 
-  // Toggle favorite job
+  // Toggle favorite functionality as before
   const toggleFavorite = async (jobId) => {
     try {
       const userId = currentUser.candidateDetails;
+
+      // Send request to the backend to toggle favorite status
       await axios.post(
         "http://localhost:8080/api/candidate/toggleFavoriteJob",
         {
@@ -47,18 +51,13 @@ const JobList = () => {
         }
       );
 
-      // Update favorites in localStorage
+      // Update the local favorites state based on the backend response
       setFavorites((prevFavorites) => {
-        const updatedFavorites = prevFavorites || [];
-
-        const newFavorites = updatedFavorites.includes(jobId)
-          ? updatedFavorites.filter((id) => id !== jobId)
-          : [...updatedFavorites, jobId];
-
-        // Save updated favorites in localStorage
-        localStorage.setItem("favorites", JSON.stringify(newFavorites));
-
-        return newFavorites;
+        if (prevFavorites.includes(jobId)) {
+          return prevFavorites.filter((id) => id !== jobId);
+        } else {
+          return [...prevFavorites, jobId];
+        }
       });
     } catch (error) {
       console.error(error);
@@ -117,7 +116,7 @@ const JobList = () => {
                   <div>
                     <h2 className="text-xl font-semibold">{job.title}</h2>
                     <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job?.postedBy.name} •{" "}
+                      {job.postedBy ? job.postedBy.name : "Unknown Recruiter"} •{" "}
                       <FaMapMarkerAlt className="inline text-red-500" />{" "}
                       {job.location} •{" "}
                       <FaClock className="inline text-yellow-500" />{" "}

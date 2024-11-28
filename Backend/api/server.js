@@ -22,6 +22,7 @@ import jobRoute from "../Routes/Jobs.route.js";
 import candidateRoute from "../Routes/candidate.route.js";
 import userRoute from "../Routes/user.route.js";
 import applicationRoute from "../Routes/Application.route.js";
+import recruiterRoute from "../Routes/recruiter.route.js";
 
 // {
 //     origin: process.env.CLIENT_URL || "http://localhost:5173/", // Your frontend URL
@@ -42,19 +43,11 @@ app.get("/", (req, res) => {
 });
 
 // routes
-
-// AUTHENTICATION ROUTES
 app.use("/api/auth", authRoute);
-
 app.use("/api/user", userRoute);
-
-// CANDIDATE INFORMATION ROUTES
-
 app.use("/api/candidate", candidateRoute);
-
 app.use("/api/application/candidate", applicationRoute);
-
-// jobs Routes
+app.use("/api/recruiter", recruiterRoute);
 app.use("/api/jobs", jobRoute);
 
 app.listen(PORT, () => {

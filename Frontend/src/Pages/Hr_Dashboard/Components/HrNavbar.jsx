@@ -10,7 +10,7 @@ const HRNavbar = () => {
       <div className="flex justify-between items-center px-4 sm:px-8 md:px-12 lg:px-20 h-[5rem]">
         {/* Logo */}
         <div className="logo">
-          <Link to="/hr/dashboard" className="text-xl font-bold">
+          <Link to="/" className="text-xl font-bold">
             Logo
           </Link>
         </div>
@@ -30,7 +30,7 @@ const HRNavbar = () => {
               Dashboard
             </Link>
           </li>
-         
+
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
             <Link to="/hr/account-settings" className="font-semibold">
               Profile Settings
@@ -57,7 +57,7 @@ const HRNavbar = () => {
           </li>
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
             <Link to="/hr/dashboard" className="font-semibold">
-             Logo
+              Logo
             </Link>
           </li>
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">

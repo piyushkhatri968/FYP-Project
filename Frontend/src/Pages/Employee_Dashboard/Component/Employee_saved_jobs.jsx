@@ -62,7 +62,7 @@ const Employee_saved_jobs = () => {
                       {job.title || "Job Title"}
                     </h2>
                     <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job.company || "Company"} •{" "}
+                      {job.postedBy ? job.postedBy.name : "Unknown Recruiter"} •{" "}
                       <FaMapMarkerAlt className="inline text-red-500" />{" "}
                       {job.location || "Location"} •{" "}
                       <FaClock className="inline text-yellow-500" />{" "}

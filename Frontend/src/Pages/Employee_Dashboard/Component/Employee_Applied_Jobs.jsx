@@ -4,6 +4,7 @@ import { FaBookmark, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import moment from "moment";
 import { Spinner } from "flowbite-react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Employee_Applied_Jobs = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,7 +19,6 @@ const Employee_Applied_Jobs = () => {
           `http://localhost:8080/api/candidate/appliedJobs/${currentUser.candidateDetails}`
         );
         setJobs(response.data.data);
-        console.log(response.data.data);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -59,7 +59,7 @@ const Employee_Applied_Jobs = () => {
                   <div>
                     <h2 className="text-xl font-semibold">{job.title}</h2>
                     <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job?.postedBy.name} •{" "}
+                      {job.postedBy ? job.postedBy.name : "Unknown Recruiter"} •{" "}
                       <FaMapMarkerAlt className="inline text-red-500" />{" "}
                       {job.location} •{" "}
                       <FaClock className="inline text-yellow-500" />{" "}
@@ -98,6 +98,12 @@ const Employee_Applied_Jobs = () => {
                     {job.experience} years of experience
                   </p>
                 </div>
+                <Link
+                  to="/dashboard/employee?tab=trackapplication"
+                  className="bg-green-600 text-white px-3 py-1 rounded-lg font-semibold"
+                >
+                  Track Status
+                </Link>
               </div>
             </div>
           ))
