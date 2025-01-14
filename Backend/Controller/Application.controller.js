@@ -136,3 +136,37 @@ export const getJobStatus = async (req, res, next) => {
     next(error); // Pass the error to the error handler
   }
 };
+
+
+export const getShortlistCandidate = async (req, res) => {
+  try {
+    // Fetch shortlisted candidates from the database
+    const shortlistedCandidates = await Application.find({ isShortlisted: true });
+
+    // Check if no candidates were found
+    if (shortlistedCandidates.length === 0) {
+      return res.status(404).json({ message: "No shortlisted candidates found." });
+    }
+
+    // Send response with the data
+    res.status(200).json({ data: shortlistedCandidates });
+  } catch (error) {
+    console.error("Error fetching shortlisted candidates:", error); // Log error for debugging
+    res.status(500).json({ error: 'Failed to fetch shortlisted candidates' });
+  }
+};
+
+
+export const updateShortListId= async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedCandidate = await Candidate.findByIdAndUpdate(
+      id,
+      { isShortlisted: true },
+      { new: true }
+    );
+    res.status(200).json(updatedCandidate);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update candidate' });
+  }
+};

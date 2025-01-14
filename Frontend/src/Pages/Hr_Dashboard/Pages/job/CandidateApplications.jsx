@@ -115,16 +115,17 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
         { status: "Rejected" }
       );
-      alert(`${candidate.userId.userId?.name } has been rejected.`);
-      setCandidates((prev) =>
-        prev.map((c) =>
-          c._id === candidate._id ? { ...c, status: "Rejected" } : c
-        )
+      alert(`${candidate.userId.userId?.name || "Candidate"} has been rejected.`);
+      // Remove the rejected candidate from the frontend
+      setCandidates((prev) => prev.filter((c) => c._id !== candidate._id));
+      setFilteredCandidates((prev) =>
+        prev.filter((c) => c._id !== candidate._id)
       );
     } catch (error) {
       alert("Failed to reject candidate.");
     }
   };
+  
 
  
 

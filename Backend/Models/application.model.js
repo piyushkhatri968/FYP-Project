@@ -21,6 +21,7 @@ const applicationSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    // isShortlisted: { type: Boolean, default: false },
     notes: { type: String }, // For HR-specific comments
   },
   { timestamps: true }

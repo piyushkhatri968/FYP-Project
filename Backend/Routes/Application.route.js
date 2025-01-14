@@ -6,6 +6,8 @@ import {
   applyJobApplication,
   updateStatus,
   getJobStatus,
+  getShortlistCandidate,
+  updateShortListId
 } from "../Controller/Application.controller.js";
 
 // fetching application
@@ -15,4 +17,8 @@ router.post("/:id/status", updateStatus);
 router.post("/applyJob", applyJobApplication);
 router.get("/jobStatus", getJobStatus);
 
+
+// handling shortlist:
+router.get("/shortlisted-candidates", getShortlistCandidate)
+router.patch("shortlist/:id",updateShortListId)
 export default router;
