@@ -2,6 +2,7 @@ import Application from "../Models/application.model.js";
 import { errorHandler } from "../utils/Error.js";
 import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
+import Interview from "../Models/Hr_Models/interview.model.js";
 
 export const getApplications = async (req, res, next) => {
   try {
@@ -183,4 +184,14 @@ export const updateShortListId= async (req, res) => {
 
 
 
-// interviewControl:
+// interviewScheduling:
+export const interviewScheduling=async (req, res) => {
+  try {
+    const newInterview = new Interview(req.body);
+    await newInterview.save();
+    res.status(200).json({ message: "Interview scheduled successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error scheduling interview" });
+  }
+};
