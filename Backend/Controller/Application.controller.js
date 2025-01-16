@@ -21,10 +21,10 @@ export const getApplications = async (req, res, next) => {
         path: "userId",
         populate: {
           path: "userId",
-          select: "name email",
+          select: "name email position",
         },
       })
-      .populate("jobId", "title description requirements");
+      
 
     res.status(200).json({
       success: true,
@@ -138,23 +138,25 @@ export const getJobStatus = async (req, res, next) => {
 };
 
 
-export const getShortlistCandidate = async (req, res) => {
+export const getShortlistedCandidates = async (req, res) => {
   try {
-    // Fetch shortlisted candidates from the database
-    const shortlistedCandidates = await Application.find({ isShortlisted: true });
+    const shortlistedApplications = await Application.find({ status: "Shortlisted" })
+    .populate({
+      path: "userId", // First populate userId from the Application model      
+    
+      populate: {
+        path: "userId", // Then populate userId from the Candidate model
+        select: "name experience", // Fetch only the fields you need from User
+      },
+    })
+      .populate("jobId","position"); // Optionally, include job details
 
-    // Check if no candidates were found
-    if (shortlistedCandidates.length === 0) {
-      return res.status(404).json({ message: "No shortlisted candidates found." });
-    }
-
-    // Send response with the data
-    res.status(200).json({ data: shortlistedCandidates });
+    res.status(200).json(shortlistedApplications);
   } catch (error) {
-    console.error("Error fetching shortlisted candidates:", error); // Log error for debugging
-    res.status(500).json({ error: 'Failed to fetch shortlisted candidates' });
+    res.status(500).json({ message: "Error fetching shortlisted candidates", error });
   }
 };
+
 
 
 export const updateShortListId= async (req, res) => {
