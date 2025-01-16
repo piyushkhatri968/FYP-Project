@@ -121,46 +121,56 @@ const ShortlistCandidates = () => {
         </div>
       </div>
 
-      {/* Candidates List */}
-      <div className="space-y-4">
-        {filteredCandidates.map((candidate) => {
-          const { userId } = candidate;
-          return (
-            <div
-              key={candidate._id}
-              className="flex items-center justify-between p-4 bg-white rounded shadow-md"
-            >
-              <div className="flex items-center gap-4">
-                <input
-                  type="checkbox"
-                  checked={selectedCandidates.includes(candidate._id)}
-                  onChange={() => toggleSelection(candidate._id)}
-                />
-                <div>
-                  <h4 className="font-bold">{userId?.userId?.name}</h4>
-                  <p className="text-gray-600">{userId?.position}</p>
-                  <p className="text-gray-600">
-                    Experience: {userId?.experience || 0} years
-                  </p>
+      {/* Candidates List or No Match Message */}
+      {filteredCandidates.length > 0 ? (
+        <div className="space-y-4">
+          {filteredCandidates.map((candidate) => {
+            const { userId } = candidate;
+            return (
+              <div
+                key={candidate._id}
+                className="flex items-center justify-between p-4 bg-white rounded shadow-md"
+              >
+                <div className="flex items-center gap-4">
+                  <input
+                    type="checkbox"
+                    checked={selectedCandidates.includes(candidate._id)}
+                    onChange={() => toggleSelection(candidate._id)}
+                  />
+                  <div>
+                    <h4 className="font-bold">{userId?.userId?.name}</h4>
+                    <p className="text-gray-600">{userId?.position}</p>
+                    <p className="text-gray-600">
+                      Experience: {userId?.experience || 0} years
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openModal(candidate)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    View Profile
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    <FaCalendarAlt className="inline mr-1" /> Schedule Interview
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => openModal(candidate)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  View Profile
-                </button>
-                <button
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  <FaCalendarAlt className="inline mr-1" /> Schedule Interview
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="text-center text-gray-600 p-6">
+          <p className="text-lg font-medium">
+            No candidates found matching the current filters.
+          </p>
+          <br />
+          <p className="fs-7"><strong>NOT FOUND</strong> </p>
+        </div>
+      )}
 
       {/* Candidate Details Modal */}
       {modalCandidate && (
