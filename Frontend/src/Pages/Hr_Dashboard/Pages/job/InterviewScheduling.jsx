@@ -1,105 +1,175 @@
 import React, { useState } from "react";
-import { FaUser, FaCalendarAlt, FaClock, FaStickyNote } from "react-icons/fa";
+import axios from "axios";
 
-const InterviewScheduling = () => {
-  const [formData, setFormData] = useState({
-    candidateName: "",
-    date: "",
-    time: "",
-    notes: "",
-  });
+const InterviewScheduling = ({ candidate, closeModal }) => {
+  const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState("");
+  const [interviewType, setInterviewType] = useState("");
+  const [interviewMode, setInterviewMode] = useState("");  // In-person or Virtual
+  const [location, setLocation] = useState(""); // Location for in-person
+  const [interviewers, setInterviewers] = useState(""); // Comma-separated list of interviewers
+  const [jobComments, setJobComments] = useState(""); // Optional comments
+  const [candidateConfirmation, setCandidateConfirmation] = useState(false); // Confirmation checkbox
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleScheduleInterview = async () => {
+    if (!interviewDate || !interviewTime || !interviewType || !interviewMode || !candidateConfirmation) {
+      setError("Please fill in all required fields and confirm the interview.");
+      return;
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Interview scheduled for ${formData.candidateName}!`);
-    // Clear form data after submission
-    setFormData({ candidateName: "", date: "", time: "", notes: "" });
+    setLoading(true);
+    setError("");
+
+    try {
+      // Assuming the interview scheduling URL is something like:
+      const response = await axios.post("http://localhost:8080/api/interviews/schedule", {
+        candidateId: candidate._id,
+        interviewDate,
+        interviewTime,
+        interviewType,
+        interviewMode,
+        location: interviewMode === "In-person" ? location : null, // Only required if In-person
+        interviewers: interviewers.split(",").map((interviewer) => interviewer.trim()), // List of interviewers
+        jobComments,
+        candidateConfirmation,
+      });
+
+      alert("Interview scheduled successfully!");
+      closeModal();
+    } catch (err) {
+      console.error("Error scheduling interview:", err);
+      setError("There was an error scheduling the interview.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen p-8 bg-gradient-to-r from-gray-50 to-gray-200">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Schedule an Interview
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Candidate Name */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              <FaUser className="inline-block mr-2 text-gray-600" />
-              Candidate Name
-            </label>
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
+        <h4 className="text-xl font-bold">Schedule Interview</h4>
+        <p>For Candidate: {candidate.userId?.userId?.name}</p>
+
+        {/* Interview Date */}
+        <div className="mt-4">
+          <label className="block">Interview Date</label>
+          <input
+            type="date"
+            value={interviewDate}
+            onChange={(e) => setInterviewDate(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+
+        {/* Interview Time */}
+        <div className="mt-4">
+          <label className="block">Interview Time</label>
+          <input
+            type="time"
+            value={interviewTime}
+            onChange={(e) => setInterviewTime(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+
+        {/* Interview Type */}
+        <div className="mt-4">
+          <label className="block">Interview Type</label>
+          <select
+            value={interviewType}
+            onChange={(e) => setInterviewType(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="">Select Interview Type</option>
+            <option value="Technical">Technical</option>
+            <option value="HR">HR</option>
+            <option value="Managerial">Managerial</option>
+          </select>
+        </div>
+
+        {/* Interview Mode */}
+        <div className="mt-4">
+          <label className="block">Interview Mode</label>
+          <select
+            value={interviewMode}
+            onChange={(e) => setInterviewMode(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="">Select Mode</option>
+            <option value="In-person">In-person</option>
+            <option value="Virtual">Virtual</option>
+          </select>
+        </div>
+
+        {/* Location (only if in-person) */}
+        {interviewMode === "In-person" && (
+          <div className="mt-4">
+            <label className="block">Location</label>
             <input
               type="text"
-              name="candidateName"
-              value={formData.candidateName}
-              onChange={handleChange}
-              placeholder="Enter candidate name"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              required
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Interview Location"
+              className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
+        )}
 
-          {/* Interview Date */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              <FaCalendarAlt className="inline-block mr-2 text-gray-600" />
-              Interview Date
-            </label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        {/* Interviewers */}
+        <div className="mt-4">
+          <label className="block">Interviewers</label>
+          <input
+            type="text"
+            value={interviewers}
+            onChange={(e) => setInterviewers(e.target.value)}
+            placeholder="Comma separated list of interviewers"
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
 
-          {/* Interview Time */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              <FaClock className="inline-block mr-2 text-gray-600" />
-              Interview Time
-            </label>
-            <input
-              type="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        {/* Job-related Comments */}
+        <div className="mt-4">
+          <label className="block">Job-related Comments</label>
+          <textarea
+            value={jobComments}
+            onChange={(e) => setJobComments(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Any additional comments about the job"
+          />
+        </div>
 
-          {/* Notes */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              <FaStickyNote className="inline-block mr-2 text-gray-600" />
-              Notes (Optional)
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              placeholder="Add any additional notes"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            ></textarea>
-          </div>
+        {/* Candidate Confirmation */}
+        <div className="mt-4 flex items-center">
+          <input
+            type="checkbox"
+            checked={candidateConfirmation}
+            onChange={() => setCandidateConfirmation(!candidateConfirmation)}
+            className="mr-2"
+          />
+          <span>I confirm my availability for the interview.</span>
+        </div>
 
-          {/* Submit Button */}
+        {/* Error Message */}
+        {error && <p className="text-red-600 mt-2">{error}</p>}
+
+        {/* Submit Button */}
+        <div className="flex justify-between mt-4">
           <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg shadow-md hover:shadow-lg hover:from-blue-600 hover:to-blue-700 transition"
+            onClick={closeModal}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
           >
-            Schedule Interview
+            Cancel
           </button>
-        </form>
+          <button
+            onClick={handleScheduleInterview}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            disabled={loading}
+          >
+            {loading ? "Scheduling..." : "Schedule Interview"}
+          </button>
+        </div>
       </div>
     </div>
   );

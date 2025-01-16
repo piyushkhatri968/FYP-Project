@@ -114,7 +114,7 @@ const HrPage = () => {
               <h3 className="text-lg font-bold mb-2">Schedule New Interview</h3>
               <button
                 className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:from-blue-600 hover:to-blue-700 transition"
-                onClick={() => navigate("/schedule-interview")}
+                onClick={() => navigate("/hr/schedule-interview")}
               >
                 Add Interview
               </button>

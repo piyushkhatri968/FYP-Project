@@ -162,6 +162,9 @@ export const getShortlistedCandidates = async (req, res) => {
 
 
 
+
+
+
 export const updateShortListId= async (req, res) => {
   try {
     const { id } = req.params;
@@ -175,3 +178,9 @@ export const updateShortListId= async (req, res) => {
     res.status(500).json({ error: 'Failed to update candidate' });
   }
 };
+
+
+
+
+
+// interviewControl:
