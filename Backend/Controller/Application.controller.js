@@ -138,6 +138,9 @@ export const getJobStatus = async (req, res, next) => {
 };
 
 
+
+// shortlist candidates.
+
 export const getShortlistedCandidates = async (req, res) => {
   try {
     const shortlistedApplications = await Application.find({ status: "Shortlisted" })
@@ -146,7 +149,7 @@ export const getShortlistedCandidates = async (req, res) => {
     
       populate: {
         path: "userId", // Then populate userId from the Candidate model
-        select: "name experience", // Fetch only the fields you need from User
+        select: "name experience", // Fetching selected fields
       },
     })
       .populate("jobId","position"); // Optionally, include job details
