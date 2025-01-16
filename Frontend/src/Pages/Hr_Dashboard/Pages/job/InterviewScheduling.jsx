@@ -23,8 +23,8 @@ const InterviewScheduling = ({ candidate, closeModal }) => {
     setError("");
 
     try {
-      // Assuming the interview scheduling URL is something like:
-      const response = await axios.post("http://localhost:8080/api/interviews/schedule", {
+      //  interview scheduling URL 
+      const response = await axios.post("http://localhost:8080/api/application/candidate/interview-schedule", {
         candidateId: candidate._id,
         interviewDate,
         interviewTime,

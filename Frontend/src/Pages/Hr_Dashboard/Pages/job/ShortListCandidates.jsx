@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSearch, FaCalendarAlt, FaFilter } from "react-icons/fa";
+import InterviewScheduling from "./InterviewScheduling"
 
 const ShortlistCandidates = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -9,6 +10,8 @@ const ShortlistCandidates = () => {
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
   const [modalCandidate, setModalCandidate] = useState(null);
+ 
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
 
   // Fetch shortlisted candidates
   useEffect(() => {
@@ -61,6 +64,11 @@ const ShortlistCandidates = () => {
         : [...prevSelected, id]
     );
   };
+ // Handle scheduling interview button click
+ const handleScheduleInterview = (candidate) => {
+  setModalCandidate(candidate);
+  setShowInterviewModal(true);
+};
 
   // Modal handlers
   const openModal = (candidate) => setModalCandidate(candidate);
@@ -153,10 +161,11 @@ const ShortlistCandidates = () => {
                     View Profile
                   </button>
                   <button
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    <FaCalendarAlt className="inline mr-1" /> Schedule Interview
-                  </button>
+              onClick={() => handleScheduleInterview(candidate)}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              <FaCalendarAlt className="inline mr-1" /> Schedule Interview
+            </button>
                 </div>
               </div>
             );
@@ -211,6 +220,15 @@ const ShortlistCandidates = () => {
           </div>
         </div>
       )}
+
+      {/* Interview Scheduling Modal */}
+      {showInterviewModal && (
+        <InterviewScheduling
+          candidate={modalCandidate}
+          closeModal={closeModal}
+        />
+      )}
+      
     </div>
   );
 };
