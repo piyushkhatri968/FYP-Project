@@ -1,22 +1,29 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
 const Account_Setting = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
       <h1 className="text-2xl font-bold mb-6">Account Settings</h1>
       <div>
         {/* Add your account settings form here */}
         <form>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-              placeholder="John Doe"
+          <div className="w-full flex justify-center items-center flex-col">
+            <img
+              src={currentUser.profilePicture}
+              className="w-32 h-32 rounded-full"
+              alt=""
             />
+            <div>
+              <label htmlFor="name">Name</label>
+              <input type="text" placeholder={currentUser.name} />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <input type="password" placeholder="******" />
+            </div>
           </div>
+          <button>Edit</button>
         </form>
       </div>
     </div>
