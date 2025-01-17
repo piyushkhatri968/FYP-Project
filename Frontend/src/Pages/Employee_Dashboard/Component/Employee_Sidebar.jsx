@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaLightbulb } from "react-icons/fa6";
 import axios from "axios";
+import { IoIosSettings } from "react-icons/io";
 
 const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -189,6 +190,20 @@ const Sidebar = () => {
             >
               <i className="fas fa-sign-out-alt"></i>
               Log Out
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/employee?tab=account-settings"
+              className={`${
+                location.pathname === "/dashboard/employee" &&
+                location.search === "?tab=account-setting"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <IoIosSettings className="text-xl" />
+              Account Settings
             </Link>
           </li>
         </ul>
