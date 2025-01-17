@@ -47,69 +47,69 @@ const Basic_Info = ({ userData }) => {
 
 
 
-  return (
-    <div className="flex flex-col mt-3">
-      <h1 className="text-[#001935] font-bold text-xl md:text-2xl">
-        Basic Information
-      </h1>
-      <form>
-        <div className="flex flex-col md:flex-row mt-3 md:justify-center md:items-center gap-5">
-          <div className="flex flex-col gap-2 md:mt-4 w-full">
-            <label>Your Phone</label>
-            <input
-              type="text"
-              placeholder="Your Phone"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
-              id="phone"
-              value={formData.phone || ""}
-              onChange={handleChangeFormInputs}
-              disabled={!isEditing} // Disable input when not editing
-            />
+    return (
+      <div className="flex flex-col mt-3">
+        <h1 className="text-[#001935] font-bold text-xl md:text-2xl">
+          Basic Information
+        </h1>
+        <form>
+          <div className="flex flex-col md:flex-row mt-3 md:justify-center md:items-center gap-5">
+            <div className="flex flex-col gap-2 md:mt-4 w-full">
+              <label>Your Phone</label>
+              <input
+                type="text"
+                placeholder="Your Phone"
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
+                id="phone"
+                value={formData.phone || ""}
+                onChange={handleChangeFormInputs}
+                disabled={!isEditing} // Disable input when not editing
+              />
+            </div>
+            <div className="flex flex-col gap-2 md:mt-4 w-full">
+              <label>Job Title</label>
+              <input
+                type="text"
+                placeholder="Job Title"
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
+                id="position"
+                value={formData.position || ""}
+                onChange={handleChangeFormInputs}
+                disabled={!isEditing} // Disable input when not editing
+              />
+            </div>
           </div>
-          <div className="flex flex-col gap-2 md:mt-4 w-full">
-            <label>Job Title</label>
-            <input
-              type="text"
-              placeholder="Job Title"
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
-              id="position"
-              value={formData.position || ""}
-              onChange={handleChangeFormInputs}
-              disabled={!isEditing} // Disable input when not editing
-            />
-          </div>
-        </div>
-        <div className="flex gap-3 mt-5">
-          {!isEditing ? (
-            <button
-              type="button"
-              className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500"
-              onClick={handleEditClick}
-            >
-              Edit
-            </button>
-          ) : (
-            <>
+          <div className="flex gap-3 mt-5">
+            {!isEditing ? (
               <button
                 type="button"
                 className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500"
-                onClick={handleSaveClick}
+                onClick={handleEditClick}
               >
-                Save
+                Edit
               </button>
-              <button
-                type="button"
-                className="text-white bg-gray-500 py-2 w-24 rounded-md hover:bg-gray-700 transition-all duration-500"
-                onClick={handleCancelClick}
-              >
-                Cancel
-              </button>
-            </>
-          )}
-        </div>
-      </form>
-    </div>
-  );
-};
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="text-white bg-OrangeColor py-2 w-24 rounded-md hover:bg-BlueColor transition-all duration-500"
+                  onClick={handleSaveClick}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-gray-500 py-2 w-24 rounded-md hover:bg-gray-700 transition-all duration-500"
+                  onClick={handleCancelClick}
+                >
+                  Cancel
+                </button>
+              </>
+            )}
+          </div>
+        </form>
+      </div>
+    );
+  };
 
 export default Basic_Info;

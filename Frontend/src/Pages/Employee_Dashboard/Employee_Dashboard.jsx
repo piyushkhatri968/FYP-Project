@@ -11,6 +11,7 @@ import Employee_logout from "./Component/Employee_logout";
 import Employee_Suggested_Jobs from "./Component/Employee_Suggested_Jobs";
 import Employee_DetailDash from "./Component/Employee_DetailDash";
 import Employee_Application from "./Component/Employee_Application";
+import Account_Setting from "./Component/Account_Setting";
 
 const Employee_Dashboard = () => {
   const location = useLocation();
@@ -61,6 +62,9 @@ const Employee_Dashboard = () => {
 
           {/* LOGOUT ACCOUNT */}
           {tab === "logout" && <Employee_logout />}
+
+          {/* ACCOUNT SETTING */}
+          {tab === "account-settings" && <Account_Setting />}
         </div>
       </div>
     </>

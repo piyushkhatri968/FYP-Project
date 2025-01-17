@@ -30,19 +30,19 @@ const App = () => {
         <Routes>
           {/* Private User routee */}
           <Route element={<PrivateRoute />}>
-            <Route path="dashboard/employee" element={<Employee_Dashboard />} />
+            <Route path="/dashboard/employee" element={<Employee_Dashboard />} />
           </Route>
 
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="signin" element={<SignIn />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="contact" element={<ContactPage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="find-job" element={<FindAJob />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/find-job" element={<FindAJob />} />
 
-          <Route path="resume" element={<Resume />} />
+          <Route path="/resume" element={<Resume />} />
 
           {HrRoutes}
         </Routes>
