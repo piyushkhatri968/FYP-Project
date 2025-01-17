@@ -12,8 +12,9 @@ import JobAnalytics from "../Pages/job/JobAnalytics";
 import AccountSetting from "../Pages/job/AccountSetting";
 import NotificationSettings from "../Pages/job/NotificationSettings";
 import JobNotification from "../Pages/JobNotification/JobNotification";
-import InterviewScheduling from "../Pages/job/InterviewScheduling";
+// import InterviewScheduling from "../Pages/job/InterviewScheduling";
 import EmployeeAnnouncement from "../Pages/job/EmployeeAnnouncement";
+import InterviewScheduling from "../Pages/job/InterviewScheduling";
 
 
 // HR-specific routes
@@ -28,7 +29,7 @@ const HrRoutes = (
       <Route path="/hr/account-settings" element={<AccountSetting />} />
       <Route path="/hr/notification-settings" element={<NotificationSettings />} />
       <Route path="/hr/job-notification" element={<JobNotification />} />
-      <Route path="/hr/schedule-interview" element={<InterviewScheduling />} />
+      <Route path="/hr/schedule-interview" element={<InterviewScheduling/>} />
       <Route path="/hr/employment-announcements" element={<EmployeeAnnouncement />} />
    </Route>
 );

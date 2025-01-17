@@ -195,3 +195,23 @@ export const interviewScheduling=async (req, res) => {
     res.status(500).json({ message: "Error scheduling interview" });
   }
 };
+
+// get interviewScheduling : 
+export const getinterviewScheduling=async (req, res) => {
+  try {
+    const interviews = await Interview.find()
+    .populate({
+      path: "candidateId", // First populate candidateId
+      populate: {
+        path: "userId", // Then populate userId from User model
+        select: "name", // Only fetch the name field
+      },
+    })
+      .sort({ interviewDate: 1 }); // Sort by date ascending
+
+    res.json(interviews);
+  } catch (error) {
+    console.error("Error fetching interviews:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
