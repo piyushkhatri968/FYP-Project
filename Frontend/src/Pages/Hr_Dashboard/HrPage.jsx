@@ -11,9 +11,38 @@ import {
 const HrPage = () => {
   const navigate = useNavigate();
   const [interviews, setInterviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [analytics, setAnalytics] = useState({
+    applicationsReceived: 0,
+    shortlisted: 0,
+    hired: 0,
+  });
 
+  // Separate loading and error states for analytics and interviews
+  const [loadingAnalytics, setLoadingAnalytics] = useState(true);
+  const [errorAnalytics, setErrorAnalytics] = useState(null);
+  const [loadingInterviews, setLoadingInterviews] = useState(true);
+  const [errorInterviews, setErrorInterviews] = useState(null);
+
+  // Fetch analytics data
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/application/candidate/analytics"
+        );
+        setAnalytics(response.data);
+      } catch (err) {
+        console.error("Error fetching analytics data:", err);
+        setErrorAnalytics("Failed to load analytics data.");
+      } finally {
+        setLoadingAnalytics(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, []);
+
+  // Fetch interview schedule data
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
@@ -21,12 +50,11 @@ const HrPage = () => {
           "http://localhost:8080/api/application/candidate/get-interview-schedule"
         );
         setInterviews(response.data);
-        console.log(response.data)
       } catch (err) {
         console.error("Error fetching interview schedule:", err);
-        setError("Failed to load interview schedule.");
+        setErrorInterviews("Failed to load interview schedule.");
       } finally {
-        setLoading(false);
+        setLoadingInterviews(false);
       }
     };
 
@@ -79,80 +107,75 @@ const HrPage = () => {
           </div>
         </section>
 
-
         {/* Analytics Overview */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Analytics Overview</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-lg font-bold mb-2">Active Jobs</h3>
-              <p className="text-3xl font-extrabold text-blue-500">12</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-lg font-bold mb-2">Applications Received</h3>
-              <p className="text-3xl font-extrabold text-green-500">345</p>
-              <div className="mt-3 bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-green-500 h-2 rounded-full"
-                  style={{ width: "80%" }}
-                ></div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Analytics Overview
+          </h2>
+          {loadingAnalytics ? (
+            <p className="text-gray-500">Loading analytics...</p>
+          ) : errorAnalytics ? (
+            <p className="text-red-500">{errorAnalytics}</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                <h3 className="text-lg font-bold mb-2">Applications Received</h3>
+                <p className="text-3xl font-extrabold text-blue-500">
+                  {analytics.applicationsReceived}
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                <h3 className="text-lg font-bold mb-2">Shortlisted</h3>
+                <p className="text-3xl font-extrabold text-green-500">
+                  {analytics.shortlisted}
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                <h3 className="text-lg font-bold mb-2">Hired</h3>
+                <p className="text-3xl font-extrabold text-purple-500">
+                  {analytics.hired}
+                </p>
               </div>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-lg font-bold mb-2">Hires This Month</h3>
-              <p className="text-3xl font-extrabold text-purple-500">7</p>
-            </div>
-          </div>
+          )}
         </section>
-        
-
 
         {/* Interview Scheduling */}
         <section>
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
             Interview Scheduling
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold mb-2">Upcoming Interviews</h3>
-              {loading ? (
-                <p className="text-gray-500">Loading interviews...</p>
-              ) : error ? (
-                <p className="text-red-500">{error}</p>
-              ) : interviews.length === 0 ? (
-                <p className="text-gray-500">No scheduled interviews.</p>
-              ) : (
-                <ul className="space-y-4">
-                  {interviews.map((interview) => (
-                    <li key={interview._id} className="flex items-center gap-4">
-                      <FaCalendarCheck size={24} className="text-gray-500" />
-                      <span className="text-gray-700">
-                        {interview?.candidateId?.userId?.name || "N/A"} -{" "}
-                        {new Date(interview.interviewDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          }
-                        )}{" "}
-                        ({interview.interviewTime})
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold mb-2">Schedule New Interview</h3>
-              <button
-                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition"
-                onClick={() => navigate("/hr/schedule-interview")}
-              >
-                Add Interview
-              </button>
-            </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-bold mb-2">Upcoming Interviews</h3>
+            {loadingInterviews ? (
+              <p className="text-gray-500">Loading interviews...</p>
+            ) : errorInterviews ? (
+              <p className="text-red-500">{errorInterviews}</p>
+            ) : interviews.length === 0 ? (
+              <p className="text-gray-500">No scheduled interviews.</p>
+            ) : (
+              <ul className="space-y-4">
+                {interviews.map((interview) => (
+                  <li key={interview._id} className="flex items-center gap-4">
+                    <FaCalendarCheck size={24} className="text-gray-500" />
+                    <span className="text-gray-700">
+                      {interview.interviewers && interview.interviewers.length > 0
+                        ? `${interview.interviewers.join(", ")} - `
+                        : "N/A - "}
+                      {new Date(interview.interviewDate).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )}{" "}
+                      ({interview.interviewTime})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </section>
       </main>
@@ -160,6 +183,4 @@ const HrPage = () => {
   );
 };
 
-
-
-export default HrPage;    
+export default HrPage;

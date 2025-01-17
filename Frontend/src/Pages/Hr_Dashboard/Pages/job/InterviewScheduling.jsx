@@ -40,6 +40,7 @@ const InterviewScheduling = ({ candidate, closeModal,addInterview }) => {
       //   date: new Date(interviewDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       //   time: interviewTime,
       // });
+      // console.log("id",candidate?.userId?._id)
 
       alert("Interview scheduled successfully!");
 

@@ -44,9 +44,9 @@ const HrSidebar = () => {
               { name: "View Applications", path: "/hr/candidate-profiles" },
               { name: "Application Tracking", path: "/hr/application-tracking" },
               { name: "Shortlist Candidates", path: "/hr/shortlisted-candidates" },
-              { name: "Job Analytics", path: "/hr/job-analytics" },
+              // { name: "Job Analytics", path: "/hr/job-analytics" },
               { name: "Notification Settings", path: "/hr/notification-settings" },
-              { name: "Announcements", path: "/hr/employment-announcements" },
+              // { name: "Announcements", path: "/hr/employment-announcements" },
             ].map((item, index) => (
               <motion.li
                 key={item.path}

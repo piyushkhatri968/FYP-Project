@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   FaUserTie,
   FaClipboardCheck,
@@ -7,34 +8,49 @@ import {
 } from "react-icons/fa";
 
 const ApplicationTracking = () => {
-  const applications = [
-    { id: 1, name: "Alice Johnson", stage: "applied" },
-    { id: 2, name: "Bob Smith", stage: "interviewed" },
-    { id: 3, name: "Carol Danvers", stage: "shortlisted" },
-    { id: 4, name: "David Brown", stage: "hired" },
-    { id: 5, name: "Eve White", stage: "applied" },
-  ];
+  const [applications, setApplications] = useState([]);
 
+  // Fetch applications from the backend
+  const fetchApplications = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/application/candidate/getApplication"
+      );
+      setApplications(response.data); // Set fetched applications to state
+      console.log("Fetched applications:", response.data); // Debugging
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
+
+  // Define application stages
   const stages = [
     { id: "applied", label: "Applied", color: "bg-gray-300", icon: FaUserTie },
-    {
-      id: "interviewed",
-      label: "Interviewed",
-      color: "bg-blue-400",
-      icon: FaClipboardCheck,
-    },
     {
       id: "shortlisted",
       label: "Shortlisted",
       color: "bg-green-500",
       icon: FaCheckCircle,
     },
+    {
+      id: "rejected",
+      label: "Rejected",
+      color: "bg-red-400",
+      icon: FaClipboardCheck,
+    },
     { id: "hired", label: "Hired", color: "bg-yellow-500", icon: FaUserCheck },
   ];
 
+  // Count applications for each stage
   const stageCounts = stages.map((stage) => ({
     ...stage,
-    count: applications.filter((app) => app.stage === stage.id).length,
+    count: applications.filter(
+      (app) => app.status?.toLowerCase() === stage.id
+    ).length,
   }));
 
   return (
@@ -57,7 +73,9 @@ const ApplicationTracking = () => {
                 >
                   <Icon size={32} />
                 </div>
-                <h4 className="text-lg font-bold text-gray-800">{stage.label}</h4>
+                <h4 className="text-lg font-bold text-gray-800">
+                  {stage.label}
+                </h4>
                 <p
                   className={`text-2xl font-extrabold text-gray-900 mt-2 ${stage.color}`}
                 >

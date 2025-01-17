@@ -37,6 +37,17 @@ export const getApplications = async (req, res, next) => {
   }
 };
 
+// getApplications: Application Tracking.
+export const getApp=async (req, res) => {
+  try {
+    const applications = await Application.find();
+    res.json(applications);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching applications' });
+  }
+};
+
+
 // UpdateStatus:
 export const updateStatus = async (req, res, next) => {
   const { id } = req.params; // Application ID
@@ -215,3 +226,25 @@ export const getinterviewScheduling=async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
+// anlaytics
+
+export const getAnalytics = async (req, res) => {
+    try {
+      const applicationsReceived = await Application.countDocuments();
+      const shortlisted = await Application.countDocuments({ status: "Shortlisted" });
+      const hired = await Application.countDocuments({ status: "Hired" });
+  
+      res.status(200).json({
+        applicationsReceived,
+        shortlisted,
+        hired,
+      });
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ message: "Error fetching analytics data." });
+    }
+  };
+  
