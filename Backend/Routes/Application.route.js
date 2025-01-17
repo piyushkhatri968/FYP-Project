@@ -8,7 +8,8 @@ import {
   getJobStatus,
   getShortlistedCandidates,
   updateShortListId,
-  interviewScheduling
+  interviewScheduling,
+  getinterviewScheduling
 } from "../Controller/Application.controller.js";
 
 // fetching application
@@ -26,4 +27,5 @@ router.patch("shortlist/:id",updateShortListId)
 
 // interview Scheduling
 router.post("/interview-schedule", interviewScheduling)
+router.get("/get-interview-schedule",getinterviewScheduling)
 export default router;

@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   FaBriefcase,
   FaClipboardList,
   FaUserCheck,
-  FaRegClock,
-  FaRegCalendarAlt,
-  FaBell,
-  FaTasks,
-  FaRegListAlt,
-  FaBullhorn,
   FaCalendarCheck,
 } from "react-icons/fa";
 
 const HrPage = () => {
   const navigate = useNavigate();
+  const [interviews, setInterviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInterviews = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/application/candidate/get-interview-schedule"
+        );
+        setInterviews(response.data);
+        console.log(response.data)
+      } catch (err) {
+        console.error("Error fetching interview schedule:", err);
+        setError("Failed to load interview schedule.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInterviews();
+  }, []);
 
   return (
     <div className="min-h-screen flex bg-gradient-to-r from-gray-50 to-gray-200">
@@ -24,36 +41,36 @@ const HrPage = () => {
           <h1 className="text-4xl font-extrabold text-gray-800">
             Welcome, HR Manager!
           </h1>
-          <div className="flex items-center gap-4">
-            <button
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:from-blue-600 hover:to-blue-700 transition"
-              onClick={() => navigate("/hr/account-settings")}
-            >
-              Profile Settings
-            </button>
-          </div>
+          <button
+            className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition"
+            onClick={() => navigate("/hr/account-settings")}
+          >
+            Profile Settings
+          </button>
         </header>
 
         {/* Quick Actions */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <button
-              className="bg-gradient-to-r from-blue-400 to-blue-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-400 to-blue-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center transition transform hover:scale-105"
               onClick={() => navigate("/hr/job-notification")}
             >
               <FaBriefcase size={32} className="mb-3" />
               <span className="font-semibold">Post a Job</span>
             </button>
             <button
-              className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
+              className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center transition transform hover:scale-105"
               onClick={() => navigate("/hr/manage-jobs")}
             >
               <FaClipboardList size={32} className="mb-3" />
               <span className="font-semibold">Manage Jobs</span>
             </button>
             <button
-              className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col items-center transition transform hover:scale-105"
+              className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-lg shadow-md flex flex-col items-center transition transform hover:scale-105"
               onClick={() => navigate("/hr/candidate-profiles")}
             >
               <FaUserCheck size={32} className="mb-3" />
@@ -61,6 +78,7 @@ const HrPage = () => {
             </button>
           </div>
         </section>
+
 
         {/* Analytics Overview */}
         <section>
@@ -86,6 +104,8 @@ const HrPage = () => {
             </div>
           </div>
         </section>
+        
+
 
         {/* Interview Scheduling */}
         <section>
@@ -93,27 +113,41 @@ const HrPage = () => {
             Interview Scheduling
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-bold mb-2">Upcoming Interviews</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-4">
-                  <FaCalendarCheck size={24} className="text-gray-500" />
-                  <span className="text-gray-700">
-                    Pawan kumar - 20th Nov, 2024 (10:00 AM)
-                  </span>
-                </li>
-                <li className="flex items-center gap-4">
-                  <FaCalendarCheck size={24} className="text-gray-500" />
-                  <span className="text-gray-700">
-                    Piyush - 22nd Nov, 2024 (2:00 PM)
-                  </span>
-                </li>
-              </ul>
+              {loading ? (
+                <p className="text-gray-500">Loading interviews...</p>
+              ) : error ? (
+                <p className="text-red-500">{error}</p>
+              ) : interviews.length === 0 ? (
+                <p className="text-gray-500">No scheduled interviews.</p>
+              ) : (
+                <ul className="space-y-4">
+                  {interviews.map((interview) => (
+                    <li key={interview._id} className="flex items-center gap-4">
+                      <FaCalendarCheck size={24} className="text-gray-500" />
+                      <span className="text-gray-700">
+                        {interview?.candidateId?.userId?.name || "N/A"} -{" "}
+                        {new Date(interview.interviewDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}{" "}
+                        ({interview.interviewTime})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-bold mb-2">Schedule New Interview</h3>
               <button
-                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:from-blue-600 hover:to-blue-700 transition"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition"
                 onClick={() => navigate("/hr/schedule-interview")}
               >
                 Add Interview
@@ -121,48 +155,11 @@ const HrPage = () => {
             </div>
           </div>
         </section>
-
-        {/* Other Features */}
-        <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Employee Announcements</h2>
-          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
-            <ul className="space-y-4">
-              <li className="flex items-center gap-4">
-                <FaBullhorn size={24} className="text-gray-500" />
-                <span className="text-gray-700">
-                  Company holiday announced for 24th Dec, 2024.
-                </span>
-              </li>
-              <li className="flex items-center gap-4">
-                <FaBullhorn size={24} className="text-gray-500" />
-                <span className="text-gray-700">
-                  Policy update: Remote work guidelines revised.
-                </span>
-              </li>
-            </ul>
-            
-          </div>
-        </section>
-
-        {/* Tasks to Review */}
-        {/* <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Tasks to Review</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
-              <FaTasks size={32} className="text-blue-500 mb-3" />
-              <h3 className="text-lg font-bold mb-2">Candidate Feedback</h3>
-              <p className="text-gray-600">3 pending candidate feedback forms.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg">
-              <FaRegListAlt size={32} className="text-green-500 mb-3" />
-              <h3 className="text-lg font-bold mb-2">Onboarding Documents</h3>
-              <p className="text-gray-600">5 documents awaiting review.</p>
-            </div>
-          </div>
-        </section> */}
       </main>
     </div>
   );
 };
 
-export default HrPage;
+
+
+export default HrPage;    
