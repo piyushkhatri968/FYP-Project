@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSearch, FaCalendarAlt, FaFilter } from "react-icons/fa";
 import InterviewScheduling from "./InterviewScheduling"
+// import ShortlistCandidates from './ShortListCandidates';
 
 const ShortlistCandidates = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,6 +30,12 @@ const ShortlistCandidates = () => {
     fetchShortlistedCandidates();
   }, []);
 
+   // debugging
+   console.log("data",shortlistedCandidates)
+
+
+ 
+
   // Define experience ranges
   const experienceRanges = [
     { label: "Fresh Graduates", value: "0" },
@@ -36,6 +43,8 @@ const ShortlistCandidates = () => {
     { label: "3-4 Years", value: "3" },
     { label: "5+ Years", value: "5" },
   ];
+
+
 
   // Filter candidates
   const filteredCandidates = shortlistedCandidates.filter((candidate) => {
@@ -45,6 +54,7 @@ const ShortlistCandidates = () => {
     const candidateExperience = userId?.experience || 0;
 
     return (
+      
       candidateName.includes(searchQuery.toLowerCase()) &&
       (filterPosition === "" || jobPosition === filterPosition) &&
       (filterExperience === "" ||
@@ -79,7 +89,11 @@ const ShortlistCandidates = () => {
   
 
   return (
+    
     <div className="p-6 bg-gray-100 min-h-screen">
+      
+      
+     
       <h3 className="text-2xl font-bold mb-6">Shortlisted Candidates</h3>
 
       {/* Search & Filter Section */}
@@ -234,6 +248,7 @@ const ShortlistCandidates = () => {
       )}
       
     </div>
+    
   );
 };
 

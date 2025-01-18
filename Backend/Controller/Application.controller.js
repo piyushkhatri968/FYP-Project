@@ -151,6 +151,9 @@ export const getJobStatus = async (req, res, next) => {
 
 
 
+
+
+
 // shortlist candidates.
 
 export const getShortlistedCandidates = async (req, res) => {
@@ -161,7 +164,7 @@ export const getShortlistedCandidates = async (req, res) => {
     
       populate: {
         path: "userId", // Then populate userId from the Candidate model
-        select: "name experience", // Fetching selected fields
+        select: "name experience email", // Fetching selected fields
       },
     })
       .populate("jobId","position"); // Optionally, include job details
@@ -215,7 +218,7 @@ export const getinterviewScheduling=async (req, res) => {
       path: "candidateId", // First populate candidateId
       populate: {
         path: "userId", // Then populate userId from User model
-        select: "name", // Only fetch the name field
+        select: "name email", // Only fetch the name field
       },
     })
       .sort({ interviewDate: 1 }); // Sort by date ascending

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const applicationSchema = new mongoose.Schema(
   {
     userId: {
@@ -11,6 +12,11 @@ const applicationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "JobPost",
       required: true,
+    },
+    CandidateId:{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: "Candidate",
+     required: true,
     },
     status: {
       type: String,
