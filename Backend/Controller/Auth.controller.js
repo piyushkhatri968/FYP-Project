@@ -6,12 +6,10 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
-  const { name, username, email, password, userType } = req.body;
+  const { name, username, email, password, userType, position, department, companyAddress, companyName, contactNumber } = req.body;
 
   try {
-    const existingEmail = await User.findOne({
-      email: email.trim().toLowerCase(),
-    });
+    const existingEmail = await User.findOne({ email: email.trim().toLowerCase() });
     if (existingEmail) {
       return next(errorHandler(400, "User already exists with this email"));
     }
@@ -20,6 +18,7 @@ export const signup = async (req, res, next) => {
     if (existingUsername) {
       return next(errorHandler(400, "User already exists with this username"));
     }
+
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const newUser = new User({
@@ -32,55 +31,49 @@ export const signup = async (req, res, next) => {
 
     const savedUser = await newUser.save();
 
-    // Create candidate details if userType is 'employee'
     let savedCandidate = null;
     if (userType === "employee") {
-      const newCandidate = new Candidate({
-        userId: savedUser._id, // Link the User's ID
-      });
+      // Only save candidate details if userType is "employee"
+      const newCandidate = new Candidate({ userId: savedUser._id });
       savedCandidate = await newCandidate.save();
-
-      // Link candidate details to user
       savedUser.candidateDetails = savedCandidate._id;
       await savedUser.save();
     }
 
     let savedRecruiter = null;
     if (userType === "recruiter") {
-      const newRecruiter = await Recruiter({
+      // Only save recruiter details if userType is "recruiter"
+      const newRecruiter = new Recruiter({
         userId: savedUser._id,
+        position: position, // Added recruiter fields
+        department: department,
+        companyAddress: companyAddress,
+        companyName: companyName,
+        contactNumber: contactNumber,
       });
       savedRecruiter = await newRecruiter.save();
       savedUser.recruiterDetails = savedRecruiter._id;
       await savedUser.save();
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      {
-        id: newUser._id,
-        email: newUser.email,
-      },
+      { id: newUser._id, email: newUser.email },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "24h",
-      }
+      { expiresIn: "24h" }
     );
 
     const { password: pass, ...rest } = newUser._doc;
 
-    res
-      .status(200)
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        samesite: "none",
-      })
+    res.status(200)
+      .cookie("access_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", samesite: "none" })
       .json(rest);
   } catch (error) {
     next(error);
   }
 };
+
+
+
 
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;

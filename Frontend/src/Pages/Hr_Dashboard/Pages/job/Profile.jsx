@@ -24,7 +24,7 @@ function Profile() {
       try {
         setLoading(true);
         const { data } = await axios.get(`http://localhost:8080/api/recruiter/profile/${currentUser._id}`);
-        
+
         // If the profile is not empty, mark it as complete
         if (data.contactNumber || data.companyName || data.companyAddress || data.department || data.position) {
           setFormData({
@@ -68,6 +68,24 @@ function Profile() {
       setError("");
       setSuccessMessage("");
 
+      const userType = currentUser.userType;
+      const requiredFields = userType === "recruiter" ? [
+        "contactNumber", 
+        "companyName", 
+        "companyAddress", 
+        "department", 
+        "position"
+      ] : [];
+
+      // Check if all required fields are filled for recruiters
+      for (const field of requiredFields) {
+        if (!formData[field]) {
+          setError(`${field} is required.`);
+          setLoading(false);
+          return;
+        }
+      }
+
       const response = await axios.post("http://localhost:8080/api/recruiter/completeProfile", {
         userId: currentUser._id,
         ...formData,
@@ -86,7 +104,7 @@ function Profile() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recruiter Profile</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">User Profile</h2>
       {loading && <p className="text-blue-600 mb-4">Loading...</p>}
       {error && <p className="text-red-600 mb-4">{error}</p>}
       {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
@@ -94,61 +112,67 @@ function Profile() {
       {!isProfileComplete ? (
         // New user form - Show form fields to fill out
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
-            <input
-              type="text"
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Company Name</label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Company Address</label>
-            <input
-              type="text"
-              name="companyAddress"
-              value={formData.companyAddress}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Department</label>
-            <input
-              type="text"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Position</label>
-            <input
-              type="text"
-              name="position"
-              value={formData.position}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          {currentUser?.userType === "recruiter" ? (
+            <>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
+                <input
+                  type="text"
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Company Name</label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Company Address</label>
+                <input
+                  type="text"
+                  name="companyAddress"
+                  value={formData.companyAddress}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Department</label>
+                <input
+                  type="text"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Position</label>
+                <input
+                  type="text"
+                  name="position"
+                  value={formData.position}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+            </>
+          ) : (
+            <p className="text-gray-600">Employee Profile. Additional fields will be available soon.</p>
+          )}
           <button
             type="submit"
             disabled={loading}
@@ -164,11 +188,17 @@ function Profile() {
         // Existing user - Show profile with an "Edit" button
         <div>
           <div className="space-y-4">
-            <p><strong>Contact Number:</strong> {formData.contactNumber || "Not provided"}</p>
-            <p><strong>Company Name:</strong> {formData.companyName || "Not provided"}</p>
-            <p><strong>Company Address:</strong> {formData.companyAddress || "Not provided"}</p>
-            <p><strong>Department:</strong> {formData.department || "Not provided"}</p>
-            <p><strong>Position:</strong> {formData.position || "Not provided"}</p>
+            {currentUser?.userType === "recruiter" ? (
+              <>
+                <p><strong>Contact Number:</strong> {formData.contactNumber || "Not provided"}</p>
+                <p><strong>Company Name:</strong> {formData.companyName || "Not provided"}</p>
+                <p><strong>Company Address:</strong> {formData.companyAddress || "Not provided"}</p>
+                <p><strong>Department:</strong> {formData.department || "Not provided"}</p>
+                <p><strong>Position:</strong> {formData.position || "Not provided"}</p>
+              </>
+            ) : (
+              <p className="text-gray-600">Employee profile data will be displayed here soon.</p>
+            )}
           </div>
           <button
             onClick={() => setIsEditing(true)}
@@ -183,61 +213,67 @@ function Profile() {
       {/* Edit Mode */}
       {isEditing && (
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
-            <input
-              type="text"
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Company Name</label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Company Address</label>
-            <input
-              type="text"
-              name="companyAddress"
-              value={formData.companyAddress}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Department</label>
-            <input
-              type="text"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Position</label>
-            <input
-              type="text"
-              name="position"
-              value={formData.position}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          {currentUser?.userType === "recruiter" ? (
+            <>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
+                <input
+                  type="text"
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Company Name</label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Company Address</label>
+                <input
+                  type="text"
+                  name="companyAddress"
+                  value={formData.companyAddress}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Department</label>
+                <input
+                  type="text"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">Position</label>
+                <input
+                  type="text"
+                  name="position"
+                  value={formData.position}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+            </>
+          ) : (
+            <p className="text-gray-600">Employee profile editing coming soon.</p>
+          )}
           <button
             type="submit"
             disabled={loading}
