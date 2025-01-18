@@ -32,8 +32,8 @@ const HRNavbar = () => {
           </li>
 
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr/account-settings" className="font-semibold">
-              Profile Settings
+            <Link to="/hr/profile" className="font-semibold">
+              Profile 
             </Link>
           </li>
           <li>
@@ -61,7 +61,7 @@ const HRNavbar = () => {
             </Link>
           </li>
           <li className="hover:bg-[#070e1f] px-4 py-2 rounded">
-            <Link to="/hr/account-settings" className="font-semibold">
+            <Link to="/hr/profile" className="font-semibold">
               Profile Settings
             </Link>
           </li>

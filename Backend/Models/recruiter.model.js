@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
 const recruiterSchema = new mongoose.Schema({
+
+  
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Refers to the User model
     required: true,
   },
+
   contactNumber: { 
     type: String,
     required: true,
