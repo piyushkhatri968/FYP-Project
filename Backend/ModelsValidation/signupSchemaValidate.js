@@ -23,61 +23,63 @@ export const signupValidation = (req, res, next) => {
     }),
     userType: Joi.string().valid("employee", "recruiter").required(),
 
-    // Fields for recruiters only (conditionally required)
-    position: Joi.string().when('userType', {
-      is: 'recruiter',
+    // Recruiter-specific fields
+    position: Joi.string().when("userType", {
+      is: "recruiter",
       then: Joi.string().min(3).max(100).required().messages({
         "string.empty": "Position is required for recruiters",
         "any.required": "Position is required for recruiters",
       }),
       otherwise: Joi.optional(),
     }),
-
-    department: Joi.string().when('userType', {
-      is: 'recruiter',
+    department: Joi.string().when("userType", {
+      is: "recruiter",
       then: Joi.string().min(3).max(100).required().messages({
         "string.empty": "Department is required for recruiters",
         "any.required": "Department is required for recruiters",
       }),
       otherwise: Joi.optional(),
     }),
-
-    companyName: Joi.string().when('userType', {
-      is: 'recruiter',
+    companyName: Joi.string().when("userType", {
+      is: "recruiter",
       then: Joi.string().min(3).max(100).required().messages({
         "string.empty": "Company Name is required for recruiters",
         "any.required": "Company Name is required for recruiters",
       }),
       otherwise: Joi.optional(),
     }),
-
-    companyAddress: Joi.string().when('userType', {
-      is: 'recruiter',
+    companyAddress: Joi.string().when("userType", {
+      is: "recruiter",
       then: Joi.string().min(3).max(100).required().messages({
         "string.empty": "Company Address is required for recruiters",
         "any.required": "Company Address is required for recruiters",
       }),
       otherwise: Joi.optional(),
     }),
-
-    contactNumber: Joi.string().when('userType', {
-      is: 'recruiter',
+    contactNumber: Joi.string().when("userType", {
+      is: "recruiter",
       then: Joi.string().min(10).max(15).required().messages({
         "string.empty": "Contact Number is required for recruiters",
         "any.required": "Contact Number is required for recruiters",
       }),
       otherwise: Joi.optional(),
     }),
-
   });
 
   const { error } = schema.validate(req.body, { abortEarly: false });
 
   if (error) {
-    const errorMessages = error.details.map((detail) => detail.message);
-    return res
-      .status(400)
-      .json({ message: "Error in schemaValidation", errors: errorMessages });
+    const errorDetails = error.details.reduce((acc, detail) => {
+      const field = detail.path[0]; // Field name
+      if (!acc[field]) acc[field] = [];
+      acc[field].push(detail.message);
+      return acc;
+    }, {});
+
+    return res.status(400).json({
+      message: "Validation error",
+      errors: errorDetails, // Structured field-specific error messages
+    });
   }
 
   next();

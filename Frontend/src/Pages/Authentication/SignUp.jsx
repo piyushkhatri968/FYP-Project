@@ -14,26 +14,26 @@ import Theme from "../../Components/Theme.jsx";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    username: '',
-    email: '',
-    password: '',
-    userType: 'select',
-    position: '',
-    department: '',
-    companyName: '',
-    companyAddress: '',
-    contactNumber: ''
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    userType: "select",
+    position: "",
+    department: "",
+    companyName: "",
+    companyAddress: "",
+    contactNumber: "",
   });
-  const { loading, error: errorMessage } = useSelector((state) => state.user);
-  const [uiError, setUiError] = useState(null);
 
+  const { loading } = useSelector((state) => state.user);
+  const [uiError, setUiError] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const checkUserType = () => {
     if (formData.userType === "select" || !formData.userType) {
-      setUiError("Please select a user type.");
+      setUiError({ userType: "Please select a user type." });
       return false;
     }
     return true;
@@ -41,34 +41,41 @@ const SignUp = () => {
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    setUiError({ ...uiError, [e.target.id]: "" }); // Clear field-specific errors on input
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setUiError(null);
-  
+    setUiError({});
+
     // Basic form validation
     if (!formData.name || !formData.username || !formData.email || !formData.password) {
-      setUiError("Please fill out all fields.");
-      return dispatch(signInFailure("Please fill out all fields."));
+      return setUiError({ general: "Please fill out all required fields." });
     }
-  
+
     // Check user type
     if (!checkUserType()) return;
-  
+
     // Recruiter-specific validation
     if (formData.userType === "recruiter") {
       const requiredRecruiterFields = [
-        "position", "department", "companyName", "companyAddress", "contactNumber"
+        "position",
+        "department",
+        "companyName",
+        "companyAddress",
+        "contactNumber",
       ];
-      const missingFields = requiredRecruiterFields.filter(field => !formData[field]);
-  
+      const missingFields = requiredRecruiterFields.filter((field) => !formData[field]);
+
       if (missingFields.length > 0) {
-        setUiError(`Please fill out all recruiter-specific fields: ${missingFields.join(', ')}`);
-        return dispatch(signInFailure("Please fill out all recruiter-specific fields."));
+        const errors = {};
+        missingFields.forEach((field) => {
+          errors[field] = `This field is required.`;
+        });
+        return setUiError(errors);
       }
     }
-  
+
     // Exclude recruiter fields if userType is 'employee'
     let finalFormData = { ...formData };
     if (formData.userType === "employee") {
@@ -80,7 +87,7 @@ const SignUp = () => {
         userType: formData.userType,
       };
     }
-  
+
     try {
       dispatch(signInStart());
       const res = await fetch("http://localhost:8080/api/auth/signup", {
@@ -91,34 +98,42 @@ const SignUp = () => {
         },
         body: JSON.stringify(finalFormData),
       });
-  
+
       const data = await res.json();
+
       if (!res.ok) {
-        setUiError(data.message);
-        return dispatch(signInFailure(data.message));
+        // Handle validation errors from backend
+        if (data.errors) {
+          setUiError(data.errors);
+        } else {
+          setUiError({ general: data.message });
+        }
+        return dispatch(signInFailure(data.message || "Validation failed"));
       }
-  
-      if (res.ok) {
-        setUiError(null);
-        dispatch(signInSuccess(data));
-        navigate("/"); // Redirect to home page
-      }
+
+      dispatch(signInSuccess(data));
+      navigate("/");
     } catch (error) {
-      setUiError(error.message);
-      return dispatch(signInFailure(error.message));
+      setUiError({ general: error.message });
+      dispatch(signInFailure(error.message));
     }
   };
-  
 
   return (
     <div className="text-center fade-in">
       <Theme pageName="Sign Up" heroImage={signUpImg} />
       <div>
-        {/* Sign Up form */}
         <div>
           <form className="p-3" onSubmit={submitHandler}>
             <div className="py-8 px-6 sm:px-12 w-full max-w-2xl mx-auto shadow-2xl rounded-3xl mt-20 mb-20 flex flex-col items-center gap-5">
-              {/* Basic Fields */}
+              {/* General Error */}
+              {uiError.general && (
+                <Alert color="failure" className="w-full">
+                  {uiError.general}
+                </Alert>
+              )}
+
+              {/* Input Fields */}
               <div className="flex flex-col justify-center items-start w-full gap-2">
                 <label className="font-semibold">Name</label>
                 <input
@@ -128,7 +143,9 @@ const SignUp = () => {
                   id="name"
                   onChange={handleInputChange}
                 />
+                {uiError.name && <p className="text-red-500 text-sm">{uiError.name}</p>}
               </div>
+
               <div className="flex flex-col justify-center items-start w-full gap-2">
                 <label className="font-semibold">Username</label>
                 <input
@@ -138,7 +155,9 @@ const SignUp = () => {
                   id="username"
                   onChange={handleInputChange}
                 />
+                {uiError.username && <p className="text-red-500 text-sm">{uiError.username}</p>}
               </div>
+
               <div className="flex flex-col justify-center items-start w-full gap-2">
                 <label className="font-semibold">Email</label>
                 <input
@@ -148,7 +167,9 @@ const SignUp = () => {
                   id="email"
                   onChange={handleInputChange}
                 />
+                {uiError.email && <p className="text-red-500 text-sm">{uiError.email}</p>}
               </div>
+
               <div className="flex flex-col justify-center items-start w-full gap-2">
                 <label className="font-semibold">Password</label>
                 <input
@@ -158,6 +179,7 @@ const SignUp = () => {
                   id="password"
                   onChange={handleInputChange}
                 />
+                {uiError.password && <p className="text-red-500 text-sm">{uiError.password}</p>}
               </div>
 
               {/* User Type Selector */}
@@ -172,61 +194,34 @@ const SignUp = () => {
                   <option value="employee">Job Seeker</option>
                   <option value="recruiter">Recruiter</option>
                 </select>
+                {uiError.userType && <p className="text-red-500 text-sm">{uiError.userType}</p>}
               </div>
 
               {/* Recruiter-Specific Fields */}
               {formData.userType === "recruiter" && (
                 <>
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Position</label>
-                    <input
-                      type="text"
-                      placeholder="Position"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="position"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Department</label>
-                    <input
-                      type="text"
-                      placeholder="Department"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="department"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Company Name</label>
-                    <input
-                      type="text"
-                      placeholder="Company Name"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="companyName"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Company Address</label>
-                    <input
-                      type="text"
-                      placeholder="Company Address"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="companyAddress"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Contact Number</label>
-                    <input
-                      type="text"
-                      placeholder="Contact Number"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="contactNumber"
-                      onChange={handleInputChange}
-                    />
-                  </div>
+                  {["position", "department", "companyName", "companyAddress", "contactNumber"].map(
+                    (field, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-col justify-center items-start w-full gap-2"
+                      >
+                        <label className="font-semibold">
+                          {field.replace(/([A-Z])/g, " $1")}
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={field.replace(/([A-Z])/g, " $1")}
+                          className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
+                          id={field}
+                          onChange={handleInputChange}
+                        />
+                        {uiError[field] && (
+                          <p className="text-red-500 text-sm">{uiError[field]}</p>
+                        )}
+                      </div>
+                    )
+                  )}
                 </>
               )}
 
@@ -238,16 +233,7 @@ const SignUp = () => {
                 {loading ? <Spinner size="sm" /> : "Sign Up"}
               </button>
 
-              {/* Error Alert */}
-              {uiError && (
-                <div className="w-full">
-                  <Alert color="failure">{uiError}</Alert>
-                </div>
-              )}
-
-
-
-
+              <SocialAuth />
             </div>
           </form>
         </div>
