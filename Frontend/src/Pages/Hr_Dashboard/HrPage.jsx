@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux"; // Import useSelector if username is in Redux
 import {
   FaBriefcase,
   FaClipboardList,
@@ -10,6 +11,32 @@ import {
 
 const HrPage = () => {
   const navigate = useNavigate();
+
+  // Fetch username from Redux (if stored there)
+  const currentUser = useSelector((state) => state.user.currentUser); // Assuming this structure
+  const usernameFromRedux = currentUser?.name;
+
+  // If username needs to be fetched from an API
+  const [username, setUsername] = useState(usernameFromRedux || ""); // Default to Redux value if available
+
+  useEffect(() => {
+    if (!usernameFromRedux) {
+      const fetchUsername = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/api/auth/profile", {
+            withCredentials: true, // Pass cookies for authentication
+          });
+          setUsername(response.data.username);
+        } catch (err) {
+          console.error("Error fetching user profile:", err);
+        }
+      };
+
+      fetchUsername();
+    }
+  }, [usernameFromRedux]);
+
+  // Analytics and Interviews logic
   const [interviews, setInterviews] = useState([]);
   const [analytics, setAnalytics] = useState({
     applicationsReceived: 0,
@@ -17,13 +44,11 @@ const HrPage = () => {
     hired: 0,
   });
 
-  // Separate loading and error states for analytics and interviews
   const [loadingAnalytics, setLoadingAnalytics] = useState(true);
   const [errorAnalytics, setErrorAnalytics] = useState(null);
   const [loadingInterviews, setLoadingInterviews] = useState(true);
   const [errorInterviews, setErrorInterviews] = useState(null);
 
-  // Fetch analytics data
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
@@ -32,7 +57,6 @@ const HrPage = () => {
         );
         setAnalytics(response.data);
       } catch (err) {
-        console.error("Error fetching analytics data:", err);
         setErrorAnalytics("Failed to load analytics data.");
       } finally {
         setLoadingAnalytics(false);
@@ -42,7 +66,6 @@ const HrPage = () => {
     fetchAnalytics();
   }, []);
 
-  // Fetch interview schedule data
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
@@ -51,7 +74,6 @@ const HrPage = () => {
         );
         setInterviews(response.data);
       } catch (err) {
-        console.error("Error fetching interview schedule:", err);
         setErrorInterviews("Failed to load interview schedule.");
       } finally {
         setLoadingInterviews(false);
@@ -67,11 +89,13 @@ const HrPage = () => {
         {/* Header */}
         <header className="flex items-center justify-between bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-4xl font-extrabold text-gray-800">
-            Welcome, HR Manager!
+            {username
+              ? `Welcome, HR, ${username}!`
+              : "Welcome, HR Manager!"}
           </h1>
           <button
             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition"
-            onClick={() => navigate("/hr/account-settings")}
+            onClick={() => navigate("/hr/profile")}
           >
             Profile Settings
           </button>
@@ -159,7 +183,8 @@ const HrPage = () => {
                   <li key={interview._id} className="flex items-center gap-4">
                     <FaCalendarCheck size={24} className="text-gray-500" />
                     <span className="text-gray-700">
-                      {interview.interviewers && interview.interviewers.length > 0
+                      {interview.interviewers &&
+                      interview.interviewers.length > 0
                         ? `${interview.interviewers.join(", ")} - `
                         : "N/A - "}
                       {new Date(interview.interviewDate).toLocaleDateString(

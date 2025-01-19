@@ -8,12 +8,12 @@ const JobListings = ({ jobs, onSelect, onEdit, onCreate, onAnalytics, onCandidat
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-2xl font-semibold">Job Listings</h3>
-        <button
+        {/* <button
           onClick={onCreate}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           + Create New Job
-        </button>
+        </button> */}
       </div>
       
       {jobs && jobs.length > 0 ? (
@@ -46,12 +46,12 @@ const JobListings = ({ jobs, onSelect, onEdit, onCreate, onAnalytics, onCandidat
                   >
                     Edit
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => onAnalytics(job)}
                     className="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-600"
                   >
                     Analytics
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => onCandidates(job)}
                     className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
