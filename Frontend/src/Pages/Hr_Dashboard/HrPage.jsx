@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux"; // Import useSelector if username is in Redux
+import { useSelector } from "react-redux"; // CurrentUser
 import {
   FaBriefcase,
   FaClipboardList,
@@ -12,11 +12,11 @@ import {
 const HrPage = () => {
   const navigate = useNavigate();
 
-  // Fetch username from Redux (if stored there)
-  const currentUser = useSelector((state) => state.user.currentUser); // Assuming this structure
+  // Fetch user from Redux 
+  const currentUser = useSelector((state) => state.user.currentUser); 
   const usernameFromRedux = currentUser?.name;
 
-  // If username needs to be fetched from an API
+  
   const [username, setUsername] = useState(usernameFromRedux || ""); // Default to Redux value if available
 
   useEffect(() => {
