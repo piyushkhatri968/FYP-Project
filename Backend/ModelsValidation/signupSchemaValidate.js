@@ -23,6 +23,30 @@ export const signupValidation = (req, res, next) => {
     }),
     userType: Joi.string().valid("employee", "recruiter").required(),
 
+    // Candidate-specific fields
+
+    phone: Joi.string().min(10).max(15).required().messages({
+      "string.empty": "Number cannot be empty",
+      "string.min": "Must have atleast 10 Numbers",
+      "any.required": "Number is required",
+    }),
+    employeePosition: Joi.string().min(5).max(100).required().messages({
+      "string.empty": "Employee Position cannot be empty",
+      "string.min": "Employee Position must be at least 5 characters",
+      "any.required": "Employee Position is required",
+    }),
+
+    city: Joi.string().min(3).max(100).required().messages({
+      "string.empty": "City cannot be empty",
+      "string.min": "City must be at least 3 characters",
+      "any.required": "City is required",
+    }),
+    country: Joi.string().min(3).max(100).required().messages({
+      "string.empty": "Country cannot be empty",
+      "string.min": "Country must be at least 3 characters",
+      "any.required": "Country is required",
+    }),
+
     // Recruiter-specific fields
     position: Joi.string().when("userType", {
       is: "recruiter",

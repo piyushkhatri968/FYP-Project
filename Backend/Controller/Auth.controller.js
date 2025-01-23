@@ -6,10 +6,27 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
-  const { name, username, email, password, userType, position, department, companyAddress, companyName, contactNumber } = req.body;
+  const {
+    name,
+    username,
+    email,
+    password,
+    userType,
+    position,
+    department,
+    companyAddress,
+    companyName,
+    contactNumber,
+    phone,
+    employeePosition,
+    city,
+    country,
+  } = req.body;
 
   try {
-    const existingEmail = await User.findOne({ email: email.trim().toLowerCase() });
+    const existingEmail = await User.findOne({
+      email: email.trim().toLowerCase(),
+    });
     if (existingEmail) {
       return next(errorHandler(400, "User already exists with this email"));
     }
@@ -34,7 +51,13 @@ export const signup = async (req, res, next) => {
     let savedCandidate = null;
     if (userType === "employee") {
       // Only save candidate details if userType is "employee"
-      const newCandidate = new Candidate({ userId: savedUser._id });
+      const newCandidate = new Candidate({
+        userId: savedUser._id,
+        phone: phone,
+        employeePosition: employeePosition,
+        city: city,
+        country: country,
+      });
       savedCandidate = await newCandidate.save();
       savedUser.candidateDetails = savedCandidate._id;
       await savedUser.save();
@@ -64,16 +87,18 @@ export const signup = async (req, res, next) => {
 
     const { password: pass, ...rest } = newUser._doc;
 
-    res.status(200)
-      .cookie("access_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", samesite: "none" })
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        samesite: "none",
+      })
       .json(rest);
   } catch (error) {
     next(error);
   }
 };
-
-
-
 
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;

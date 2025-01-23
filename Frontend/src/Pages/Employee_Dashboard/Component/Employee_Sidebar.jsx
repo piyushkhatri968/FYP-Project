@@ -37,7 +37,7 @@ const Sidebar = () => {
         <h3 className="text-xl md:text-2xl font-bold mt-4">
           {currentUser.name}
         </h3>
-        <p className="text-gray-500">{currentUserData.position}</p>
+        <p className="text-gray-500">{currentUserData.employeePosition}</p>
       </div>
 
       {/* Navigation Links */}

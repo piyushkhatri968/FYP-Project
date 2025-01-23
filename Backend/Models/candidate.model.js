@@ -19,7 +19,7 @@ const candidateSchema = new mongoose.Schema(
         ref: "JobPost", // Referencing the JobPost model
       },
     ],
-    position: {
+    employeePosition: {
       type: String,
     },
     phone: {
@@ -54,16 +54,13 @@ const candidateSchema = new mongoose.Schema(
     resume: {
       type: String, // URL to the resume
     },
-   
+
     socialLinks: {
       linkedIn: { type: String },
       github: { type: String },
     },
   },
   { timestamps: true }
-  ,
-
-
 );
 
 const Candidate = mongoose.model("Candidate", candidateSchema);
