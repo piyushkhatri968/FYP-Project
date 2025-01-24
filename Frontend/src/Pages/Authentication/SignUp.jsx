@@ -24,10 +24,6 @@ const SignUp = () => {
     companyName: "",
     companyAddress: "",
     contactNumber: "",
-    phone: "",
-    employeePosition: "",
-    city: "",
-    country: "",
   });
 
   const { loading } = useSelector((state) => state.user);
@@ -53,12 +49,7 @@ const SignUp = () => {
     setUiError({});
 
     // Basic form validation
-    if (
-      !formData.name ||
-      !formData.username ||
-      !formData.email ||
-      !formData.password
-    ) {
+    if (!formData.name || !formData.username || !formData.email || !formData.password) {
       return setUiError({ general: "Please fill out all required fields." });
     }
 
@@ -74,11 +65,7 @@ const SignUp = () => {
         "companyAddress",
         "contactNumber",
       ];
-      if (formData.userType === "recruiter") {
-        missingFields = requiredRecruiterFields.filter(
-          (field) => !formData[field]
-        );
-      }
+      const missingFields = requiredRecruiterFields.filter((field) => !formData[field]);
 
       if (missingFields.length > 0) {
         const errors = {};
@@ -98,10 +85,6 @@ const SignUp = () => {
         email: formData.email,
         password: formData.password,
         userType: formData.userType,
-        phone: formData.phone,
-        employeePosition: formData.employeePosition,
-        city: formData.city,
-        country: formData.country,
       };
     }
 
@@ -143,6 +126,13 @@ const SignUp = () => {
         <div>
           <form className="p-3" onSubmit={submitHandler}>
             <div className="py-8 px-6 sm:px-12 w-full max-w-2xl mx-auto shadow-2xl rounded-3xl mt-20 mb-20 flex flex-col items-center gap-5">
+              {/* General Error */}
+              {uiError.general && (
+                <Alert color="failure" className="w-full">
+                  {uiError.general}
+                </Alert>
+              )}
+
               {/* Input Fields */}
               <div className="flex flex-col justify-center items-start w-full gap-2">
                 <label className="font-semibold">Name</label>
@@ -152,11 +142,8 @@ const SignUp = () => {
                   className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
                   id="name"
                   onChange={handleInputChange}
-                  required
                 />
-                {uiError.name && (
-                  <p className="text-red-500 text-sm">{uiError.name}</p>
-                )}
+                {uiError.name && <p className="text-red-500 text-sm">{uiError.name}</p>}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -167,11 +154,8 @@ const SignUp = () => {
                   className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
                   id="username"
                   onChange={handleInputChange}
-                  required
                 />
-                {uiError.username && (
-                  <p className="text-red-500 text-sm">{uiError.username}</p>
-                )}
+                {uiError.username && <p className="text-red-500 text-sm">{uiError.username}</p>}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -182,11 +166,8 @@ const SignUp = () => {
                   className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
                   id="email"
                   onChange={handleInputChange}
-                  required
                 />
-                {uiError.email && (
-                  <p className="text-red-500 text-sm">{uiError.email}</p>
-                )}
+                {uiError.email && <p className="text-red-500 text-sm">{uiError.email}</p>}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -197,11 +178,8 @@ const SignUp = () => {
                   className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
                   id="password"
                   onChange={handleInputChange}
-                  required
                 />
-                {uiError.password && (
-                  <p className="text-red-500 text-sm">{uiError.password}</p>
-                )}
+                {uiError.password && <p className="text-red-500 text-sm">{uiError.password}</p>}
               </div>
 
               {/* User Type Selector */}
@@ -216,122 +194,34 @@ const SignUp = () => {
                   <option value="employee">Job Seeker</option>
                   <option value="recruiter">Recruiter</option>
                 </select>
-                {uiError.userType && (
-                  <p className="text-red-500 text-sm">{uiError.userType}</p>
-                )}
+                {uiError.userType && <p className="text-red-500 text-sm">{uiError.userType}</p>}
               </div>
-
-              {/* Job-Seeker Specific Fields */}
-
-              {formData.userType === "employee" && (
-                <div className="w-full">
-                  <div className="flex flex-col justify-center items-start w-full gap-2">
-                    <label className="font-semibold">Contact Number</label>
-                    <input
-                      type="number"
-                      placeholder="Your Contact Number"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="phone"
-                      onChange={handleInputChange}
-                      required
-                    />
-                    {uiError.phone && (
-                      <p className="text-red-500 text-sm">{uiError.phone}</p>
-                    )}
-                  </div>
-                  <div className="flex flex-col justify-center items-start w-full gap-2 py-3">
-                    <label className="font-semibold">Postion / Field</label>
-                    <input
-                      type="text"
-                      placeholder="Your Working Postion"
-                      className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                      id="employeePosition"
-                      onChange={handleInputChange}
-                      required
-                    />
-                    {uiError.employeePosition && (
-                      <p className="text-red-500 text-sm">
-                        {uiError.employeePosition}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex flex-col md:flex-row w-full gap-2">
-                    <div className="flex flex-col justify-center items-start gap-2 w-full">
-                      <label className="font-semibold">City</label>
-                      <input
-                        type="text"
-                        placeholder="Your City"
-                        className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                        id="city"
-                        onChange={handleInputChange}
-                        required
-                      />
-                      {uiError.city && (
-                        <p className="text-red-500 text-sm">{uiError.city}</p>
-                      )}
-                    </div>
-                    <div className="flex flex-col justify-center items-start gap-2 w-full">
-                      <label className="font-semibold">Country</label>
-                      <input
-                        type="text"
-                        placeholder="Your Country"
-                        className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                        id="country"
-                        onChange={handleInputChange}
-                        required
-                      />
-                      {uiError.country && (
-                        <p className="text-red-500 text-sm">
-                          {uiError.country}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {/* <div className="flex flex-col justify-center items-start gap-2 py-3 mt-0 md:mt-3">
-                    <label className="font-semibold">Upload Resume</label>
-                    <input
-                      type="file"
-                      placeholder="Your Country"
-                      className="w-full rounded-full bg-[#F9F6F6] hov border border-gray-500"
-                      id="resume"
-                      onChange={handleInputChange}
-                    />
-                    {uiError.name && (
-                      <p className="text-red-500 text-sm">{uiError.resume}</p>
-                    )}
-                  </div> */}
-                </div>
-              )}
 
               {/* Recruiter-Specific Fields */}
               {formData.userType === "recruiter" && (
                 <>
-                  {[
-                    "position",
-                    "department",
-                    "companyName",
-                    "companyAddress",
-                    "contactNumber",
-                  ].map((field, idx) => (
-                    <div
-                      key={idx}
-                      className="flex flex-col justify-center items-start w-full gap-2"
-                    >
-                      <label className="font-semibold">
-                        {field.replace(/([A-Z])/g, " $1")}
-                      </label>
-                      <input
-                        type="text"
-                        placeholder={field.replace(/([A-Z])/g, " $1")}
-                        className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                        id={field}
-                        onChange={handleInputChange}
-                      />
-                      {uiError[field] && (
-                        <p className="text-red-500 text-sm">{uiError[field]}</p>
-                      )}
-                    </div>
-                  ))}
+                  {["position", "department", "companyName", "companyAddress", "contactNumber"].map(
+                    (field, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-col justify-center items-start w-full gap-2"
+                      >
+                        <label className="font-semibold">
+                          {field.replace(/([A-Z])/g, " $1")}
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={field.replace(/([A-Z])/g, " $1")}
+                          className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
+                          id={field}
+                          onChange={handleInputChange}
+                        />
+                        {uiError[field] && (
+                          <p className="text-red-500 text-sm">{uiError[field]}</p>
+                        )}
+                      </div>
+                    )
+                  )}
                 </>
               )}
 
@@ -344,26 +234,6 @@ const SignUp = () => {
               </button>
 
               <SocialAuth />
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-gray-600 text-[17px]">
-                  Already have an Account?{" "}
-                  <Link
-                    to="/signin"
-                    className="font-semibold hover:text-red-600 transition-all duration-500"
-                  >
-                    Sign In
-                  </Link>
-                </span>
-                <span>
-                  <img src={animateArrow} alt="" className="w-[20px]" />
-                </span>
-              </div>
-              {/* General Error */}
-              {uiError.general && (
-                <Alert color="failure" className="w-full">
-                  {uiError.general}
-                </Alert>
-              )}
             </div>
           </form>
         </div>
