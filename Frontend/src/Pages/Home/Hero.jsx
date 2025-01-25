@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Hero() {
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-center min-h-screen bg-gradient-to-r from-[#F2EDF8] to-[#FEF6F6] px-4 lg:px-16 py-8">
+    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-center h-[90vh] bg-gradient-to-r from-[#F2EDF8] to-[#FEF6F6] px-4 lg:px-16 py-8">
       <div className="flex flex-col gap-5 text-center lg:text-left">
         <p className="text-red-600 font-bold text-base lg:text-lg mt-16 md:mt-8">
           Find Jobs, Employment & Career Opportunities

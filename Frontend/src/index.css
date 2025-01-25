@@ -27,20 +27,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  position:static;
   width: 100%;
   top: 0;
   left: 0;
   transition: transform 0.3s ease-in-out;
   z-index: 20;
-}
-
-.navbar-container.hidden {
-  transform: translateY(-100%);
-}
-
-.navbar-container.visible {
-  transform: translateY(0);
 }
 
 .navbar-group::before {
@@ -80,7 +72,6 @@
   display: block;
   animation: dropdown-fade-in 0.3s ease forwards;
 }
-
 
 @media only screen and (max-width: 900px) {
   .desktop-nav {
@@ -135,3 +126,4 @@
     opacity: 0.5;
   }
 }
+

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Hero from "./Hero";
 
 import TopCompanies from "./TopCompanies";
@@ -13,7 +13,10 @@ import HowWebWorks from "./HowWebWorks";
 import SubscribeBox from "../../Components/SubscribeBox ";
 import JobRecruitment from "./JobRecruitment";
 
+import { useSelector } from "react-redux";
+
 function HomePage() {
+  const currentUser = useSelector((state) => state.user);
   return (
     <>
       <Hero />
@@ -59,7 +62,7 @@ function HomePage() {
       <TopCompanies />
       <Stats />
       <HowWebWorks />
-      <JobRecruitment />
+      {currentUser ? <JobRecruitment /> : null}
       <Reviews />
       <SubscribeBox />
     </>

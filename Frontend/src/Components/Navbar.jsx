@@ -6,6 +6,7 @@ import SignOut from "../Pages/Authentication/SignOut";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus, FaMinus } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa6";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -14,12 +15,9 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobilenav, setMobilenav] = useState(false);
   const [jobsDropdown, setJobsDropdown] = useState(false);
+  const [openNotificationModal, setOpenNotificationModal] = useState(false);
 
   const location = useLocation();
-
-  const handleProfileModal = () => {
-    setOpenProfileModal(!openProfileModal);
-  };
 
   // NAVBAR SMOOTH SCROLL
 
@@ -53,9 +51,7 @@ const Navbar = () => {
     <>
       {/* DESKTOP NAVBAR */}
       <nav
-        className={`desktop-nav px-4 sm:px-8 fixed top-0 md:px-12 lg:px-20 bg-[#010C29] text-white navbar-container ${
-          showNavbar ? "visible" : "hidden"
-        }`}
+        className={`desktop-nav px-4 sm:px-8 fixed top-0 md:px-12 lg:px-20 bg-[#010C29] text-white navbar-container visible `}
       >
         <div className="logo">
           <Link to="/">Logo</Link>
@@ -113,31 +109,47 @@ const Navbar = () => {
                 Contact Us
               </Link>
             </li>
-            <li>
-              {/* <Link
-                to="/hr/dashboard"
-                className={`font-semibold ${
-                  location.pathname === "/hr-home" ? "text-red-600" : ""
-                }`}
-              >
-                HR-Dashboard
-              </Link> */}
-            </li>
           </ul>
         </div>
         {currentUser ? (
-          <div className="relative">
-            <div onClick={handleProfileModal} className="w-11 h-11">
-              <img
-                draggable="false"
-                src={currentUser.profilePicture}
-                alt="user profile"
-                className="w-10 h-10 rounded-full object-cover"
-              />
-            </div>
-            <div>
+          <div className="flex gap-10 items-center">
+            {currentUser.userType === "employee" ? (
+              <>
+                <div
+                  className="cursor-pointer relative"
+                  onClick={() =>
+                    setOpenNotificationModal(!openNotificationModal) ||
+                    setOpenProfileModal(false)
+                  }
+                >
+                  <div className="absolute bg-red-600 text-white rounded-full text-[8px] top-[-30%] left-[40%] p-1">
+                    10
+                  </div>
+                  <FaBell className="text-2xl" />
+                </div>
+                {openNotificationModal && (
+                  <div className="absolute z-[10000] top-[11%] right-[10%] bg-[#374151] w-[400px] h-[400px] text-center border-t-2 rounded-lg"></div>
+                )}
+              </>
+            ) : null}
+
+            <div className="relative">
+              <div
+                onClick={() =>
+                  setOpenProfileModal(!openProfileModal) ||
+                  setOpenNotificationModal(false)
+                }
+                className="w-11 h-11"
+              >
+                <img
+                  draggable="false"
+                  src={currentUser.profilePicture}
+                  alt="user profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </div>
               {openProfileModal && (
-                <div className="absolute top-14 -left-20 bg-[#374151] w-[12.5vw] text-center border-t-2 rounded-lg">
+                <div className="absolute z-[10000] top-14 -left-20 bg-[#374151] w-[12.5vw] text-center border-t-2 rounded-lg">
                   <p>{currentUser && currentUser.name}</p>
                   <p>{currentUser && currentUser.email}</p>
                   <hr className="my-2" />
