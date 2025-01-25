@@ -214,16 +214,11 @@ export const interviewScheduling=async (req, res) => {
 export const getinterviewScheduling=async (req, res) => {
   try {
     const interviews = await Interview.find()
-    .populate({
-      path: "candidateId", // First populate candidateId
-      populate: {
-        path: "userId", // Then populate userId from User model
-        select: "name email", // Only fetch the name field
-      },
-    })
-      .sort({ interviewDate: 1 }); // Sort by date ascending
+    .populate("userId", "name email")  // Populate userId with name and email
+    .exec();
 
-    res.json(interviews);
+  res.json(interviews);
+    
   } catch (error) {
     console.error("Error fetching interviews:", error);
     res.status(500).json({ error: "Internal Server Error" });
