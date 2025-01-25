@@ -26,7 +26,7 @@ const Employee_Dashboard = () => {
   }, [location.search || location.pathname]);
   return (
     <>
-      <div className="flex flex-col justify-center items-center md:items-start gap-8 md:flex-row my-16 md:mt-32">
+      <div className="flex flex-col justify-center items-center md:items-start gap-8 md:flex-row my-16 md:mt-8">
         <div className="w-full max-w-96">
           {/* SideBar */}
           <Employee_Sidebar />
