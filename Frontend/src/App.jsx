@@ -20,6 +20,7 @@ import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
 import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
+import ProfileCompletionPopup from "./Components/ProfileCompletionPopup";
 
 const App = () => {
   return (
@@ -30,7 +31,10 @@ const App = () => {
         <Routes>
           {/* Private User routee */}
           <Route element={<PrivateRoute />}>
-            <Route path="/dashboard/employee" element={<Employee_Dashboard />} />
+            <Route
+              path="/dashboard/employee"
+              element={<Employee_Dashboard />}
+            />
           </Route>
 
           {/* PUBLIC ROUTES */}
@@ -43,6 +47,7 @@ const App = () => {
           <Route path="/find-job" element={<FindAJob />} />
 
           <Route path="/resume" element={<Resume />} />
+          <Route path="/test" element={<ProfileCompletionPopup />} />
 
           {HrRoutes}
         </Routes>

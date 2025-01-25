@@ -24,11 +24,6 @@ import userRoute from "../Routes/user.route.js";
 import applicationRoute from "../Routes/Application.route.js";
 import recruiterRoute from "../Routes/recruiter.route.js";
 
-// {
-//     origin: process.env.CLIENT_URL || "http://localhost:5173/", // Your frontend URL
-//     credentials: true, // Allow credentials (cookies)
-//   }
-
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {

@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Hero from "./Hero";
-
 import TopCompanies from "./TopCompanies";
 import JobSearch from "../Jobs/FinaAJob/Components/JobSearch";
 import PopularJobCategory from "../Jobs/FinaAJob/Components/PopularJobCategory";
@@ -14,11 +13,38 @@ import SubscribeBox from "../../Components/SubscribeBox ";
 import JobRecruitment from "./JobRecruitment";
 
 import { useSelector } from "react-redux";
+import ProfileCompletionPopup from "../../Components/ProfileCompletionPopup";
+import axios from "axios";
 
 function HomePage() {
-  const currentUser = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const checkUserInfo = async () => {
+      if (currentUser) {
+        if (currentUser.userType === "employee") {
+          try {
+            const response = await axios.get(
+              `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
+            );
+            const { position, skills } = response.data.data;
+            if (!position || (Array.isArray(skills) && skills.length === 0)) {
+              setShowPopup(true);
+            } else {
+              setShowPopup(false);
+            }
+          } catch (error) {
+            console.error("Error fetching employee data:", error);
+          }
+        }
+      }
+    };
+    checkUserInfo();
+  }, []);
   return (
     <>
+      {showPopup && <ProfileCompletionPopup />}
       <Hero />
       <JobSearch />
       <PopularJobCategory />
