@@ -24,7 +24,7 @@ const InterviewScheduling = ({ candidate, closeModal,addInterview }) => {
 
     try {
       const response = await axios.post("http://localhost:8080/api/application/candidate/interview-schedule", {
-        candidateId: candidate._id,
+        userId: candidate?.userId?.userId,
         interviewDate,
         interviewTime,
         interviewType,
@@ -56,12 +56,16 @@ const InterviewScheduling = ({ candidate, closeModal,addInterview }) => {
   
 
   return (
+    
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+      
       <div className="bg-white p-4 rounded shadow-md w-full max-w-md">
         <h4 className="text-lg font-semibold mb-2">Schedule Interview</h4>
+        
         <p className="text-sm mb-4">For Candidate: {candidate.userId?.userId?.name}</p>
-
+             
         <div className="space-y-3">
+          
           {/* Interview Date */}
           <div>
             <label className="block text-sm font-medium">Interview Date</label>

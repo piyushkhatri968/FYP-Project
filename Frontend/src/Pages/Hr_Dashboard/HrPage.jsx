@@ -12,20 +12,22 @@ import {
 const HrPage = () => {
   const navigate = useNavigate();
 
-  // Fetch user from Redux 
-  const currentUser = useSelector((state) => state.user.currentUser); 
+  // Fetch user from Redux
+  const currentUser = useSelector((state) => state.user.currentUser);
   const usernameFromRedux = currentUser?.name;
 
-  
   const [username, setUsername] = useState(usernameFromRedux || ""); // Default to Redux value if available
 
   useEffect(() => {
     if (!usernameFromRedux) {
       const fetchUsername = async () => {
         try {
-          const response = await axios.get("http://localhost:8080/api/auth/profile", {
-            withCredentials: true, // Pass cookies for authentication
-          });
+          const response = await axios.get(
+            "http://localhost:8080/api/auth/profile",
+            {
+              withCredentials: true, // Pass cookies for authentication
+            }
+          );
           setUsername(response.data.username);
         } catch (err) {
           console.error("Error fetching user profile:", err);
@@ -72,6 +74,7 @@ const HrPage = () => {
         const response = await axios.get(
           "http://localhost:8080/api/application/candidate/get-interview-schedule"
         );
+        console.log("Interview data from API:", response.data); // Log API response
         setInterviews(response.data);
       } catch (err) {
         setErrorInterviews("Failed to load interview schedule.");
@@ -89,9 +92,7 @@ const HrPage = () => {
         {/* Header */}
         <header className="flex items-center justify-between bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-4xl font-extrabold text-gray-800">
-            {username
-              ? `Welcome, HR, ${username}!`
-              : "Welcome, HR Manager!"}
+            {username ? `Welcome, HR, ${username}!` : "Welcome, HR Manager!"}
           </h1>
           <button
             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition"
@@ -143,7 +144,9 @@ const HrPage = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-                <h3 className="text-lg font-bold mb-2">Applications Received</h3>
+                <h3 className="text-lg font-bold mb-2">
+                  Applications Received
+                </h3>
                 <p className="text-3xl font-extrabold text-blue-500">
                   {analytics.applicationsReceived}
                 </p>
@@ -183,10 +186,11 @@ const HrPage = () => {
                   <li key={interview._id} className="flex items-center gap-4">
                     <FaCalendarCheck size={24} className="text-gray-500" />
                     <span className="text-gray-700">
-                      {interview.interviewers &&
-                      interview.interviewers.length > 0
+                      {/* Display Interviewers */}
+                      {interview.interviewers?.length > 0
                         ? `${interview.interviewers.join(", ")} - `
                         : "N/A - "}
+                      {/* Display Interview Date */}
                       {new Date(interview.interviewDate).toLocaleDateString(
                         "en-US",
                         {
@@ -195,7 +199,18 @@ const HrPage = () => {
                           year: "numeric",
                         }
                       )}{" "}
-                      ({interview.interviewTime})
+                      {/* Display Interview Time */}({interview.interviewTime})
+                      {/* Display Interviewer Name and Email from userId */}
+                      {interview.userId ? (
+                        <div className="mt-2 text-gray-600">
+                          <strong>Name:</strong> {interview.userId.name} <br />
+                          <strong>Email:</strong> {interview.userId.email}
+                        </div>
+                      ) : (
+                        <div className="mt-2 text-gray-500">
+                          User not available
+                        </div>
+                      )}
                     </span>
                   </li>
                 ))}
