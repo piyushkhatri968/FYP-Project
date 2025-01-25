@@ -26,18 +26,22 @@ const jobPostSchema = new mongoose.Schema(
       type: [String], // An array of strings for skills
       required: true,
     },
+
+    slug: {
+      type: String,
+      required: true,
+    },
     jobType: {
       type: String,
       required: true,
       enum: ["Full-Time", "Part-Time", "Contract", "Remote"],
     },
-    
+
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Referencing the User model
       required: true,
     },
-    
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
