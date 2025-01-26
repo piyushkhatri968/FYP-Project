@@ -150,7 +150,7 @@ const Sidebar = () => {
               Saved Jobs
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/dashboard/employee?tab=change-password"
               className={`${
@@ -191,13 +191,13 @@ const Sidebar = () => {
               <i className="fas fa-sign-out-alt"></i>
               Log Out
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/dashboard/employee?tab=account-settings"
               className={`${
                 location.pathname === "/dashboard/employee" &&
-                location.search === "?tab=account-setting"
+                location.search === "?tab=account-settings"
                   ? "text-white bg-[#FD1616] font-bold"
                   : null
               } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}

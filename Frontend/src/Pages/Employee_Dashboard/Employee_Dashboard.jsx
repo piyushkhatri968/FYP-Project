@@ -55,13 +55,13 @@ const Employee_Dashboard = () => {
           {tab === "saved-jobs" && <Employee_saved_jobs />}
 
           {/* CHANGE PASSWORD */}
-          {tab === "change-password" && <Employee_change_password />}
+          {/* {tab === "change-password" && <Employee_change_password />} */}
 
           {/* DELETE ACCOUNT */}
-          {tab === "delete-account" && <Employee_delete_account />}
+          {/* {tab === "delete-account" && <Employee_delete_account />} */}
 
           {/* LOGOUT ACCOUNT */}
-          {tab === "logout" && <Employee_logout />}
+          {/* {tab === "logout" && <Employee_logout />} */}
 
           {/* ACCOUNT SETTING */}
           {tab === "account-settings" && <Account_Setting />}
