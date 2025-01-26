@@ -18,7 +18,7 @@ const JobList = () => {
         setLoading(true);
         // Fetch jobs for the current user
         const jobResponse = await axios.get(
-          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
+          `http://localhost:8080/api/jobs/getJobPostsRecommendation?userId=${currentUser.candidateDetails}`
         );
         setJobs(jobResponse.data.data);
         // Fetch the user's favorites from the backend

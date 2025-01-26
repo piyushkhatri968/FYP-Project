@@ -28,37 +28,37 @@ export const createJobPost = async (req, res) => {
   }
 };
 
-// export const getJobPosts = async (req, res, next) => {
-//   const { userId } = req.query;
+export const getJobPosts = async (req, res, next) => {
+  const { userId } = req.query;
 
-//   try {
-//     let appliedJobs = [];
-//     if (userId) {
-//
-//
-// const user = await Candidate.findById(userId).select("appliedJobs");
-//       if (user) appliedJobs = user.appliedJobs;
-//     }
+  try {
+    let appliedJobs = [];
+    if (userId) {
 
-//     // Fetch job posts excluding applied jobs, and sort by creation date (latest first)
-//     const jobs = await JobPost.find({
-//       _id: { $nin: appliedJobs }, // Exclude applied jobs
-//     })
-//       .sort({ createdAt: -1 })
-//       .populate("postedBy");
 
-//     res.status(200).json({
-//       success: true,
-//       data: jobs,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const user = await Candidate.findById(userId).select("appliedJobs");
+      if (user) appliedJobs = user.appliedJobs;
+    }
+
+    // Fetch job posts excluding applied jobs, and sort by creation date (latest first)
+    const jobs = await JobPost.find({
+      _id: { $nin: appliedJobs }, // Exclude applied jobs
+    })
+      .sort({ createdAt: -1 })
+      .populate("postedBy");
+
+    res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //!-------------------------------------------------------------
 
-export const getJobPosts = async (req, res, next) => {
+export const getJobPostsRecommendation = async (req, res, next) => {
   try {
     const { userId } = req.query;
     if (!userId) {
