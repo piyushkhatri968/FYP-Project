@@ -13,6 +13,12 @@ const applicationSchema = new mongoose.Schema(
       ref: "JobPost",
       required: true,
     },
+    rejectionReason: {
+      type: String,
+      required: function () {
+        return this.status === "Rejected";
+      },
+    },
     // CandidateId:{
     //  type: mongoose.Schema.Types.ObjectId,
     //  ref: "Candidate",

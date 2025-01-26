@@ -51,20 +51,28 @@ export const getApp=async (req, res) => {
 // UpdateStatus:
 export const updateStatus = async (req, res, next) => {
   const { id } = req.params; // Application ID
-  const { status } = req.body; // New status: "Shortlisted" or "Rejected"
+  const { status, reason } = req.body; // New status and rejection reason
 
   // Validate status
   if (!["Applied", "Shortlisted", "Rejected"].includes(status)) {
     return res.status(400).json({ error: "Invalid status value." });
   }
 
+  // Validate rejection reason if status is "Rejected"
+  if (status === "Rejected" && !reason) {
+    return res.status(400).json({ error: "Rejection reason is required." });
+  }
+
   try {
-    // Find the application and update its status
-    const application = await Application.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    // Find the application and update its status and reason
+    const updateData = { status };
+    if (status === "Rejected") {
+      updateData.rejectionReason = reason; // Save the rejection reason
+    }
+
+    const application = await Application.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     if (!application) {
       return res.status(404).json({ error: "Application not found." });
@@ -80,6 +88,7 @@ export const updateStatus = async (req, res, next) => {
     next(error);
   }
 };
+
 
 export const applyJobApplication = async (req, res, next) => {
   const { userId, jobId } = req.body;

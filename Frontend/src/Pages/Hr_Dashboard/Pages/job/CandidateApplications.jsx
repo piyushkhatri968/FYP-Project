@@ -111,20 +111,41 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const handleRejectCandidate = async (candidate) => {
     try {
+      // Prompt the user to enter a rejection reason
+      const rejectionReason = prompt(
+        `Please enter a reason for rejecting ${
+          candidate.userId?.name || "the candidate"
+        }:`
+      );
+  
+      // If no reason is provided, cancel the rejection
+      if (!rejectionReason) {
+        alert("Rejection reason is required.");
+        return;
+      }
+  
+      // Send the rejection reason along with the status to the server
       await axios.post(
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
-        { status: "Rejected" }
+        { status: "Rejected", reason: rejectionReason }
       );
-      alert(`${candidate.userId.userId?.name || "Candidate"} has been rejected.`);
-      // Remove the rejected candidate from the frontend
+  
+      // Show confirmation to the admin
+      alert(
+        `${candidate.userId?.name || "Candidate"} has been rejected with reason: "${rejectionReason}".`
+      );
+  
+      // Remove the rejected candidate from the frontend list
       setCandidates((prev) => prev.filter((c) => c._id !== candidate._id));
       setFilteredCandidates((prev) =>
         prev.filter((c) => c._id !== candidate._id)
       );
     } catch (error) {
+      console.error("Failed to reject candidate:", error);
       alert("Failed to reject candidate.");
     }
   };
+  
   
 
  
