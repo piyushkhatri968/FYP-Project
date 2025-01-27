@@ -36,7 +36,6 @@ const App = () => {
               element={<Employee_Dashboard />}
             />
           </Route>
-
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
@@ -47,8 +46,6 @@ const App = () => {
           <Route path="/find-job" element={<FindAJob />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="*" element={<NotFoundPage />} />
-
-
           {HrRoutes}
         </Routes>
       </ConditionalWrapper>
