@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Alert } from "flowbite-react";
-import { Avatar } from "flowbite-react";
 import defaultImage from "../../../assets/Images/Avatar.png";
-const Account_Setting = ({ userData }) => {
-  console.log(userData);
+const Account_Setting = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const [formData, setFormData] = useState(userData); // Initialize with userData
+  const [formData, setFormData] = useState([]); // Initialize with userData
   const [isEditing, setIsEditing] = useState(false); // Track editing state
-  const [originalData, setOriginalData] = useState(userData); // Store original data
-  const [loading, setLoading] = useState(false);
+  const [originalData, setOriginalData] = useState([]); // Store original data
 
   const [updateUserError, setUpdateUserError] = useState(null);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
@@ -23,13 +20,26 @@ const Account_Setting = ({ userData }) => {
     }));
   };
 
-  const handleEditClick = () => {
-    setOriginalData(formData); // Save current state to allow cancel
-    setIsEditing(true);
-  };
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/user/getUserInfo/${currentUser._id}`)
+        setFormData(response.data.data)
+        setOriginalData(response.data.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getUserData()
+  }, [])
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if (formData.name === "" || formData.email === "" || formData.username === "" || formData.password === "") {
+      setUpdateUserSuccess(null)
+      setUpdateUserError("Field can not be empty")
+      return
+    }
     if (Object.keys(formData).length === 0) {
       setUpdateUserSuccess(null);
       setUpdateUserError("No any changes made");
@@ -53,9 +63,11 @@ const Account_Setting = ({ userData }) => {
 
   // Handle Cancel button click
   const handleCancelClick = () => {
-    setFormData(originalData); // Revert to original data
     setIsEditing(false); // Exit editing mode
+    setFormData(originalData)
   };
+
+
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl w-full">
       <h1 className="text-2xl font-bold mb-6 text-center">Account Settings</h1>
@@ -73,7 +85,7 @@ const Account_Setting = ({ userData }) => {
               type="text"
               id="name"
               placeholder="Your name"
-              value={formData.name || userData.name}
+              value={formData.name}
               onChange={handleFormChange}
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
@@ -84,7 +96,7 @@ const Account_Setting = ({ userData }) => {
             <input
               type="text"
               id="username"
-              value={formData.username || currentUser.username}
+              value={formData.username}
               onChange={handleFormChange}
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
@@ -95,7 +107,7 @@ const Account_Setting = ({ userData }) => {
             <input
               type="text"
               id="email"
-              value={formData.email || currentUser.email}
+              value={formData.email}
               onChange={handleFormChange}
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
@@ -111,11 +123,21 @@ const Account_Setting = ({ userData }) => {
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
             />
-          </div>
 
-          <button className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300">
-            Update
-          </button>
+          </div>
+          {isEditing ? (
+            <button className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300">
+              Update
+            </button>
+          ) : (
+            <div className="w-full max-w-lg bg-OrangeColor text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer" onClick={() => setIsEditing(true)}>
+              Edit
+            </div>
+          )}
+
+          {isEditing && <div className="w-full max-w-lg bg-red-700 text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer" onClick={handleCancelClick}>
+            Cancel
+          </div>}
 
           <div className="flex justify-between items-center w-full max-w-lg mt-2">
             <span className="text-red-600 font-semibold cursor-pointer">
