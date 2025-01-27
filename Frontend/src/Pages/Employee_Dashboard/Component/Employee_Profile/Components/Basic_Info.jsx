@@ -33,7 +33,6 @@ const Basic_Info = ({ userData }) => {
       );
       setIsEditing(false); // Exit editing mode
       console.log("Data saved successfully!");
-      // navigate("/dashboard/employee?tab=profile");
     } catch (error) {
       console.error("Error saving data:", error.message);
     }

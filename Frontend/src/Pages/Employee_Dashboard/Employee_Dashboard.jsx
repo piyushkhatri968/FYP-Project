@@ -70,7 +70,9 @@ const Employee_Dashboard = () => {
           {tab === "saved-jobs" && <Employee_saved_jobs />}
 
           {/* ACCOUNT SETTING */}
-          {tab === "account-settings" && <Account_Setting />}
+          {tab === "account-settings" && (
+            <Account_Setting userData={currentUserData} />
+          )}
         </div>
       </div>
     </>
