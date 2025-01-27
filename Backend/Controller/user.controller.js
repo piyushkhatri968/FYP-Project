@@ -62,6 +62,7 @@ export const updateCandidateProfile = async (req, res, next) => {
     if (email && email.trim() === "") {
       return next(errorHandler(400, "Email is required"));
     }
+
     if (password && password.length < 6) {
       return next(errorHandler(400, "Password must be at least 6 characters"));
     }
@@ -83,7 +84,6 @@ export const updateCandidateProfile = async (req, res, next) => {
         );
       }
     }
-    
 
     // Hash password if it exists
     let hashedPassword;
@@ -91,17 +91,17 @@ export const updateCandidateProfile = async (req, res, next) => {
       hashedPassword = await bcryptjs.hash(password, 10);
     }
 
-    // Update user
-    const updateFields = {
-      ...(name && { name }),
-      ...(username && { username }),
-      ...(email && { email }),
-      ...(password && { password: hashedPassword }),
-    };
-
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { $set: updateFields },
+      {
+        $set: {
+          name: req.body.name,
+          username: req.body.username,
+          email: req.body.email,
+          profilePicture: req.body.profilePicture,
+          password: hashedPassword,
+        },
+      },
       { new: true }
     );
 
@@ -119,4 +119,3 @@ export const updateCandidateProfile = async (req, res, next) => {
     next(errorHandler(500, "Internal Server Error"));
   }
 };
-
