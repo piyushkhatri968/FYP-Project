@@ -83,6 +83,7 @@ export const updateCandidateProfile = async (req, res, next) => {
         );
       }
     }
+    
 
     // Hash password if it exists
     let hashedPassword;

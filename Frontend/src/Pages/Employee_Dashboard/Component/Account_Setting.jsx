@@ -50,14 +50,15 @@ const Account_Setting = () => {
         `http://localhost:8080/api/user/updateCandidateProfile/${currentUser._id}`,
         formData
       );
-      if (response.status === 200) {
+      if (response) {
         setIsEditing(false);
         setUpdateUserError(null);
         setUpdateUserSuccess("User updated successfully");
       }
     } catch (error) {
       setUpdateUserSuccess(null);
-      setUpdateUserError("Some error accured");
+      console.log(error.response.data.message)
+      setUpdateUserError(error.response.data.message);
     }
   };
 
@@ -65,6 +66,8 @@ const Account_Setting = () => {
   const handleCancelClick = () => {
     setIsEditing(false); // Exit editing mode
     setFormData(originalData)
+    setUpdateUserError(null)
+    setUpdateUserSuccess(null)
   };
 
 
@@ -118,7 +121,7 @@ const Account_Setting = () => {
             <input
               type="password"
               id="password"
-              placeholder="******"
+              placeholder="password"
               onChange={handleFormChange}
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
