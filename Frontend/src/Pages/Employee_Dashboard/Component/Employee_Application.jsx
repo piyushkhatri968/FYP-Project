@@ -49,6 +49,7 @@ const Employee_Application = () => {
         ...prevStatus,
         [jobId]: response.data.data.status, // Store the status for each job
       }));
+      console.log(response.data.data.rejectionReason)
     } catch (error) {
       console.log(error);
     }
@@ -141,6 +142,7 @@ const Employee_Application = () => {
                   <p className="mt-2 text-gray-600">
                     Status: <span className="font-semibold">{status}</span>
                   </p>
+               
                 </div>
               </div>
             );

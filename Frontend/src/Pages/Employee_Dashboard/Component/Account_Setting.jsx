@@ -172,13 +172,15 @@ const Account_Setting = ({ userData }) => {
           disabled={!isEditing}
         />
         <div className="w-full flex justify-center items-center flex-col">
+
           <img
-            src={(imageFileUrl && imageFileUrl) || currentUser.profilePicture || defaultImage}
+            src={imageFileUrl || currentUser.profilePicture || defaultImage}
             className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${imageFileUploading && "opacity-60"}`}
             alt="user"
             draggable="false"
             onClick={() => filePickerRef.current.click()}
           />
+
           {imageFileUploadError && (
             <div className="w-full flex justify-center mt-5">
               <Alert color="failure" className="w-full max-w-lg text-center">
