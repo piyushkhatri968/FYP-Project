@@ -9,7 +9,9 @@ import {
 
 const ApplicationTracking = () => {
   const [applications, setApplications] = useState([]);
-
+  // const user = useSelector((state) => state.user.currentUser);
+  
+  // const hrId = user._id; 
   // Fetch applications from the backend
   const fetchApplications = async () => {
     try {
@@ -22,6 +24,21 @@ const ApplicationTracking = () => {
       console.error("Error fetching applications:", error);
     }
   };
+  
+  // const fetchApplications = async (hrId, setApplications) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8080/api/application/candidate/getApplication?hrId=${hrId}`
+  //     );
+  
+  //     setApplications(response.data);
+  //     console.log("Fetched applications:", response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching applications:", error);
+  //   }
+  // };
+  
+ 
 
   useEffect(() => {
     fetchApplications();

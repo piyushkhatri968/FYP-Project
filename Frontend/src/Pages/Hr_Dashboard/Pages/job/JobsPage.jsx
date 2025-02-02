@@ -6,6 +6,7 @@ import JobAnalytics from "./JobAnalytics";
 import CandidateApplications from "./CandidateApplications";
 import ShortListCandidates from "./ShortListCandidates";
 import ApplicationTracking from "./ApplicationTracking";
+import { useSelector } from "react-redux"; // CurrentUser
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]); // Store jobs from backend
@@ -14,17 +15,30 @@ const JobsPage = () => {
   const [isViewingAnalytics, setIsViewingAnalytics] = useState(false);
   const [isViewingCandidates, setIsViewingCandidates] = useState(false);
   const [isViewingTracking, setIsViewingTracking] = useState(false); // New state for tracking view
-  const [showShortlisted, setShowShortlisted] = useState(false); // State for shortlisted view
+  const [showShortlisted, setShowShortlisted] = useState(false); // State for 
+  // shortlisted view
+  const user = useSelector((state) => state.user.currentUser);
 
-  // Fetch job data from the API
+
+
+
+  
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/jobs/getJobPosts"); // API endpoint
+        
+        if (!user || !user._id) {
+          console.error("User ID is missing.");
+          return;
+        }
+  
+        const response = await fetch(`http://localhost:8080/api/jobs/getJobPosts?userId=${user._id}`); 
         const data = await response.json();
-        console.log("Fetched jobs data:", data); // Log response for debugging
+        console.log("Fetched jobs data:", data);
+  
         if (data.success) {
-          setJobs(data.data); // Save fetched jobs to state
+          setJobs(data.data);
         } else {
           console.error("Failed to fetch jobs:", data.message);
         }
@@ -32,8 +46,30 @@ const JobsPage = () => {
         console.error("Error fetching jobs:", error);
       }
     };
+  
     fetchJobs();
-  }, []);
+  }, [user]);
+  
+
+
+  // Fetch job data from the API
+  // useEffect(() => {
+  //   const fetchJobs = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/api/jobs/getJobPosts"); // API endpoint
+  //       const data = await response.json();
+  //       console.log("Fetched jobs data:", data); // Log response for debugging
+  //       if (data.success) {
+  //         setJobs(data.data); // Save fetched jobs to state
+  //       } else {
+  //         console.error("Failed to fetch jobs:", data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching jobs:", error);
+  //     }
+  //   };
+  //   fetchJobs();
+  // }, []);
 
   const handleJobSelect = (job) => {
     setSelectedJob(job);
@@ -105,7 +141,7 @@ const JobsPage = () => {
     }
   };
 
-  console.log("Jobs state in JobsPage:", jobs);
+  // console.log("Jobs state in JobsPage:", jobs);
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">

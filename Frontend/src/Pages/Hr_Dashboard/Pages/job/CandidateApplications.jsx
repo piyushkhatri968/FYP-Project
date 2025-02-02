@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // CurrentUser
 import {
   FaUser,
   FaSearch,
@@ -20,7 +21,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [modalCandidate, setModalCandidate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const user = useSelector((state) => state.user.currentUser);
   const positions = [
     "Frontend Developer",
     "Backend Developer",
@@ -34,14 +35,25 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     { label: "4+ Years", value: 4 },
   ];
 
-  // Fetch candidates from the backend
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         setIsLoading(true);
+        
+        // Ensure HR is logged in
+        if (!user || !user._id) {
+          setErrorMessage("HR ID is missing.");
+          setIsLoading(false);
+          return;
+        }
+
+        const hrId = user._id; // Get HR ID from Redux store
+
+        // Fetch only candidates who applied for HR's jobs
         const response = await axios.get(
-          "http://localhost:8080/api/application/candidate/get"
+          `http://localhost:8080/api/application/candidate/get?hrId=${hrId}`
         );
+
         console.log("Response:", response);
         setCandidates(response.data.data || []);
         setFilteredCandidates(response.data.data || []);
@@ -52,8 +64,34 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         setIsLoading(false);
       }
     };
+
     fetchCandidates();
-  }, []);
+  }, [user]); // Run effect when `user` changes
+
+// ****************************8 OLD CODE *****************************************
+  // // Fetch candidates from the backend
+  // useEffect(() => {
+  //   const fetchCandidates = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/application/candidate/get"
+  //       );
+  //       console.log("Response:", response);
+  //       setCandidates(response.data.data || []);
+  //       setFilteredCandidates(response.data.data || []);
+  //     } catch (error) {
+  //       console.error("Error fetching candidates:", error);
+  //       setErrorMessage("Failed to load candidate data. Please try again.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchCandidates();
+  // }, []);
+  
+
+// ****************************8 OLD CODE *****************************************
 
   // console.log("candidates are :", candidates);
 
