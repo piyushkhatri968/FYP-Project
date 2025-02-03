@@ -51,11 +51,13 @@ const HrPage = () => {
   const [loadingInterviews, setLoadingInterviews] = useState(true);
   const [errorInterviews, setErrorInterviews] = useState(null);
 
+
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
+        const hrId = currentUser._id;
         const response = await axios.get(
-          "http://localhost:8080/api/application/candidate/analytics"
+          `http://localhost:8080/api/application/candidate/analytics?hrId=${hrId}`
         );
         setAnalytics(response.data);
       } catch (err) {
@@ -64,27 +66,69 @@ const HrPage = () => {
         setLoadingAnalytics(false);
       }
     };
-
+  
     fetchAnalytics();
   }, []);
+  
+  // useEffect(() => {
+  //   const fetchAnalytics = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/application/candidate/analytics"
+  //       );
+  //       setAnalytics(response.data);
+  //     } catch (err) {
+  //       setErrorAnalytics("Failed to load analytics data.");
+  //     } finally {
+  //       setLoadingAnalytics(false);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchInterviews = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/application/candidate/get-interview-schedule"
-        );
-        console.log("Interview data from API:", response.data); // Log API response
-        setInterviews(response.data);
-      } catch (err) {
-        setErrorInterviews("Failed to load interview schedule.");
-      } finally {
-        setLoadingInterviews(false);
-      }
-    };
+  //   fetchAnalytics();
+  // }, []);
 
-    fetchInterviews();
-  }, []);
+
+
+// get interviewScheduling:
+useEffect(() => {
+  const fetchInterviews = async () => {
+    try {
+      const hrId = currentUser._id;
+      const response = await axios.get(
+        `http://localhost:8080/api/application/candidate/get-interview-schedule?hrId=${hrId}`
+      );
+      console.log("Filtered Interview Data:", response.data); // Debugging
+      setInterviews(response.data);
+    } catch (err) {
+      setErrorInterviews("Failed to load interview schedule.");
+    } finally {
+      setLoadingInterviews(false);
+    }
+  };
+
+  fetchInterviews();
+}, []);
+
+
+
+
+  // useEffect(() => {
+  //   const fetchInterviews = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/application/candidate/get-interview-schedule"
+  //       );
+  //       console.log("Interview data from API:", response.data); // Log API response
+  //       setInterviews(response.data);
+  //     } catch (err) {
+  //       setErrorInterviews("Failed to load interview schedule.");
+  //     } finally {
+  //       setLoadingInterviews(false);
+  //     }
+  //   };
+
+  //   fetchInterviews();
+  // }, []);
 
   return (
     <div className="min-h-screen flex bg-gradient-to-r from-gray-50 to-gray-200">
@@ -187,11 +231,12 @@ const HrPage = () => {
                     <FaCalendarCheck size={24} className="text-gray-500" />
                     <span className="text-gray-700">
                       {/* Display Interviewers */}
-                      {interview.interviewers?.length > 0
-                        ? `${interview.interviewers.join(", ")} - `
+                      <strong>Interviewr:</strong> {interview.interviewers?.length > 0
+                        ? `${interview.interviewers.join(" ")}  `
                         : "N/A - "}
                       {/* Display Interview Date */}
-                      {new Date(interview.interviewDate).toLocaleDateString(
+                      <br />
+                      <strong>Time & Date</strong> : {new Date(interview.interviewDate).toLocaleDateString(
                         "en-US",
                         {
                           month: "short",

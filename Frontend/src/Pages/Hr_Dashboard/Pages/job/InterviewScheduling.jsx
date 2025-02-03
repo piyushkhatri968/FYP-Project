@@ -40,6 +40,7 @@ const InterviewScheduling = ({ candidate, closeModal, addInterview }) => {
         "http://localhost:8080/api/application/candidate/interview-schedule",
         {
           userId: candidate.userId?.userId,
+          jobId: candidate.jobId,
           interviewDate,
           interviewTime,
           interviewType,

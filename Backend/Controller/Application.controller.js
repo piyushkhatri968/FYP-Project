@@ -112,14 +112,56 @@ export const getApplications = async (req, res, next) => {
 
 
 
+
 export const getApp = async (req, res) => {
   try {
-    const applications = await Application.find();
-    res.json(applications);
+    const { hrId } = req.query; // Get HR's ID from request query
+
+    if (!hrId) {
+      return res.status(400).json({ error: "HR ID is required." });
+    }
+
+    // Fetch applications where the job is posted by this HR
+    const applications = await Application.find()
+      .populate({
+        path: "jobId",
+        select: "title department location postedBy",
+      })
+      .populate({
+        path: "userId",
+        select: "name experience email phone education skills",
+      });
+
+    // Filter applications where the job's postedBy field matches HR ID
+    const filteredApplications = applications.filter(
+      (app) => app.jobId?.postedBy.toString() === hrId
+    );
+
+    // Count applications based on status
+    const applicationStats = {
+      applied: filteredApplications.filter((app) => app.status === "Applied").length,
+      shortlisted: filteredApplications.filter((app) => app.status === "Shortlisted").length,
+      rejected: filteredApplications.filter((app) => app.status === "Rejected").length,
+      hired: filteredApplications.filter((app) => app.status === "Hired").length,
+      applications: filteredApplications, // Send filtered applications for frontend
+    };
+
+    res.status(200).json(applicationStats);
   } catch (error) {
     res.status(500).json({ error: "Error fetching applications" });
   }
 };
+
+
+
+// export const getApp = async (req, res) => {
+//   try {
+//     const applications = await Application.find();
+//     res.json(applications);
+//   } catch (error) {
+//     res.status(500).json({ error: "Error fetching applications" });
+//   }
+// };
 
 // UpdateStatus:
 export const updateStatus = async (req, res, next) => {
@@ -346,7 +388,7 @@ export const updateShortListId = async (req, res) => {
   }
 };
 
-// interviewScheduling:
+// interviewScheduling and sending email:
 export const interviewScheduling = async (req, res) => {
   try {
     const newInterview = new Interview(req.body);
@@ -359,28 +401,79 @@ export const interviewScheduling = async (req, res) => {
 };
 
 // get interviewScheduling :
+
 export const getinterviewScheduling = async (req, res) => {
   try {
+    const { hrId } = req.query; // Get HR ID from query params
+
+    if (!hrId) {
+      return res.status(400).json({ error: "HR ID is required." });
+    }
+
+    // Fetch interviews and populate user & job details
     const interviews = await Interview.find()
+
+      .populate({
+        path: "jobId",
+        select: "postedBy",
+      })
       .populate("userId", "name email") // Populate userId with name and email
       .exec();
 
-    res.json(interviews);
+    // Filter interviews that belong to jobs posted by this HR
+    const filteredInterviews = interviews.filter(
+      (interview) => interview.jobId?.postedBy.toString() === hrId
+    );
+
+    res.status(200).json(filteredInterviews);
   } catch (error) {
     console.error("Error fetching interviews:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
+
+// export const getinterviewScheduling = async (req, res) => {
+//   try {
+//     const interviews = await Interview.find()
+//       .populate("userId", "name email") // Populate userId with name and email
+//       .exec();
+
+//     res.json(interviews);
+//   } catch (error) {
+//     console.error("Error fetching interviews:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
 // anlaytics
+
+
 
 export const getAnalytics = async (req, res) => {
   try {
-    const applicationsReceived = await Application.countDocuments();
-    const shortlisted = await Application.countDocuments({
-      status: "Shortlisted",
-    });
-    const hired = await Application.countDocuments({ status: "Hired" });
+    const { hrId } = req.query; // Get HR's ID from request query
+
+    if (!hrId) {
+      return res.status(400).json({ error: "HR ID is required." });
+    }
+
+    // Find applications related to jobs posted by this HR
+    const applications = await Application.find()
+      .populate({
+        path: "jobId",
+        select: "postedBy",
+      });
+
+    // Filter applications that belong to jobs posted by this HR
+    const filteredApplications = applications.filter(
+      (app) => app.jobId?.postedBy.toString() === hrId
+    );
+
+    // Count applications based on status
+    const applicationsReceived = filteredApplications.length;
+    const shortlisted = filteredApplications.filter((app) => app.status === "Shortlisted").length;
+    const hired = filteredApplications.filter((app) => app.status === "Hired").length;
 
     res.status(200).json({
       applicationsReceived,
@@ -392,3 +485,24 @@ export const getAnalytics = async (req, res) => {
     res.status(500).json({ message: "Error fetching analytics data." });
   }
 };
+
+
+
+// export const getAnalytics = async (req, res) => {
+//   try {
+//     const applicationsReceived = await Application.countDocuments();
+//     const shortlisted = await Application.countDocuments({
+//       status: "Shortlisted",
+//     });
+//     const hired = await Application.countDocuments({ status: "Hired" });
+
+//     res.status(200).json({
+//       applicationsReceived,
+//       shortlisted,
+//       hired,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching analytics:", error);
+//     res.status(500).json({ message: "Error fetching analytics data." });
+//   }
+// };

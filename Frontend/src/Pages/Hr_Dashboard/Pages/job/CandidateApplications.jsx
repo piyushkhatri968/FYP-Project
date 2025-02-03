@@ -40,14 +40,13 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       try {
         setIsLoading(true);
         
-        // Ensure HR is logged in
         if (!user || !user._id) {
           setErrorMessage("HR ID is missing.");
           setIsLoading(false);
           return;
         }
 
-        const hrId = user._id; // Get HR ID from Redux store
+        const hrId = user._id;
 
         // Fetch only candidates who applied for HR's jobs
         const response = await axios.get(
@@ -66,7 +65,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     };
 
     fetchCandidates();
-  }, [user]); // Run effect when `user` changes
+  }, [user]); 
 
 // ****************************8 OLD CODE *****************************************
   // // Fetch candidates from the backend

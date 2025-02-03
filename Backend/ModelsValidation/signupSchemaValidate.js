@@ -26,7 +26,7 @@ export const signupValidation = (req, res, next) => {
     // Recruiter-specific fields
     position: Joi.string().when("userType", {
       is: "recruiter",
-      then: Joi.string().min(3).max(100).required().messages({
+      then: Joi.string().min(2).max(100).required().messages({
         "string.empty": "Position is required for recruiters",
         "any.required": "Position is required for recruiters",
       }),
@@ -34,7 +34,7 @@ export const signupValidation = (req, res, next) => {
     }),
     department: Joi.string().when("userType", {
       is: "recruiter",
-      then: Joi.string().min(3).max(100).required().messages({
+      then: Joi.string().min(2).max(100).required().messages({
         "string.empty": "Department is required for recruiters",
         "any.required": "Department is required for recruiters",
       }),
