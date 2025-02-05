@@ -60,7 +60,6 @@ const Account_Setting = ({ userData }) => {
       setImageFileUrl(response.data.secure_url)
       setFormData({ ...formData, profilePicture: response.data.secure_url })
       setImageFileUploading(false)
-      console.log(response.data.secure_url)
     } catch (error) {
       setImageFileUploadError("Could not upload image");
       setImageFile(null);

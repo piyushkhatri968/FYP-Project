@@ -7,7 +7,7 @@ import defaultImage from "../../../assets/Images/Avatar.png"
 const Sidebar = ({ userData }) => {
   const location = useLocation();
   return (
-    <div className="md:w-96 bg-white shadow-lg mx-auto rounded-xl py-6">
+    <div className="md:w-96 bg-white shadow-lg mx-auto rounded-xl p-6">
       {/* Profile Section */}
       <div className="text-center mx-auto">
         <img
