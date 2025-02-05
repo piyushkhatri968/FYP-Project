@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaSearch, FaCalendarAlt, FaFilter } from "react-icons/fa";
 import InterviewScheduling from "./InterviewScheduling"
 // import ShortlistCandidates from './ShortListCandidates';
+import { useSelector } from "react-redux"; // CurrentUser
 
 const ShortlistCandidates = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,25 +15,51 @@ const ShortlistCandidates = () => {
  
   const [showInterviewModal, setShowInterviewModal] = useState(false);
 
-  // Fetch shortlisted candidates
+  // // Fetch shortlisted candidates
+  // useEffect(() => {
+  //   const fetchShortlistedCandidates = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/application/candidate/shortlisted-candidates"
+  //       );
+  //       setShortlistedCandidates(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching shortlisted candidates:", error);
+  //     }
+  //   };
+
+  //   fetchShortlistedCandidates();
+  // }, []);
+
+
+  const user = useSelector((state) => state.user.currentUser);
+
   useEffect(() => {
     const fetchShortlistedCandidates = async () => {
       try {
+        if (!user || !user._id) {
+          console.log("HR ID is missing.");
+          return; // If user._id is not available, return early
+        }
+  
+        const hrId = user._id; 
+      
+  
         const response = await axios.get(
-          "http://localhost:8080/api/application/candidate/shortlisted-candidates"
+          `http://localhost:8080/api/application/candidate/shortlisted-candidates?hrId=${hrId}`
         );
-        setShortlistedCandidates(response.data);
+        
+        setShortlistedCandidates(response.data); // Set shortlisted candidates state
       } catch (error) {
         console.error("Error fetching shortlisted candidates:", error);
       }
     };
-
+  
     fetchShortlistedCandidates();
-  }, []);
+  }, [user]); // Run effect whenever the `user` state changes
+  
 
-   // debugging
-   console.log("data",shortlistedCandidates)
-
+  
 
  
 
@@ -49,7 +76,7 @@ const ShortlistCandidates = () => {
   // Filter candidates
   const filteredCandidates = shortlistedCandidates.filter((candidate) => {
     const { userId } = candidate;
-    const candidateName = userId?.userId?.name?.toLowerCase() || "";
+    const candidateName = userId?.userId?.name.toLowerCase() || "";
     const jobPosition = userId?.position || "";
     const candidateExperience = userId?.experience || 0;
 
@@ -164,8 +191,8 @@ const ShortlistCandidates = () => {
                     onChange={() => toggleSelection(candidate._id)}
                   />
                   <div>
-                    <h4 className="font-bold">{userId?.userId?.name}</h4>
-                    <p className="text-gray-600">{userId?.position}</p>
+                    <h4 className="font-bold"> Name: {userId?.userId?.name}</h4>
+                    <p className="text-gray-600">Position: {userId?.position}</p>
                     <p className="text-gray-600">
                       Experience: {userId?.experience || 0} years
                     </p>
@@ -206,11 +233,13 @@ const ShortlistCandidates = () => {
             <h4 className="text-xl font-bold">
               Name: {modalCandidate.userId?.userId?.name}
             </h4>
+            <br/>
             <p>
               <strong>Email:</strong> {modalCandidate.userId?.userId?.email}
             </p>
             <p>
-              <strong>Skills:</strong> {modalCandidate.userId?.skills || "N/A"}
+            <strong>Skills:</strong> {modalCandidate.userId?.skills?.join(' ') || "N/A"}
+
             </p>
             <p>
               <strong>Phone:</strong> {modalCandidate.userId?.phone || "N/A"}
