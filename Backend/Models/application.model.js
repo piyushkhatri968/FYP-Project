@@ -19,11 +19,7 @@ const applicationSchema = new mongoose.Schema(
         return this.status === "Rejected";
       },
     },
-    // CandidateId:{
-    //  type: mongoose.Schema.Types.ObjectId,
-    //  ref: "Candidate",
-    //  required: true,
-    // },
+
     status: {
       type: String,
       enum: ["Applied", "Shortlisted", "Rejected","Hired"],
