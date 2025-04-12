@@ -4,6 +4,6 @@ gensim
 scipy
 numpy
 spacy
-fuzzywuzzy
 pymongo
 flask-cors
+sentence-transformers

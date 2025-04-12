@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 app.use(
   cors({
     // origin: "https://fyp-project-tiest.vercel.app", // Your frontend URL
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://127.0.0.1:5000"],
     credentials: true, // Allow credentials (cookies)
   })
 );

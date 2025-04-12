@@ -11,13 +11,13 @@ const JobSearch = () => {
   // const [category, setCategory] = useState("");
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setloading(false)
+    setloading(false);
     setError(null);
-    setResults(null)
+    setResults(null);
 
     // Combine all inputs into one query for the backend
     const query = `${keyword}`.trim();
@@ -28,23 +28,28 @@ const JobSearch = () => {
     }
 
     try {
-      setloading(true)
+      setloading(true);
       // Send request to backend
-      const response = await axios.post("http://localhost:5000/job-seeker-match", {
-        job_seeker_input: query,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/job-seeker-match",
+        {
+          job_seeker_input: query,
+        }
+      );
 
       // Set the results from the response
       if (response.data.message === "No match right now") {
-        setError("No jobs found")
+        setError("No jobs found");
       }
       setResults(response.data);
-      console.log(results)
-      setloading(false)
+      console.log(results);
+      setloading(false);
     } catch (err) {
-      setloading(false)
-      setError(err.response?.data?.error || "Something went wrong while fetching jobs.");
-      setResults(null)
+      setloading(false);
+      setError(
+        err.response?.data?.error || "Something went wrong while fetching jobs."
+      );
+      setResults(null);
     }
   };
 
@@ -60,6 +65,7 @@ const JobSearch = () => {
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               className="border-none text-sm w-full text-gray-700 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-gray-50"
+              required
             />
             <CiSearch className="text-gray-600 text-lg mr-2" />
           </div>
@@ -110,25 +116,33 @@ const JobSearch = () => {
 
           {/* Find a Job Button */}
           <div className="flex items-center gap-4 bg-red-600 text-white py-3 w-full justify-center rounded-xl">
-            {loading ? (<div><Spinner size="sm" /> Loading...</div>) : (<>
-              <button type="submit" className="font-semibold">
-                FIND A JOB
-              </button>
-              <CiSearch className="text-lg" /></>)}
+            {loading ? (
+              <div>
+                <Spinner size="sm" /> Loading...
+              </div>
+            ) : (
+              <>
+                <button type="submit" className="font-semibold">
+                  FIND A JOB
+                </button>
+                <CiSearch className="text-lg" />
+              </>
+            )}
           </div>
         </div>
       </form>
 
       {/* Display Results */}
-      {results &&
+      {results && (
         <div className="mt-6 mx-4 p-6 bg-green-100 border border-green-400 rounded-md">
           <h3 className="text-lg font-semibold text-green-800">Best Match</h3>
           <p className="mt-2 text-gray-800">{results.matched_job_post}</p>
           <p className="text-gray-600 mt-1">
-            <strong>Match Score:</strong> {results.best_job_post_score?.toFixed(2)}
+            <strong>Match Score:</strong>{" "}
+            {results.best_job_post_score?.toFixed(2)}
           </p>
         </div>
-      }
+      )}
 
       {/* Display Error */}
       {error && (
