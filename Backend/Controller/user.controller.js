@@ -67,9 +67,9 @@ export const updateCandidateProfile = async (req, res, next) => {
       return next(errorHandler(400, "Password must be at least 6 characters"));
     }
     if (username) {
-      if (username.length < 6 || username.length > 20) {
+      if (username.length < 5 || username.length > 20) {
         return next(
-          errorHandler(400, "Username must be between 6 and 20 characters")
+          errorHandler(400, "Username must be between 5 and 20 characters")
         );
       }
       if (username.includes(" ")) {
