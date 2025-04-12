@@ -104,7 +104,7 @@ const Login = () => {
                   <Alert color="failure">{uiError}</Alert>
                 </div>
               )}
-              <SocialAuth />
+              {/* <SocialAuth /> */}
               <div className="flex items-center justify-center gap-2">
                 <span className="text-gray-600 text-[17px]">
                   Don't have an Account?{" "}

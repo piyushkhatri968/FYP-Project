@@ -233,7 +233,7 @@ const SignUp = () => {
                 {loading ? <Spinner size="sm" /> : "Sign Up"}
               </button>
 
-              <SocialAuth />
+              {/* <SocialAuth /> */}
               <div className="flex items-center justify-center gap-2">
                 <span className="text-gray-600 text-[17px]">
                   Already have an Account?{" "}
