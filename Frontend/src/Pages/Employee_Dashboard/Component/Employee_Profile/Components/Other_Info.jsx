@@ -62,9 +62,6 @@ const Other_Info = ({ userData }) => {
     setFormData(originalData);
     setIsEditing(false);
   };
-  useEffect(() => {
-    console.log(userData.age);
-  }, []);
 
   return (
     <div className="flex flex-col">

@@ -1,5 +1,6 @@
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
 import Candidate from "../Models/candidate.model.js";
+import User from "../Models/user.model.js"
 
 export const createJobPost = async (req, res) => {
   try {
@@ -28,14 +29,66 @@ export const createJobPost = async (req, res) => {
   }
 };
 
+
+// getting posted jobs:
+
+export const getJobPosts = async (req, res, next) => {
+  const { userId } = req.query;
+
+  try {
+    let appliedJobs = [];
+    let jobs = [];
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "User ID is required." });
+    }
+
+    // Find user details
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    if (user.userType === "recruiter") {
+      // Check if recruiter has posted jobs
+      jobs = await JobPost.find({ postedBy: userId }).sort({ createdAt: -1 }).populate("postedBy");
+
+    } else if (user.userType === "candidate") {
+      // Fetch candidate's applied jobs
+      const candidate = await Candidate.findById(userId).select("appliedJobs");
+      if (candidate) appliedJobs = candidate.appliedJobs;
+
+      // Fetch job posts excluding applied jobs
+      jobs = await JobPost.find({ _id: { $nin: appliedJobs } })
+        .sort({ createdAt: -1 })
+        .populate("postedBy");
+    }
+
+    res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
+
+// ************************************************************************8
+
 // export const getJobPosts = async (req, res, next) => {
 //   const { userId } = req.query;
 
 //   try {
 //     let appliedJobs = [];
 //     if (userId) {
-//
-//
+
+
 // const user = await Candidate.findById(userId).select("appliedJobs");
 //       if (user) appliedJobs = user.appliedJobs;
 //     }
@@ -58,7 +111,7 @@ export const createJobPost = async (req, res) => {
 
 //!-------------------------------------------------------------
 
-export const getJobPosts = async (req, res, next) => {
+export const getJobPostsRecommendation = async (req, res, next) => {
   try {
     const { userId } = req.query;
     if (!userId) {

@@ -6,26 +6,48 @@ import {
   FaCheckCircle,
   FaUserCheck,
 } from "react-icons/fa";
-
+import { useSelector } from "react-redux"; // CurrentUser
 const ApplicationTracking = () => {
   const [applications, setApplications] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
 
-  // Fetch applications from the backend
+  
   const fetchApplications = async () => {
     try {
+      const hrId = user._id; 
       const response = await axios.get(
-        "http://localhost:8080/api/application/candidate/getApplication"
+        `http://localhost:8080/api/application/candidate/getApplication?hrId=${hrId}`
       );
-      setApplications(response.data); // Set fetched applications to state
-      console.log("Fetched applications:", response.data); // Debugging
+  
+      const data = response.data;
+      setApplications(data.applications); // Store the filtered applications
+      console.log("Fetched applications:", data);
     } catch (error) {
       console.error("Error fetching applications:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchApplications();
   }, []);
+  
+  
+  // const fetchApplications = async (hrId, setApplications) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8080/api/application/candidate/getApplication?hrId=${hrId}`
+  //     );
+  
+  //     setApplications(response.data);
+  //     console.log("Fetched applications:", response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching applications:", error);
+  //   }
+  // };
+  
+ 
+
+;
 
   // Define application stages
   const stages = [

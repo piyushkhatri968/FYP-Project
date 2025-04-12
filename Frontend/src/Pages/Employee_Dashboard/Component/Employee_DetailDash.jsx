@@ -17,7 +17,7 @@ const Employee_DetailDash = () => {
     const getJobs = async () => {
       try {
         const jobs = await axios.get(
-          `http://localhost:8080/api/jobs/getJobPosts?userId=${currentUser.candidateDetails}`
+          `http://localhost:8080/api/jobs/getJobPostsRecommendation?userId=${currentUser.candidateDetails}`
         );
         setTotalJobs(jobs.data.data.length);
       } catch (error) {

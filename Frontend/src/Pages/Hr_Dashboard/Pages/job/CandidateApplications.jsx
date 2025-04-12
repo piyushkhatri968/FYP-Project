@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // CurrentUser
 import {
   FaUser,
   FaSearch,
@@ -20,7 +21,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [modalCandidate, setModalCandidate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const user = useSelector((state) => state.user.currentUser);
   const positions = [
     "Frontend Developer",
     "Backend Developer",
@@ -34,14 +35,24 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     { label: "4+ Years", value: 4 },
   ];
 
-  // Fetch candidates from the backend
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         setIsLoading(true);
+        
+        if (!user || !user._id) {
+          setErrorMessage("HR ID is missing.");
+          setIsLoading(false);
+          return;
+        }
+
+        const hrId = user._id;
+
+        // Fetch only candidates who applied for HR's jobs
         const response = await axios.get(
-          "http://localhost:8080/api/application/candidate/get"
+          `http://localhost:8080/api/application/candidate/get?hrId=${hrId}`
         );
+
         console.log("Response:", response);
         setCandidates(response.data.data || []);
         setFilteredCandidates(response.data.data || []);
@@ -52,8 +63,34 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         setIsLoading(false);
       }
     };
+
     fetchCandidates();
-  }, []);
+  }, [user]); 
+
+// ****************************8 OLD CODE *****************************************
+  // // Fetch candidates from the backend
+  // useEffect(() => {
+  //   const fetchCandidates = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/application/candidate/get"
+  //       );
+  //       console.log("Response:", response);
+  //       setCandidates(response.data.data || []);
+  //       setFilteredCandidates(response.data.data || []);
+  //     } catch (error) {
+  //       console.error("Error fetching candidates:", error);
+  //       setErrorMessage("Failed to load candidate data. Please try again.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchCandidates();
+  // }, []);
+  
+
+// ****************************8 OLD CODE *****************************************
 
   // console.log("candidates are :", candidates);
 
@@ -111,20 +148,41 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const handleRejectCandidate = async (candidate) => {
     try {
+      // Prompt the user to enter a rejection reason
+      const rejectionReason = prompt(
+        `Please enter a reason for rejecting ${
+          candidate.userId?.name || "the candidate"
+        }:`
+      );
+  
+      // If no reason is provided, cancel the rejection
+      if (!rejectionReason) {
+        alert("Rejection reason is required.");
+        return;
+      }
+  
+      // Send the rejection reason along with the status to the server
       await axios.post(
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
-        { status: "Rejected" }
+        { status: "Rejected", reason: rejectionReason }
       );
-      alert(`${candidate.userId.userId?.name || "Candidate"} has been rejected.`);
-      // Remove the rejected candidate from the frontend
+  
+      // Show confirmation to the admin
+      alert(
+        `${candidate.userId?.name || "Candidate"} has been rejected with reason: "${rejectionReason}".`
+      );
+  
+      // Remove the rejected candidate from the frontend list
       setCandidates((prev) => prev.filter((c) => c._id !== candidate._id));
       setFilteredCandidates((prev) =>
         prev.filter((c) => c._id !== candidate._id)
       );
     } catch (error) {
+      console.error("Failed to reject candidate:", error);
       alert("Failed to reject candidate.");
     }
   };
+  
   
 
  

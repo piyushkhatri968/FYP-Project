@@ -13,6 +13,9 @@ const candidateSchema = new mongoose.Schema(
         ref: "JobPost", // Referencing the JobPost model
       },
     ],
+    resume: {
+      type: String,
+    },
     appliedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -54,16 +57,13 @@ const candidateSchema = new mongoose.Schema(
     resume: {
       type: String, // URL to the resume
     },
-   
+
     socialLinks: {
       linkedIn: { type: String },
       github: { type: String },
     },
   },
   { timestamps: true }
-  ,
-
-
 );
 
 const Candidate = mongoose.model("Candidate", candidateSchema);

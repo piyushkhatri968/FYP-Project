@@ -13,11 +13,13 @@ const applicationSchema = new mongoose.Schema(
       ref: "JobPost",
       required: true,
     },
-    // CandidateId:{
-    //  type: mongoose.Schema.Types.ObjectId,
-    //  ref: "Candidate",
-    //  required: true,
-    // },
+    rejectionReason: {
+      type: String,
+      required: function () {
+        return this.status === "Rejected";
+      },
+    },
+
     status: {
       type: String,
       enum: ["Applied", "Shortlisted", "Rejected","Hired"],

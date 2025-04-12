@@ -233,7 +233,21 @@ const SignUp = () => {
                 {loading ? <Spinner size="sm" /> : "Sign Up"}
               </button>
 
-              <SocialAuth />
+              {/* <SocialAuth /> */}
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-gray-600 text-[17px]">
+                  Already have an Account?{" "}
+                  <Link
+                    to="/signin"
+                    className="font-semibold hover:text-red-600 transition-all duration-500"
+                  >
+                    Sign In
+                  </Link>
+                </span>
+                <span>
+                  <img src={animateArrow} alt="" className="w-[20px]" />
+                </span>
+              </div>
             </div>
           </form>
         </div>

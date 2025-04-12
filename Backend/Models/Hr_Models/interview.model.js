@@ -6,7 +6,11 @@ const interviewSchema = new mongoose.Schema({
     ref: "User", // candidate model
     required: true,
   },
-  
+  jobId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "JobPost", // job post model
+    required: true,
+  },
   interviewDate: {
     type: Date,
     required: true,

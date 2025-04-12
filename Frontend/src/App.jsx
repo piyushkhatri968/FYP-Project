@@ -20,7 +20,7 @@ import Employee_Dashboard from "./Pages/Employee_Dashboard/Employee_Dashboard";
 import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
 import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
-import ProfileCompletionPopup from "./Components/ProfileCompletionPopup";
+import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
 
 const App = () => {
   return (
@@ -36,7 +36,6 @@ const App = () => {
               element={<Employee_Dashboard />}
             />
           </Route>
-
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
@@ -45,10 +44,8 @@ const App = () => {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/find-job" element={<FindAJob />} />
-
           <Route path="/resume" element={<Resume />} />
-          <Route path="/test" element={<ProfileCompletionPopup />} />
-
+          <Route path="*" element={<NotFoundPage />} />
           {HrRoutes}
         </Routes>
       </ConditionalWrapper>

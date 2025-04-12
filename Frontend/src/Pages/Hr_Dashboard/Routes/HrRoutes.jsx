@@ -1,7 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-// Import all the required HR pages and layouts
 import HRLayout from "../Components/HrLayout";
 import HrPage from "../HrPage";
 import JobsPage from "../Pages/job/JobsPage";
@@ -12,7 +11,7 @@ import JobAnalytics from "../Pages/job/JobAnalytics";
 import AccountSetting from "../Pages/job/AccountSetting";
 import NotificationSettings from "../Pages/job/NotificationSettings";
 import JobNotification from "../Pages/JobNotification/JobNotification";
-// import InterviewScheduling from "../Pages/job/InterviewScheduling";
+
 import EmployeeAnnouncement from "../Pages/job/EmployeeAnnouncement";
 import InterviewScheduling from "../Pages/job/InterviewScheduling";
 import Profile from "../Pages/job/Profile";

@@ -4,7 +4,7 @@ import { Outlet, Navigate } from "react-router-dom";
 
 const PrivateRoute = () => {
   const { currentUser } = useSelector((state) => state.user);
-  return currentUser ? <Outlet /> : <Navigate to="/signup" />;
+  return currentUser && currentUser.userType === "employee" ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;
