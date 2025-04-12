@@ -1,0 +1,9 @@
+flask
+scikit-learn
+gensim
+scipy
+numpy
+spacy
+fuzzywuzzy
+pymongo
+flask-cors

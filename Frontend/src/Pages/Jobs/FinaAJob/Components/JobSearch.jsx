@@ -3,20 +3,24 @@ import { CiSearch } from "react-icons/ci";
 import { FaChevronDown } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import axios from "axios";
+import { Spinner } from "flowbite-react";
 
 const JobSearch = () => {
   const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
-  const [category, setCategory] = useState("");
+  // const [location, setLocation] = useState("");
+  // const [category, setCategory] = useState("");
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setloading] = useState(false)
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setloading(false)
     setError(null);
+    setResults(null)
 
     // Combine all inputs into one query for the backend
-    const query = `${keyword} ${location} ${category}`.trim();
+    const query = `${keyword}`.trim();
 
     if (!query) {
       setError("Please enter at least one search criterion.");
@@ -24,15 +28,23 @@ const JobSearch = () => {
     }
 
     try {
+      setloading(true)
       // Send request to backend
       const response = await axios.post("http://localhost:5000/job-seeker-match", {
         job_seeker_input: query,
       });
 
       // Set the results from the response
+      if (response.data.message === "No match right now") {
+        setError("No jobs found")
+      }
       setResults(response.data);
+      console.log(results)
+      setloading(false)
     } catch (err) {
+      setloading(false)
       setError(err.response?.data?.error || "Something went wrong while fetching jobs.");
+      setResults(null)
     }
   };
 
@@ -53,7 +65,7 @@ const JobSearch = () => {
           </div>
 
           {/* Location Input */}
-          <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl focus-within:border-blue-500">
+          {/* <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl focus-within:border-blue-500">
             <input
               type="text"
               placeholder="Location"
@@ -62,10 +74,10 @@ const JobSearch = () => {
               className="border-none text-sm w-full text-gray-700 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-gray-50"
             />
             <IoLocationOutline className="text-gray-600 text-lg mr-2" />
-          </div>
+          </div> */}
 
           {/* Category Select */}
-          <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl">
+          {/* <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full  rounded-xl">
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -94,28 +106,29 @@ const JobSearch = () => {
                 Hospitality
               </option>
             </select>
-          </div>
+          </div> */}
 
           {/* Find a Job Button */}
           <div className="flex items-center gap-4 bg-red-600 text-white py-3 w-full justify-center rounded-xl">
-            <button type="submit" className="font-semibold">
-              FIND A JOB
-            </button>
-            <CiSearch className="text-lg" />
+            {loading ? (<div><Spinner size="sm" /> Loading...</div>) : (<>
+              <button type="submit" className="font-semibold">
+                FIND A JOB
+              </button>
+              <CiSearch className="text-lg" /></>)}
           </div>
         </div>
       </form>
 
       {/* Display Results */}
-      {results && (
+      {results &&
         <div className="mt-6 mx-4 p-6 bg-green-100 border border-green-400 rounded-md">
           <h3 className="text-lg font-semibold text-green-800">Best Match</h3>
           <p className="mt-2 text-gray-800">{results.matched_job_post}</p>
           <p className="text-gray-600 mt-1">
-            <strong>Match Score:</strong> {results.best_job_post_score.toFixed(2)}
+            <strong>Match Score:</strong> {results.best_job_post_score?.toFixed(2)}
           </p>
         </div>
-      )}
+      }
 
       {/* Display Error */}
       {error && (
