@@ -21,6 +21,7 @@ import OrangeButton from "./Components/OrangeButton";
 import Resume from "./Components/Resume";
 import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
 import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
+import Public_Job_Search from "./Pages/Public_Job_Search/Public_Job_Search";
 
 const App = () => {
   return (
@@ -45,6 +46,10 @@ const App = () => {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/find-job" element={<FindAJob />} />
           <Route path="/resume" element={<Resume />} />
+          <Route
+            path="/jobSearch/:title?/:location?"
+            element={<Public_Job_Search />}
+          />
           <Route path="*" element={<NotFoundPage />} />
           {HrRoutes}
         </Routes>
