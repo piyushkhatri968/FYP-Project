@@ -15,7 +15,7 @@ const InterviewScheduling = ({ candidate, closeModal, addInterview }) => {
   const [error, setError] = useState("");
 
   // EmailJS Configuration (replace with your actual IDs)
-  const SERVICE_ID = "service_i93fjbn";
+  const SERVICE_ID = "service_ccqomzm";
   const TEMPLATE_ID = "template_gdu1dt5";
   const PUBLIC_KEY = "sg64VtTyStBeiRWML";
 
