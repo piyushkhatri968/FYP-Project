@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  CiClock1,
-  CiFilter,
-  CiLocationOn,
-  CiSearch,
-} from "react-icons/ci";
+import { CiClock1, CiFilter, CiLocationOn, CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
@@ -15,7 +10,9 @@ const Public_Job_Search = () => {
   const { title, location } = useParams();
 
   const [searchTitle, setSearchTitle] = useState(title || "");
-  const [searchLocation, setSearchLocation] = useState(location === "none" ? "" : location || "");
+  const [searchLocation, setSearchLocation] = useState(
+    location === "none" ? "" : location || ""
+  );
   const [jobResults, setJobResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -139,7 +136,7 @@ const Public_Job_Search = () => {
                   </div>
                   <div className="text-gray-500 flex items-center space-x-1">
                     <CiFilter className="text-gray-600 text-lg" />
-                    <span>{job.skills}</span>
+                    <span>{job.skills.join(", ")}</span>
                   </div>
                 </div>
 
