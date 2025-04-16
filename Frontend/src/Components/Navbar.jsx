@@ -19,7 +19,6 @@ const Navbar = () => {
   const [openNotificationModal, setOpenNotificationModal] = useState(false);
   const [userData, setUserData] = useState([]);
 
-
   const location = useLocation();
 
   // NAVBAR SMOOTH SCROLL
@@ -53,14 +52,14 @@ const Navbar = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/user/getUserInfo/${currentUser._id}`)
-        setUserData(response.data.data)
-      } catch (error) {
-
-      }
-    }
-    getUserData()
-  }, [currentUser])
+        const response = await axios.get(
+          `http://localhost:8080/api/user/getUserInfo/${currentUser._id}`
+        );
+        setUserData(response.data.data);
+      } catch (error) {}
+    };
+    getUserData();
+  }, [currentUser]);
 
   return (
     <>
@@ -77,8 +76,9 @@ const Navbar = () => {
             <li>
               <Link
                 to="/about"
-                className={`font-semibold hover:text-red-600 ${location.pathname === "/about" ? "text-red-600" : ""
-                  }`}
+                className={`font-semibold hover:text-red-600 ${
+                  location.pathname === "/about" ? "text-red-600" : ""
+                }`}
               >
                 About
               </Link>
@@ -95,8 +95,9 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/find-job"
-                    className={`text-sm block px-4 py-2 font-normal text-white hover:bg-[#657294] border-b border-dashed border-gray-600 ${location.pathname === "/find-job" ? "bg-[#657294]" : ""
-                      }`}
+                    className={`text-sm block px-4 py-2 font-normal text-white hover:bg-[#657294] border-b border-dashed border-gray-600 ${
+                      location.pathname === "/find-job" ? "bg-[#657294]" : ""
+                    }`}
                   >
                     Find A Job
                   </Link>
@@ -115,8 +116,9 @@ const Navbar = () => {
             <li>
               <Link
                 to="/contact"
-                className={`font-semibold hover:text-red-600 ${location.pathname === "/contact" ? "text-red-600" : ""
-                  }`}
+                className={`font-semibold hover:text-red-600 ${
+                  location.pathname === "/contact" ? "text-red-600" : ""
+                }`}
               >
                 Contact Us
               </Link>
@@ -171,10 +173,10 @@ const Navbar = () => {
                       currentUser.userType === "recruiter"
                         ? "/hr/dashboard"
                         : currentUser.userType === "employee"
-                          ? "dashboard/employee?tab=dashboard"
-                          : currentUser.userType === "admin"
-                            ? "dashboard/admin"
-                            : null
+                        ? "dashboard/employee?tab=dashboard"
+                        : currentUser.userType === "Admin"
+                        ? "dashboard/admin"
+                        : null
                     }
                   >
                     Profile
@@ -222,8 +224,9 @@ const Navbar = () => {
           </span>
           {/* DROPDOWN MENU */}
           <div
-            className={`dropdown-menu absolute z-30 top-11 -right-4 w-[100vw] h-[51vh] bg-white text-gray-500 overflow-y-auto hide-scrollbar ${mobilenav ? "block" : "hidden"
-              }`}
+            className={`dropdown-menu absolute z-30 top-11 -right-4 w-[100vw] h-[51vh] bg-white text-gray-500 overflow-y-auto hide-scrollbar ${
+              mobilenav ? "block" : "hidden"
+            }`}
           >
             <ul className="flex flex-col justify-center gap-[15px] mt-4">
               <li
@@ -260,8 +263,9 @@ const Navbar = () => {
                   <span>{jobsDropdown ? <FaMinus /> : <FaPlus />}</span>
                 </div>
                 <div
-                  className={`flex flex-col px-4 ml-4 mt-4 gap-4 ${jobsDropdown ? "block" : "hidden"
-                    }`}
+                  className={`flex flex-col px-4 ml-4 mt-4 gap-4 ${
+                    jobsDropdown ? "block" : "hidden"
+                  }`}
                 >
                   <hr />
                   <Link

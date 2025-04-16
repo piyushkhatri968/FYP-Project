@@ -22,6 +22,8 @@ import Resume from "./Components/Resume";
 import HrRoutes from "./Pages/Hr_Dashboard/Routes/HrRoutes";
 import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
 import Public_Job_Search from "./Pages/Public_Job_Search/Public_Job_Search";
+import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
+import PrivateRouteAdmin from "./Components/Protected Routes/PrivateRouteAdmin";
 
 const App = () => {
   return (
@@ -36,6 +38,9 @@ const App = () => {
               path="/dashboard/employee"
               element={<Employee_Dashboard />}
             />
+          </Route>
+          <Route element={<PrivateRouteAdmin />}>
+            <Route path="/dashboard/admin" element={<Admin_Dashboard />} />
           </Route>
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />

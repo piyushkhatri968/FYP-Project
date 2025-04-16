@@ -30,7 +30,7 @@ const Employee_Applied_Jobs = () => {
 
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl">
-      <h1 className="text-2xl font-bold mb-6">Jobs Your Applied</h1>
+      <h1 className="text-2xl font-bold mb-6">Jobs You Applied</h1>
       <div className="space-y-6">
         {loading ? (
           <div className="flex justify-center items-center">
