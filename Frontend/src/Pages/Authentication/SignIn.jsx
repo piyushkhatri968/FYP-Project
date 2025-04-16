@@ -11,7 +11,6 @@ import {
 import SocialAuth from "../../Components/SocialAuth.jsx";
 import Theme from "../../Components/Theme.jsx";
 import signUpImg from "../../assets/Images/signUp.png";
-import { Backend_URL } from "../../config/config.js";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
@@ -33,7 +32,7 @@ const Login = () => {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch(`${Backend_URL}/auth/signin`, {
+      const res = await fetch(`http://localhost:8080/api/auth/signin`, {
         method: "POST",
         credentials: "include",
         headers: {

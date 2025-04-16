@@ -11,7 +11,6 @@ import {
 } from "../../Redux/User/UserSlice.js";
 import SocialAuth from "../../Components/SocialAuth.jsx";
 import Theme from "../../Components/Theme.jsx";
-import { Backend_URL } from "../../config/config.js";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -98,7 +97,7 @@ const SignUp = () => {
 
     try {
       dispatch(signInStart());
-      const res = await fetch(`${Backend_URL}/auth/signup`, {
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
         method: "POST",
         credentials: "include",
         headers: {
