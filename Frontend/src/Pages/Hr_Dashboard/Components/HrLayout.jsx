@@ -1,8 +1,8 @@
 import React from "react";
-import HRNavbar from "./HrNavbar";
 import HRSidebar from "./HRSidebar";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
+import HRNavbar from "./HrNavbar.jsx";
 
 const HRLayout = () => {
   return (
