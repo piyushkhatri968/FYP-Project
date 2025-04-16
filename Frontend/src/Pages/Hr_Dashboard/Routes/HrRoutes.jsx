@@ -15,6 +15,7 @@ import JobNotification from "../Pages/JobNotification/JobNotification";
 import EmployeeAnnouncement from "../Pages/job/EmployeeAnnouncement";
 import InterviewScheduling from "../Pages/job/InterviewScheduling";
 import Profile from "../Pages/job/Profile";
+import MatchedCandidates from "../Pages/job/MatchedCandidates";
 
 
 // HR-specific routes
@@ -31,6 +32,7 @@ const HrRoutes = (
       <Route path="/hr/job-notification" element={<JobNotification />} />
       <Route path="/hr/schedule-interview" element={<InterviewScheduling/>} />
       <Route path="/hr/employment-announcements" element={<EmployeeAnnouncement />} />
+      <Route path="/hr/matched-candidates" element={<MatchedCandidates/>}/>
       <Route path="/hr/profile" element={<Profile/>} />
    </Route>
 );

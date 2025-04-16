@@ -49,10 +49,27 @@ const JobNotification = ({ addRecentJob }) => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setIsSending(true);
     setSuccessMessage("");
     setErrorMessage("");
+
+
+
+  const recruiterInput = {
+    position: jobTitle,
+    experience: experience,
+    location: {
+      city: selectedCity,
+      country: selectedCountry,
+    },
+    skills: selectedSkills,
+  };
+
+  navigate("/hr/matched-candidates", { state: { recruiterInput } });
+
+
 
     try {
       // Send job details to the backend
