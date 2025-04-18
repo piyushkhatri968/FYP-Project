@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
-from database import jobs_collection
+from database import jobs_collection, users_collection, recruiters_collection
 from utils.text_processing import normalize_text, normalize_skills, title_similarity
 import re
+from bson import ObjectId
+from datetime import datetime
 
 job_seeker_blueprint = Blueprint('job_seeker', __name__)
 
@@ -67,21 +69,30 @@ def job_seeker_match():
 
     job_posts = list(jobs_collection.find())
 
-    # Find matching jobs
+       
     matched_jobs = [
-        {
-            "title": job["title"],
-            "location": job["location"],
-            "skills": job["skills"],
-            "jobType": job["jobType"],
-            "description": job["description"],
-            "experience": job.get("experience", "Not specified")  # Include experience
-        }
-        for job in job_posts if flexible_match(job_seeker_input, job)
+    {
+        "title": job["title"],
+        "location": job["location"],
+        "skills": job["skills"],
+        "jobType": job["jobType"],
+        "description": job["description"],
+        "experience": job.get("experience", "Not specified"),
+        "postedBy": str(job["postedBy"]) if "postedBy" in job else None,
+        "createdAt": job["createdAt"].isoformat() if "createdAt" in job else None,
+        "updatedAt": job["updatedAt"].isoformat() if "updatedAt" in job else None
+    }
+    for job in job_posts if flexible_match(job_seeker_input, job)
     ]
+    
 
     # If no jobs match, return a "No match found" message
     if not matched_jobs:
         return jsonify({"message": "No match found"})
 
     return jsonify({"message": "Matches found", "matched_jobs": matched_jobs})
+
+
+
+
+# from database import jobs_collection, users_collection, recruiters_collection  # make sure these are imported
