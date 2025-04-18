@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
+      enum: ["employee", "recruiter", "Admin"],
       required: true,
     },
     candidateDetails: {

@@ -49,7 +49,12 @@ const SignUp = () => {
     setUiError({});
 
     // Basic form validation
-    if (!formData.name || !formData.username || !formData.email || !formData.password) {
+    if (
+      !formData.name ||
+      !formData.username ||
+      !formData.email ||
+      !formData.password
+    ) {
       return setUiError({ general: "Please fill out all required fields." });
     }
 
@@ -65,7 +70,9 @@ const SignUp = () => {
         "companyAddress",
         "contactNumber",
       ];
-      const missingFields = requiredRecruiterFields.filter((field) => !formData[field]);
+      const missingFields = requiredRecruiterFields.filter(
+        (field) => !formData[field]
+      );
 
       if (missingFields.length > 0) {
         const errors = {};
@@ -143,7 +150,9 @@ const SignUp = () => {
                   id="name"
                   onChange={handleInputChange}
                 />
-                {uiError.name && <p className="text-red-500 text-sm">{uiError.name}</p>}
+                {uiError.name && (
+                  <p className="text-red-500 text-sm">{uiError.name}</p>
+                )}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -155,7 +164,9 @@ const SignUp = () => {
                   id="username"
                   onChange={handleInputChange}
                 />
-                {uiError.username && <p className="text-red-500 text-sm">{uiError.username}</p>}
+                {uiError.username && (
+                  <p className="text-red-500 text-sm">{uiError.username}</p>
+                )}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -167,7 +178,9 @@ const SignUp = () => {
                   id="email"
                   onChange={handleInputChange}
                 />
-                {uiError.email && <p className="text-red-500 text-sm">{uiError.email}</p>}
+                {uiError.email && (
+                  <p className="text-red-500 text-sm">{uiError.email}</p>
+                )}
               </div>
 
               <div className="flex flex-col justify-center items-start w-full gap-2">
@@ -179,7 +192,9 @@ const SignUp = () => {
                   id="password"
                   onChange={handleInputChange}
                 />
-                {uiError.password && <p className="text-red-500 text-sm">{uiError.password}</p>}
+                {uiError.password && (
+                  <p className="text-red-500 text-sm">{uiError.password}</p>
+                )}
               </div>
 
               {/* User Type Selector */}
@@ -194,34 +209,40 @@ const SignUp = () => {
                   <option value="employee">Job Seeker</option>
                   <option value="recruiter">Recruiter</option>
                 </select>
-                {uiError.userType && <p className="text-red-500 text-sm">{uiError.userType}</p>}
+                {uiError.userType && (
+                  <p className="text-red-500 text-sm">{uiError.userType}</p>
+                )}
               </div>
 
               {/* Recruiter-Specific Fields */}
               {formData.userType === "recruiter" && (
                 <>
-                  {["position", "department", "companyName", "companyAddress", "contactNumber"].map(
-                    (field, idx) => (
-                      <div
-                        key={idx}
-                        className="flex flex-col justify-center items-start w-full gap-2"
-                      >
-                        <label className="font-semibold">
-                          {field.replace(/([A-Z])/g, " $1")}
-                        </label>
-                        <input
-                          type="text"
-                          placeholder={field.replace(/([A-Z])/g, " $1")}
-                          className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
-                          id={field}
-                          onChange={handleInputChange}
-                        />
-                        {uiError[field] && (
-                          <p className="text-red-500 text-sm">{uiError[field]}</p>
-                        )}
-                      </div>
-                    )
-                  )}
+                  {[
+                    "position",
+                    "department",
+                    "companyName",
+                    "companyAddress",
+                    "contactNumber",
+                  ].map((field, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col justify-center items-start w-full gap-2"
+                    >
+                      <label className="font-semibold">
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={field.replace(/([A-Z])/g, " $1")}
+                        className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
+                        id={field}
+                        onChange={handleInputChange}
+                      />
+                      {uiError[field] && (
+                        <p className="text-red-500 text-sm">{uiError[field]}</p>
+                      )}
+                    </div>
+                  ))}
                 </>
               )}
 

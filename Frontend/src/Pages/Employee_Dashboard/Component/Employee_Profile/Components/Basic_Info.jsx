@@ -91,9 +91,6 @@ const Basic_Info = ({ userData }) => {
       );
 
       setIsEditing(false); // Exit editing mode
-      // setTimeout(() => {
-      //   window.location.reload(false);
-      // }, 500);
     } catch (error) {
       console.error("Error saving data:", error.message);
     } finally {
