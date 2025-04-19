@@ -41,6 +41,23 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+// 🔥 Middleware to clean up corresponding data
+userSchema.pre("findOneAndDelete", async function (next) {
+  const user = await this.model.findOne(this.getQuery());
+
+  if (!user) return next();
+
+  try {
+    if (user.role === "Candidate" && user.candidateDetails) {
+      await Candidate.findByIdAndDelete(user.candidateDetails);
+    } else if (user.role === "Recruiter" && user.recruiterDetails) {
+      await Recruiter.findByIdAndDelete(user.recruiterDetails);
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 const User = new mongoose.model("User", userSchema);
 

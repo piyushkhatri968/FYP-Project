@@ -210,7 +210,16 @@ export const deleteJobPost = async (req, res) => {
 export const getJobDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const job = await User.findById(id);
+    const job = await JobPost.findById(id).populate({
+      path: "postedBy",
+      select: "name email profilePicture username",
+      model: "User",
+      populate: {
+        path: "recruiterDetails",
+        select:"companyAddress companyName contactNumber department position",
+        model: "Recruiter",
+      },
+    });
     if (!job) {
       return next(errorHandler(404, "Job not found."));
     }

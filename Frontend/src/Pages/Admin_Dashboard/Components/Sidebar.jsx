@@ -12,13 +12,13 @@ const Sidebar = () => {
   const location = useLocation();
   return (
     <div
-      className="w-full mt-6 flex flex-col justify-between rounded-md overflow-hidden bg-[#414141] gap-12"
+      className="w-full mt-6 flex flex-col justify-between rounded-md overflow-hidden bg-[#0D1B2A] gap-12"
       style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
     >
       <div>
         <Link
           to="/dashboard/admin?tab=adminDash"
-          className={`hover:bg-[#515151] w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
+          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
             location.pathname === "/profile" &&
             location.search === "?tab=adminDash"
               ? "text-[#00B79E]"
@@ -32,7 +32,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/dashboard/admin?tab=allEmployees"
-          className={`hover:bg-[#515151] w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
+          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
             location.pathname === "/profile" &&
             location.search === "?tab=allEmployees"
               ? "text-[#00B79E]"
@@ -46,7 +46,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/dashboard/admin?tab=allRecruiter"
-          className={`hover:bg-[#515151] w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
+          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
             location.pathname === "/profile" &&
             location.search === "?tab=allRecruiter"
               ? "text-[#00B79E]"
@@ -60,7 +60,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/dashboard/admin?tab=alladmins"
-          className={`hover:bg-[#515151] w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
+          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
             location.pathname === "/profile" &&
             location.search === "?tab=alladmins"
               ? "text-[#00B79E]"
@@ -74,7 +74,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/dashboard/admin?tab=addNewAdmin"
-          className={`hover:bg-[#515151] w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
+          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
             location.pathname === "/profile" &&
             location.search === "?tab=addNewAdmin"
               ? "text-[#00B79E]"

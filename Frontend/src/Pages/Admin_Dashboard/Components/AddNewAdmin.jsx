@@ -42,7 +42,7 @@ const AddNewAdmin = ({ getTotalUsers }) => {
 
   return (
     <div
-      className="w-full mt-6 flex flex-col items-center rounded-md overflow-hidden bg-[#414141] p-4"
+      className="w-full mt-6 flex flex-col items-center rounded-md overflow-hidden bg-[#0D1B2A] p-4"
       style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
     >
       <form
@@ -50,7 +50,7 @@ const AddNewAdmin = ({ getTotalUsers }) => {
         className="flex flex-col gap-6 items-center justify-center w-full max-w-xl"
       >
         <h1 className="font-bold text-2xl mt-4 mb-8">Add New Admin</h1>
-        <div className="group border-b bg-[#4B4B4B] hover:bg-[#5A5A5A] w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
+        <div className="group border-b bg-BlueColor hover:bg-BlueColor w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
           <label
             htmlFor="name"
             className="text-[12px] text-[#C7C7C7] group-focus-within:text-[#00b79e] w-full"
@@ -66,7 +66,7 @@ const AddNewAdmin = ({ getTotalUsers }) => {
             required
           />
         </div>
-        <div className="group border-b bg-[#4B4B4B] hover:bg-[#5A5A5A] w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
+        <div className="group border-b bg-BlueColor hover:bg-BlueColor w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
           <label
             htmlFor="username"
             className="text-[12px] text-[#C7C7C7] group-focus-within:text-[#00b79e] w-full"
@@ -82,7 +82,7 @@ const AddNewAdmin = ({ getTotalUsers }) => {
             required
           />
         </div>
-        <div className="group border-b bg-[#4B4B4B] hover:bg-[#5A5A5A] w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
+        <div className="group border-b bg-BlueColor hover:bg-BlueColor w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
           <label
             htmlFor="email"
             className="text-[12px] text-[#C7C7C7] group-focus-within:text-[#00b79e] w-full"
@@ -99,7 +99,7 @@ const AddNewAdmin = ({ getTotalUsers }) => {
           />
         </div>
         {/* Password Field */}
-        <div className="group border-b bg-[#4B4B4B] hover:bg-[#5A5A5A] w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
+        <div className="group border-b bg-BlueColor hover:bg-BlueColor w-full h-15 rounded-t-sm py-2 px-3 flex flex-col justify-center focus-within:border-[#00b79e] transition-all duration-200">
           <label
             htmlFor="password"
             className="text-[12px] text-[#C7C7C7] group-focus-within:text-[#00b79e] w-full"

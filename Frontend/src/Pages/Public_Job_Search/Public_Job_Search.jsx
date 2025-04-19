@@ -112,7 +112,7 @@ const Public_Job_Search = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-4 sm:mx-12 text-center md:text-left mb-6 ">
             {jobResults.map((job, index) => (
               <Link
-                to={`/jobs/${job.postedBy}`}
+                to={`/jobs/${job._id}`}
                 key={index}
                 className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md hover:scale-105 transition-all duration-200"
               >

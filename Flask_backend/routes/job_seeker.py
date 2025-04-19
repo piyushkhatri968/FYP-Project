@@ -72,6 +72,7 @@ def job_seeker_match():
        
     matched_jobs = [
     {
+      "_id": str(job["_id"]),
         "title": job["title"],
         "location": job["location"],
         "skills": job["skills"],

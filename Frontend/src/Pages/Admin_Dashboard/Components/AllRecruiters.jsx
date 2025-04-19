@@ -32,19 +32,23 @@ const AllRecruiters = ({ totalUsers, setTotalUsers }) => {
   const handleDelete = async (userId) => {
     if (deletingUserId) return;
 
-    if (window.confirm("Are you sure you want to delete this Client?")) {
+    if (window.confirm("Are you sure you want to delete this Recruiter?")) {
       try {
         setDeletingUserId(userId);
-        const response = await axios.delete(`${Backend_URI}/admin/delete`, {
-          data: { userId },
-          withCredentials: true,
-        });
+        const response = await axios.delete(
+          `http://localhost:8080/api/admin/deleteUser`,
+          {
+            data: { userId },
+            withCredentials: true,
+          }
+        );
 
         if (response.status === 200) {
+          alert(response.data.message);
           setTotalUsers((prev) => prev.filter((user) => user._id !== userId));
         }
       } catch (error) {
-        // toast.error(error.response?.data?.message || "Failed to delete user");
+        alert(error.response?.data?.message || "Failed to delete user");
       } finally {
         setDeletingUserId(null);
       }
@@ -53,7 +57,7 @@ const AllRecruiters = ({ totalUsers, setTotalUsers }) => {
 
   return (
     <div
-      className="w-full mt-6 flex flex-col rounded-md overflow-hidden bg-[#414141] p-4 text-white"
+      className="w-full mt-6 flex flex-col rounded-md overflow-hidden bg-[#0D1B2A] p-4 text-white"
       style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
     >
       <div className="flex items-end w-full justify-end">
@@ -92,7 +96,7 @@ const AllRecruiters = ({ totalUsers, setTotalUsers }) => {
                 {filteredClients?.map((user, index) => (
                   <tr
                     key={user._id}
-                    className={(index + 1) % 2 === 0 ? "bg-[#515151]" : ""}
+                    className={(index + 1) % 2 === 0 ? "bg-BlueColor" : ""}
                   >
                     <td className="px-3 py-3">{index + 1}</td>
                     <td className="px-3 py-3">{user?.name}</td>
