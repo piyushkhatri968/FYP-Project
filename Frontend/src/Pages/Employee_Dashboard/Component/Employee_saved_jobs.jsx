@@ -46,7 +46,7 @@ const Employee_saved_jobs = () => {
       alert("Job application submitted successfully.");
     } catch (error) {
       console.error(error);
-      alert("Failed to apply for the job.");
+      alert(error.response?.data?.message);
     }
   };
 

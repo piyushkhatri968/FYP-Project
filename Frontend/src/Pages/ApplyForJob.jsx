@@ -41,8 +41,14 @@ const ApplyForJob = () => {
     if (!currentUser) {
       return alert("Login in first to apply for this job");
     }
+    if (currentUser.userType === "Admin") {
+      return alert("Admin can't apply for jobs.");
+    }
+    if (currentUser.userType === "recruiter") {
+      return alert("HR can't apply for jobs.");
+    }
+    const userId = currentUser?.candidateDetails;
     try {
-      const userId = currentUser.candidateDetails;
       await axios.post(
         "http://localhost:8080/api/application/candidate/applyJob",
         {
@@ -51,7 +57,6 @@ const ApplyForJob = () => {
         }
       );
       alert("Job application submitted successfully.");
-      // setTimeout(() => {}, 500);
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.message);
@@ -130,7 +135,7 @@ const ApplyForJob = () => {
             </button>
           </div>
           {/* posted by */}
-          <div className="flex flex-col items-center gap-3 shadow-2xl mt-4 px-28 py-8 w-full text-center">
+          <div className="flex flex-col items-center gap-3 shadow-2xl mt-4 px-28 py-8 w-full text-center max-w-sm rounded-md">
             <h1 className="font-bold text-2xl text-[#010C29]">Posted By</h1>
             <img
               src={job.postedBy.profilePicture}

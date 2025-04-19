@@ -209,7 +209,7 @@ export const applyJobApplication = async (req, res, next) => {
 
   try {
     if (!userId || !jobId) {
-      return next(errorHandler(400, "User ID and Job ID are requiredpu"));
+      return next(errorHandler(400, "User ID and Job ID are required."));
     }
 
     const job = await JobPost.findById(jobId);
