@@ -1,6 +1,7 @@
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
 import Candidate from "../Models/candidate.model.js";
-import User from "../Models/user.model.js"
+import User from "../Models/user.model.js";
+import { errorHandler } from "../utils/Error.js";
 
 export const createJobPost = async (req, res) => {
   try {
@@ -29,7 +30,6 @@ export const createJobPost = async (req, res) => {
   }
 };
 
-
 // getting posted jobs:
 
 export const getJobPosts = async (req, res, next) => {
@@ -40,20 +40,25 @@ export const getJobPosts = async (req, res, next) => {
     let jobs = [];
 
     if (!userId) {
-      return res.status(400).json({ success: false, message: "User ID is required." });
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID is required." });
     }
 
     // Find user details
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
     }
 
     if (user.userType === "recruiter") {
       // Check if recruiter has posted jobs
-      jobs = await JobPost.find({ postedBy: userId }).sort({ createdAt: -1 }).populate("postedBy");
-
+      jobs = await JobPost.find({ postedBy: userId })
+        .sort({ createdAt: -1 })
+        .populate("postedBy");
     } else if (user.userType === "candidate") {
       // Fetch candidate's applied jobs
       const candidate = await Candidate.findById(userId).select("appliedJobs");
@@ -69,15 +74,10 @@ export const getJobPosts = async (req, res, next) => {
       success: true,
       data: jobs,
     });
-
   } catch (error) {
     next(error);
   }
 };
-
-
-
-
 
 // ************************************************************************8
 
@@ -87,7 +87,6 @@ export const getJobPosts = async (req, res, next) => {
 //   try {
 //     let appliedJobs = [];
 //     if (userId) {
-
 
 // const user = await Candidate.findById(userId).select("appliedJobs");
 //       if (user) appliedJobs = user.appliedJobs;
@@ -205,5 +204,22 @@ export const deleteJobPost = async (req, res) => {
   } catch (error) {
     console.error("Error deleting job:", error);
     res.status(500).json({ success: false, message: "Error deleting job" });
+  }
+};
+
+export const getJobDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const job = await User.findById(id);
+    if (!job) {
+      return next(errorHandler(404, "Job not found."));
+    }
+    res.status(200).json({
+      success: true,
+      job,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };

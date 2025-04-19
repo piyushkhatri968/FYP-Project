@@ -24,6 +24,7 @@ import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
 import Public_Job_Search from "./Pages/Public_Job_Search/Public_Job_Search";
 import Admin_Dashboard from "./Pages/Admin_Dashboard/Admin_Dashboard";
 import PrivateRouteAdmin from "./Components/Protected Routes/PrivateRouteAdmin";
+import ApplyForJob from "./Pages/ApplyForJob";
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
             path="/jobSearch/:title?/:location?"
             element={<Public_Job_Search />}
           />
+          <Route path="/jobs/:id" element={<ApplyForJob />} />
           <Route path="*" element={<NotFoundPage />} />
           {HrRoutes}
         </Routes>

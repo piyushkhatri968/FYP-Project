@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { CiClock1, CiFilter, CiLocationOn, CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Spinner } from "flowbite-react";
 import companyImage from "../../assets/Images/Jobs/CompanyImg.png";
+import moment from "moment";
 
 const Public_Job_Search = () => {
   const { title, location } = useParams();
@@ -108,11 +109,12 @@ const Public_Job_Search = () => {
         ) : jobResults.length === 0 ? (
           <div className="text-center text-gray-500 mt-8">No jobs found.</div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-4 sm:mx-12 text-center md:text-left mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-4 sm:mx-12 text-center md:text-left mb-6 ">
             {jobResults.map((job, index) => (
-              <div
+              <Link
+                to={`/jobs/${job.postedBy}`}
                 key={index}
-                className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row"
+                className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md hover:scale-105 transition-all duration-200"
               >
                 {/* Company Image */}
                 <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
@@ -127,9 +129,9 @@ const Public_Job_Search = () => {
                 {/* Job Details */}
                 <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
                   <h2 className="text-lg font-bold">{job.title}</h2>
-                  <p className="text-sm">
+                  {/* <p className="text-sm">
                     Via <span className="text-red-500">{job.companyName}</span>
-                  </p>
+                  </p> */}
                   <div className="text-gray-500 flex items-center space-x-1 mt-1">
                     <CiLocationOn className="text-gray-600 text-lg" />
                     <span>{job.location}</span>
@@ -147,10 +149,10 @@ const Public_Job_Search = () => {
                   </div>
                   <div className="flex justify-center items-center gap-2 text-gray-500">
                     <CiClock1 />
-                    <span>{job.posted_at}</span>
+                    <span>{moment(job.createdAt).fromNow()}</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

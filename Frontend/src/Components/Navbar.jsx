@@ -102,14 +102,14 @@ const Navbar = () => {
                     Find A Job
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     to="/post-job"
                     className="text-sm block px-4 py-2 font-normal text-white hover:bg-[#657294]"
                   >
                     Post A Job
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </li>
             {/* CONTACT US  */}
@@ -127,7 +127,7 @@ const Navbar = () => {
         </div>
         {currentUser ? (
           <div className="flex gap-10 items-center">
-            {currentUser.userType === "employee" ? (
+            {/* {currentUser.userType === "employee" ? (
               <>
                 <div
                   className="cursor-pointer relative"
@@ -145,7 +145,7 @@ const Navbar = () => {
                   <div className="absolute z-[10000] top-[11%] right-[10%] bg-[#374151] w-[400px] h-[400px] text-center border-t-2 rounded-lg"></div>
                 )}
               </>
-            ) : null}
+            ) : null} */}
 
             <div className="relative">
               <div
