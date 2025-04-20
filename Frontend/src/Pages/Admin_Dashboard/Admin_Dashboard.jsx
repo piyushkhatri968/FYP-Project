@@ -44,7 +44,7 @@ const Admin_Dashboard = () => {
     getTotalUsers();
   }, []);
   return (
-    <div className="mt-[70px] lg:mt-[0px]">
+    <div className="mt-[70px] lg:mt-[0px] bg-[#0D1B2A]">
       {userLoading ? (
         <div className="flex justify-center items-center w-full h-[200px]">
           <div className="w-6 h-6 border-4 border-[#00806E] border-dotted rounded-full animate-spin"></div>
