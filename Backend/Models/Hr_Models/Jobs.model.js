@@ -8,15 +8,15 @@ const jobPostSchema = new mongoose.Schema(
     },
     department: {
       type: String,
-      required: true,
+      // required: true,
     },
     location: {
       type: String,
-      required: true,
+      // required: true,
     },
     description: {
       type: String,
-      required: true,
+      // required: true,
     },
     experience: {
       type: String,
@@ -33,7 +33,7 @@ const jobPostSchema = new mongoose.Schema(
     },
     jobType: {
       type: String,
-      required: true,
+      // required: true,
       enum: ["Full-Time", "Part-Time", "Contract", "Remote"],
     },
 
