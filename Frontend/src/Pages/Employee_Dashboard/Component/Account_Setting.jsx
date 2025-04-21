@@ -1,13 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Alert } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import defaultImage from "../../../assets/Images/Avatar.png";
+import SignOut from "../../Authentication/SignOut";
+import {
+  deleteUserFailure,
+  deleteUserSuccess,
+  deleteUserStart,
+} from "../../../Redux/User/UserSlice";
 
-const Account_Setting = ({ userData }) => {
+const Account_Setting = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState([]);
@@ -162,136 +169,168 @@ const Account_Setting = ({ userData }) => {
     setUpdateUserSuccess(null);
   };
 
+  const handleDeleteAccount = async (id) => {
+    if (window.confirm("Are you sure you want to delete your account?"))
+      try {
+        dispatch(deleteUserStart());
+        const response = await axios.delete(
+          "http://localhost:8080/api/admin/deleteUser",
+          {
+            data: {
+              userId: id,
+            },
+          }
+        );
+        if (response.status === 200) {
+          dispatch(deleteUserSuccess());
+        }
+      } catch (error) {
+        dispatch(deleteUserFailure());
+      }
+  };
+
   return (
-    <div className="p-6 min-h-screen shadow-2xl rounded-2xl w-full">
-      <h1 className="text-2xl font-bold mb-6 text-center">Account Settings</h1>
+    <>
+      <div className="p-6 min-h-screen shadow-2xl rounded-2xl w-full">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Account Settings
+        </h1>
 
-      <form onSubmit={handleSubmitForm}>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          ref={filePickerRef}
-          className="hidden"
-          disabled={!isEditing}
-        />
-        <div className="w-full flex justify-center items-center flex-col">
-          <img
-            src={imageFileUrl || currentUser.profilePicture || defaultImage}
-            className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${
-              imageFileUploading && "opacity-60"
-            }`}
-            alt="user"
-            draggable="false"
-            onClick={() => filePickerRef.current.click()}
+        <form onSubmit={handleSubmitForm}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            ref={filePickerRef}
+            className="hidden"
+            disabled={!isEditing}
           />
+          <div className="w-full flex justify-center items-center flex-col">
+            <img
+              src={imageFileUrl || currentUser.profilePicture || defaultImage}
+              className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${
+                imageFileUploading && "opacity-60"
+              }`}
+              alt="user"
+              draggable="false"
+              onClick={() => filePickerRef.current.click()}
+            />
 
-          {imageFileUploadError && (
-            <div className="w-full flex justify-center mt-5">
-              <Alert color="failure" className="w-full max-w-lg text-center">
-                {imageFileUploadError}
-              </Alert>
+            {imageFileUploadError && (
+              <div className="w-full flex justify-center mt-5">
+                <Alert color="failure" className="w-full max-w-lg text-center">
+                  {imageFileUploadError}
+                </Alert>
+              </div>
+            )}
+            <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Your name"
+                value={formData.name || ""}
+                onChange={handleFormChange}
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
+                disabled={!isEditing}
+              />
             </div>
-          )}
-          <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Your name"
-              value={formData.name || ""}
-              onChange={handleFormChange}
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
-              disabled={!isEditing}
-            />
-          </div>
-          <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              value={formData.username || ""}
-              onChange={handleFormChange}
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
-              disabled={!isEditing}
-            />
-          </div>
-          <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              id="email"
-              value={formData.email || ""}
-              onChange={handleFormChange}
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
-              disabled={!isEditing}
-            />
-          </div>
-          <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="password"
-              onChange={handleFormChange}
-              className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
-              disabled={!isEditing}
-            />
-          </div>
-          {isEditing ? (
-            <button
-              className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300"
-              disabled={imageFileUploading}
-            >
-              {imageFileUploading ? "Uploading Image " : "Update"}
-            </button>
-          ) : (
-            <div
-              className="w-full max-w-lg bg-OrangeColor text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
-              onClick={() =>
-                setIsEditing(true) ||
-                setUpdateUserError(null) ||
-                setUpdateUserSuccess(null)
-              }
-            >
-              Edit
+            <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={formData.username || ""}
+                onChange={handleFormChange}
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
+                disabled={!isEditing}
+              />
             </div>
-          )}
+            <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                value={formData.email || ""}
+                onChange={handleFormChange}
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
+                disabled={!isEditing}
+              />
+            </div>
+            <div className="flex flex-col gap-2 md:mt-4 w-full max-w-lg">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="password"
+                onChange={handleFormChange}
+                className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
+                disabled={!isEditing}
+              />
+            </div>
+            {isEditing ? (
+              <button
+                className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300"
+                disabled={imageFileUploading}
+              >
+                {imageFileUploading ? "Uploading Image " : "Update"}
+              </button>
+            ) : (
+              <div
+                className="w-full max-w-lg bg-OrangeColor text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
+                onClick={() =>
+                  setIsEditing(true) ||
+                  setUpdateUserError(null) ||
+                  setUpdateUserSuccess(null)
+                }
+              >
+                Edit
+              </div>
+            )}
 
-          {isEditing && (
-            <div
-              className="w-full max-w-lg bg-red-700 text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
-              onClick={handleCancelClick}
-            >
-              Cancel
-            </div>
-          )}
+            {isEditing && (
+              <div
+                className="w-full max-w-lg bg-red-700 text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </div>
+            )}
 
-          <div className="flex justify-between items-center w-full max-w-lg mt-2">
-            <span className="text-red-600 font-semibold cursor-pointer">
-              Delete Account
-            </span>
-            <span className="text-red-600 font-semibold cursor-pointer">
+            <div className="flex justify-between items-center w-full max-w-lg mt-2">
+              <button
+                onClick={() => handleDeleteAccount(currentUser._id)}
+                type="button"
+                className="font-semibold cursor-pointer"
+              >
+                Delete Account
+              </button>
+              {/* <button
+              type="button"
+              className="text-red-600 font-semibold cursor-pointer"
+            >
               Sign Out
-            </span>
+            </button> */}
+              <SignOut />
+            </div>
           </div>
-        </div>
-      </form>
-      {updateUserError && (
-        <div className="w-full flex justify-center mt-5">
-          <Alert color="failure" className="w-full max-w-lg text-center">
-            {updateUserError}
-          </Alert>
-        </div>
-      )}
-      {updateUserSuccess && (
-        <div className="w-full flex justify-center mt-5">
-          <Alert color="success" className="w-full max-w-lg text-center">
-            {updateUserSuccess}
-          </Alert>
-        </div>
-      )}
-    </div>
+        </form>
+        {updateUserError && (
+          <div className="w-full flex justify-center mt-5">
+            <Alert color="failure" className="w-full max-w-lg text-center">
+              {updateUserError}
+            </Alert>
+          </div>
+        )}
+        {updateUserSuccess && (
+          <div className="w-full flex justify-center mt-5">
+            <Alert color="success" className="w-full max-w-lg text-center">
+              {updateUserSuccess}
+            </Alert>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

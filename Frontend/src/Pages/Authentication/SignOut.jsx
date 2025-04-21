@@ -29,7 +29,7 @@ const SignOut = () => {
   return (
     <div>
       {currentUser && (
-        <button className="mb-2" type="submit" onClick={handleSignOut}>
+        <button className="mb-2 font-semibold" type="submit" onClick={handleSignOut}>
           Sign Out
         </button>
       )}
