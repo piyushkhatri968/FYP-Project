@@ -4,7 +4,7 @@ import "./Footer.css";
 import AboutPage from "../../Pages/About/AboutPage";
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer sticky">
       <div className="container">
         <div className="footer-content">
           {/* Logo and Description */}
