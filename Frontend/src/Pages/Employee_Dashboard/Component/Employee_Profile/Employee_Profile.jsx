@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Social_Links from "./Components/Social_Links";
 import { Spinner } from "flowbite-react";
+import UpdateResume from "./Components/UpdateResume";
 
 const Employee_Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -21,6 +22,7 @@ const Employee_Profile = () => {
           `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
         );
         setCurrentUserData(userData.data.data);
+
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -42,6 +44,11 @@ const Employee_Profile = () => {
 
           <Basic_Info userData={currentUserData} />
 
+          <hr className="my-8" />
+
+          {/* Resume update */}
+
+          <UpdateResume />
           <hr className="my-8" />
 
           {/* ADDRESS */}

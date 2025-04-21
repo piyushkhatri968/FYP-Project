@@ -7,6 +7,7 @@ import {
   getSavedJobs,
   toggleFavoriteJob,
   getFavorites,
+  uploadResume
 } from "../Controller/Candidate.controller.js";
 
 router.get("/getData/:id", getCandidateDetails);
@@ -15,5 +16,6 @@ router.get("/appliedJobs/:id", getAppliedJobs); //
 router.get("/savedJobs/:id", getSavedJobs);
 router.post("/toggleFavoriteJob", toggleFavoriteJob);
 router.get("/getFavorites", getFavorites);
+router.put("/uploadResume/:id", uploadResume)
 
 export default router;

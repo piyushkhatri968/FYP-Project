@@ -133,3 +133,30 @@ export const getFavorites = async (req, res, next) => {
     next(error);
   }
 };
+
+export const uploadResume = async (req, res, next) => {
+  const { id } = req.params;
+  const { resume } = req.body;
+
+  if (!resume) {
+    return next(errorHandler(400, "Resume URL is required."));
+  }
+
+  try {
+    const updatedResume = await Candidate.findByIdAndUpdate(
+      id,
+      { resume: resume },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedResume) {
+      return next(errorHandler(404, "Candidate not found."));
+    }
+
+    return res.status(200).json({
+      message: "Resume updated successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

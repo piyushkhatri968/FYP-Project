@@ -34,13 +34,13 @@ const Resume = () => {
   return (
     <div>
       {loading ? (
-        <div>
-          <Spinner size="sm" />
+        <div className="w-full min-h-screen flex items-center justify-center">
+          <Spinner size="xl" />
         </div>
       ) : (
         <>
           {/* <Theme pageName="Resume" heroImage={ResumeImg} /> */}
-          <div className="w-full h-screen">
+          <div className="w-full h-screen mt-6">
             <div className="">
               {/* PROFILE SECTION */}
               <div className="text-center">
@@ -51,6 +51,7 @@ const Resume = () => {
                     currentUser.profilePicture
                   }
                   alt=""
+                  draggable="false"
                   className="w-40 h-40 mx-auto rounded-full object-cover"
                 />
                 <h1 className="text-3xl font-bold text-gray-800 mt-4">
@@ -62,7 +63,7 @@ const Resume = () => {
                 <a
                   href={userData?.candidateDetails?.resume}
                   target="_blank"
-                  className="px-4 py-2 bg-BlueColor text-white rounded-md cursor-pointer" 
+                  className="px-4 py-2 bg-BlueColor text-white rounded-md cursor-pointer"
                 >
                   Resume
                 </a>

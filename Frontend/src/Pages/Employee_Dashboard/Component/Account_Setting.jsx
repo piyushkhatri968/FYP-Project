@@ -39,7 +39,7 @@ const Account_Setting = ({ userData }) => {
     setImageFileUploadError(null);
     setImageFileUploading(true);
     if (file) {
-      setImageFile(file)
+      setImageFile(file);
       setImageFileUrl(URL.createObjectURL(file));
     }
   };
@@ -47,19 +47,22 @@ const Account_Setting = ({ userData }) => {
   const uploadImage = async () => {
     setImageFileUploadError(null);
     if (!imageFile) {
-      return null
+      return null;
     }
-    setImageFileUploading(true)
-    const data = new FormData()
-    data.append("file", imageFile)
-    data.append("upload_preset", "for_fyp_project")
-    data.append("cloud_name", "dtfvymy9c")
+    setImageFileUploading(true);
+    const data = new FormData();
+    data.append("file", imageFile);
+    data.append("upload_preset", "for_fyp_project");
+    data.append("cloud_name", "dtfvymy9c");
 
     try {
-      const response = await axios.post("https://api.cloudinary.com/v1_1/dtfvymy9c/image/upload", data)
-      setImageFileUrl(response.data.secure_url)
-      setFormData({ ...formData, profilePicture: response.data.secure_url })
-      setImageFileUploading(false)
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dtfvymy9c/image/upload",
+        data
+      );
+      setImageFileUrl(response.data.secure_url);
+      setFormData({ ...formData, profilePicture: response.data.secure_url });
+      setImageFileUploading(false);
     } catch (error) {
       setImageFileUploadError("Could not upload image");
       setImageFile(null);
@@ -67,17 +70,15 @@ const Account_Setting = ({ userData }) => {
       setImageFileUploading(false);
       console.error("Error uploading image:", error);
     }
-  }
+  };
 
   useEffect(() => {
     if (imageFile) {
-      uploadImage()
+      uploadImage();
     }
-  }, [imageFile])
+  }, [imageFile]);
 
   //! ------------------------------------------------
-
-
 
   const handleFormChange = (e) => {
     const { id, value } = e.target;
@@ -90,25 +91,32 @@ const Account_Setting = ({ userData }) => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/user/getUserInfo/${currentUser._id}`)
-        setFormData(response.data.data)
-        setOriginalData(response.data.data)
+        const response = await axios.get(
+          `http://localhost:8080/api/user/getUserInfo/${currentUser._id}`
+        );
+        setFormData(response.data.data);
+        setOriginalData(response.data.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getUserData()
-  }, [currentUser])
+    };
+    getUserData();
+  }, [currentUser]);
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    setUpdateUserError(null)
-    setUpdateUserSuccess(null)
+    setUpdateUserError(null);
+    setUpdateUserSuccess(null);
 
-    if (formData.name === "" || formData.email === "" || formData.username === "" || formData.password === "") {
-      setUpdateUserSuccess(null)
-      setUpdateUserError("Field can not be empty")
-      return
+    if (
+      formData.name === "" ||
+      formData.email === "" ||
+      formData.username === "" ||
+      formData.password === ""
+    ) {
+      setUpdateUserSuccess(null);
+      setUpdateUserError("Field can not be empty");
+      return;
     }
     // Check if data has changed
     const hasChanges = Object.keys(formData).some(
@@ -122,7 +130,7 @@ const Account_Setting = ({ userData }) => {
     }
 
     if (imageFileUploading) {
-      setUpdateUserError("Please wait for the image to upload")
+      setUpdateUserError("Please wait for the image to upload");
     }
     try {
       const response = await axios.put(
@@ -131,7 +139,7 @@ const Account_Setting = ({ userData }) => {
       );
       if (response) {
         setTimeout(() => {
-          window.location.reload(false)
+          window.location.reload(false);
         }, 1000);
         setIsEditing(false);
         setUpdateUserError(null);
@@ -139,7 +147,7 @@ const Account_Setting = ({ userData }) => {
       }
     } catch (error) {
       setUpdateUserSuccess(null);
-      console.log(error.response.data.message)
+      console.log(error.response.data.message);
       setUpdateUserError(error.response.data.message);
     }
   };
@@ -153,9 +161,6 @@ const Account_Setting = ({ userData }) => {
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
   };
-
-
-
 
   return (
     <div className="p-6 min-h-screen shadow-2xl rounded-2xl w-full">
@@ -171,10 +176,11 @@ const Account_Setting = ({ userData }) => {
           disabled={!isEditing}
         />
         <div className="w-full flex justify-center items-center flex-col">
-
           <img
             src={imageFileUrl || currentUser.profilePicture || defaultImage}
-            className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${imageFileUploading && "opacity-60"}`}
+            className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${
+              imageFileUploading && "opacity-60"
+            }`}
             alt="user"
             draggable="false"
             onClick={() => filePickerRef.current.click()}
@@ -231,21 +237,35 @@ const Account_Setting = ({ userData }) => {
               className="border-gray-300 px-4 py-2.5 rounded-md md:w-78  text-black font-semibold"
               disabled={!isEditing}
             />
-
           </div>
           {isEditing ? (
-            <button className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300" disabled={imageFileUploading}>
+            <button
+              className="w-full max-w-lg bg-[#010c29eb] text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#010C29] transition-all duration-300"
+              disabled={imageFileUploading}
+            >
               {imageFileUploading ? "Uploading Image " : "Update"}
             </button>
           ) : (
-            <div className="w-full max-w-lg bg-OrangeColor text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer" onClick={() => setIsEditing(true) || setUpdateUserError(null) || setUpdateUserSuccess(null)}>
+            <div
+              className="w-full max-w-lg bg-OrangeColor text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
+              onClick={() =>
+                setIsEditing(true) ||
+                setUpdateUserError(null) ||
+                setUpdateUserSuccess(null)
+              }
+            >
               Edit
             </div>
           )}
 
-          {isEditing && <div className="w-full max-w-lg bg-red-700 text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer" onClick={handleCancelClick}>
-            Cancel
-          </div>}
+          {isEditing && (
+            <div
+              className="w-full max-w-lg bg-red-700 text-center text-white font-semibold p-2 mt-4 rounded-md hover:bg-[#ff3737] transition-all duration-300 cursor-pointer"
+              onClick={handleCancelClick}
+            >
+              Cancel
+            </div>
+          )}
 
           <div className="flex justify-between items-center w-full max-w-lg mt-2">
             <span className="text-red-600 font-semibold cursor-pointer">
