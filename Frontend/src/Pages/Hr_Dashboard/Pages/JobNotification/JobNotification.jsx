@@ -110,10 +110,10 @@ const JobNotification = ({ addRecentJob }) => {
           position: jobDetails.title,
           experience: jobDetails.experience,
           skills: jobDetails.skills,
-          location: { city: jobDetails.location }, // Make sure this matches Flask logic
+          location: { city: jobDetails.location }, 
         };
 
-        // console.log("hr input",recruiterInput)
+        console.log("hr input",recruiterInput)
   
         try {
           const matchRes = await fetch("http://localhost:5000/recruiter-search", {
