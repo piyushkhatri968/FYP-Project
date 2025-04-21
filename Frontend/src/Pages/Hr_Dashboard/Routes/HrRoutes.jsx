@@ -32,7 +32,7 @@ const HrRoutes = (
       <Route path="/hr/job-notification" element={<JobNotification />} />
       <Route path="/hr/schedule-interview" element={<InterviewScheduling/>} />
       <Route path="/hr/employment-announcements" element={<EmployeeAnnouncement />} />
-      <Route path="/hr/matched-candidates" element={<MatchedCandidates/>}/>
+      {/* <Route path="/hr/matched-candidates" element={<MatchedCandidates/>}/> */}
       <Route path="/hr/profile" element={<Profile/>} />
    </Route>
 );
