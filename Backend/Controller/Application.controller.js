@@ -44,7 +44,7 @@ export const getApplications = async (req, res, next) => {
         path: "userId",
         populate: {
           path: "userId",
-          select: "name email position",
+          select: "name email position profilePicture",
         },
       })
       .populate("jobId", "title postedBy"); // Populate job details
@@ -129,7 +129,7 @@ export const getApp = async (req, res) => {
       })
       .populate({
         path: "userId",
-        select: "name experience email phone education skills",
+        select: "name experience email phone education skills profilePicture",
       });
 
     // Filter applications where the job's postedBy field matches HR ID

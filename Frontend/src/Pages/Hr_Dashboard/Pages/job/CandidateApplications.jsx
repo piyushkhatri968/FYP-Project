@@ -67,6 +67,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     fetchCandidates();
   }, [user]); 
 
+  console.log("candidates are :", candidates);
 // ****************************8 OLD CODE *****************************************
   // // Fetch candidates from the backend
   // useEffect(() => {
@@ -280,7 +281,12 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     className="flex items-center justify-between p-4 bg-white rounded shadow-md"
   >
     <div className="flex items-center gap-4">
-      <FaUser className="text-blue-500 text-2xl" />
+    <img
+  src={candidate.userId.userId?.profilePicture || "/default-avatar.png"}
+  alt="User Profile"
+  className="w-8 h-8 rounded-full object-cover"
+/>
+      {/* <FaUser className="text-blue-500 text-2xl" /> */}
       <div>
         {/* Display User's Name */}
         <h4 className="font-bold"> {candidate.userId.userId?.name || "N/A"}</h4>
