@@ -385,7 +385,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
             </p>
 
             <a
-              href={modalCandidate.resumeUrl || "#"}
+              href={modalCandidate.userId.resume || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline mt-2 inline-block"
