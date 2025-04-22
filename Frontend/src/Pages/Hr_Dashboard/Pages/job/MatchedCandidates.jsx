@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { FaEnvelope, FaMapMarkerAlt, FaBriefcase, FaUserTie, FaCode } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { color } from "framer-motion";
 
 
 const MatchedCandidatesPage = () => {
@@ -13,7 +15,18 @@ const MatchedCandidatesPage = () => {
 
 
   if (matchedCandidates.length === 0) {
-    return <p className="text-center text-gray-500">No matched candidates found.</p>;
+    <div>
+
+    </div>
+    
+    return <p className="text-center text-gray-500">No matched candidates found.  <br /> <br />
+    <Link 
+    to={"/hr/dashboard"} 
+      className="inline-block bg-blue-600 text-white px-5 py-2 rounded-md font-semibold hover:bg-red-700 transition"
+
+    
+    >Go to Dashobard</Link></p>;
+    
   }
 
   return (
