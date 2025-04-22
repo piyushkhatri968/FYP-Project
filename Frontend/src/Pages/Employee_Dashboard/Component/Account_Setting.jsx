@@ -207,7 +207,7 @@ const Account_Setting = () => {
           />
           <div className="w-full flex justify-center items-center flex-col">
             <img
-              src={imageFileUrl || currentUser.profilePicture || defaultImage}
+              src={imageFileUrl || formData.profilePicture || defaultImage}
               className={`rounded-full w-32 h-32 object-cover border-8 border-[lightgray] mb-4 ${
                 imageFileUploading && "opacity-60"
               }`}

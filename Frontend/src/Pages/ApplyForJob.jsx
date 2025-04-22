@@ -107,22 +107,22 @@ const ApplyForJob = () => {
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
                   Comapany{" "}
                   <span className="text-gray-600">
-                    {job.postedBy.recruiterDetails?.companyName}
+                    {job.postedBy?.recruiterDetails?.companyName}
                   </span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
                   Experience{" "}
-                  <span className="text-gray-600">{job.experience} Years</span>
+                  <span className="text-gray-600">{job?.experience} Years</span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
-                  Location <span className="text-gray-600">{job.location}</span>
+                  Location <span className="text-gray-600">{job?.location}</span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
-                  Job Type <span className="text-gray-600">{job.jobType}</span>
+                  Job Type <span className="text-gray-600">{job?.jobType}</span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
                   Email{" "}
-                  <span className="text-gray-600">{job.postedBy.email}</span>
+                  <span className="text-gray-600">{job?.postedBy?.email}</span>
                 </p>
               </div>
             </div>
@@ -138,13 +138,13 @@ const ApplyForJob = () => {
           <div className="flex flex-col items-center gap-3 shadow-2xl mt-4 px-28 py-8 w-full text-center max-w-sm rounded-md">
             <h1 className="font-bold text-2xl text-[#010C29]">Posted By</h1>
             <img
-              src={job.postedBy.profilePicture}
+              src={job?.postedBy?.profilePicture}
               alt=""
               className="h-28 w-28 rounded-full"
             />
-            <p className="text-lg font-semibold">{job.postedBy.name}</p>
+            <p className="text-lg font-semibold">{job?.postedBy?.name}</p>
             <p className="text-xl text-gray-600">
-              Recruiter at {job.postedBy.recruiterDetails?.companyName}
+              Recruiter at {job.postedBy?.recruiterDetails?.companyName}
             </p>
           </div>
         </div>

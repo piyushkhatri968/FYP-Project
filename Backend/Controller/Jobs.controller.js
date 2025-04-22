@@ -7,7 +7,7 @@ export const createJobPost = async (req, res) => {
   try {
     let { title, description, location, skills } = req.body;
     let skill = skills.join(" ");
-    const slug = (title + " " + description + " " + location + " " + skill)
+    const slug = (title + " " + " " + location + " " + skill)
       .split(" ")
       .join("-")
       .toLowerCase()
@@ -216,7 +216,7 @@ export const getJobDetails = async (req, res, next) => {
       model: "User",
       populate: {
         path: "recruiterDetails",
-        select:"companyAddress companyName contactNumber department position",
+        select: "companyAddress companyName contactNumber department position",
         model: "Recruiter",
       },
     });

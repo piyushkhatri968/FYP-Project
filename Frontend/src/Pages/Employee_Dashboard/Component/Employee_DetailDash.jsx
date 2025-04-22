@@ -6,9 +6,9 @@ import { FaClipboardList } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
 const Employee_DetailDash = () => {
-  const [totalJobs, setTotalJobs] = useState();
-  const [appliedJobs, setAppliedJobs] = useState();
-  const [savedJobs, setSavedJobs] = useState();
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [appliedJobs, setAppliedJobs] = useState(0);
+  const [savedJobs, setSavedJobs] = useState(0);
 
   const { currentUser } = useSelector((state) => state.user);
 
