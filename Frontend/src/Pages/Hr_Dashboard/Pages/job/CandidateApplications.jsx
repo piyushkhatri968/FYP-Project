@@ -282,11 +282,11 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   >
     <div className="flex items-center gap-4">
     <img
-  src={candidate.userId.userId?.profilePicture || "/default-avatar.png"}
+  src={candidate.userId.userId?.profilePicture ||    <FaUser className="text-blue-500 text-2xl" />}
   alt="User Profile"
   className="w-8 h-8 rounded-full object-cover"
 />
-      {/* <FaUser className="text-blue-500 text-2xl" /> */}
+   
       <div>
         {/* Display User's Name */}
         <h4 className="font-bold"> {candidate.userId.userId?.name || "N/A"}</h4>
