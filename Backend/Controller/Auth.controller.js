@@ -31,6 +31,24 @@ export const signup = async (req, res, next) => {
     if (existingUsername) {
       return next(errorHandler(400, "User already exists with this username"));
     }
+    if (username) {
+      if (username.length < 5 || username.length > 20) {
+        return next(
+          errorHandler(400, "Username must be between 5 and 20 characters")
+        );
+      }
+      if (username.includes(" ")) {
+        return next(errorHandler(400, "Username cannot contain spaces"));
+      }
+      if (username !== username.toLowerCase()) {
+        return next(errorHandler(400, "Username must be lowercase"));
+      }
+      if (!/^[a-zA-Z0-9]+$/.test(username)) {
+        return next(
+          errorHandler(400, "Username can only contain letters and numbers")
+        );
+      }
+    }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
@@ -137,6 +155,25 @@ export const signin = async (req, res, next) => {
 export const signout = (req, res, next) => {
   try {
     res.clearCookie("access_token").status(200).json("User has been signout");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getMe = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    if (!userId) {
+      return next(errorHandler(400, "UserId is required."));
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(errorHandler(404, "User not exist."));
+    }
+    res.status(200).json({
+      success: true,
+      message: "User is available",
+    });
   } catch (error) {
     next(error);
   }

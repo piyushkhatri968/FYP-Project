@@ -26,7 +26,7 @@ const candidateSchema = new mongoose.Schema(
       type: String,
     },
     phone: {
-      type: Number,
+      type: String,
     },
     language: {
       type: String,
