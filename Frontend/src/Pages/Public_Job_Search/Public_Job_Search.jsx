@@ -136,10 +136,10 @@ const Public_Job_Search = () => {
                     <CiLocationOn className="text-gray-600 text-lg" />
                     <span>{job.location}</span>
                   </div>
-                  <div className="text-gray-500 flex items-center space-x-1">
+                  {/* <div className="text-gray-500 flex items-center space-x-1">
                     <CiFilter className="text-gray-600 text-lg" />
                     <span>{job.skills.join(", ")}</span>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Right Side */}
