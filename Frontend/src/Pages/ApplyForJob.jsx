@@ -98,6 +98,18 @@ const ApplyForJob = () => {
               </h1>
               <p className="text-gray-600 mb-6">{job.description}</p>
             </div>
+            {/* Skills */}
+            <div>
+              <h1 className="mb-4 font-bold text-2xl text-[#010C29]">
+                Skills Required
+              </h1>
+              <p className="text-gray-600 mb-6 flex gap-2">
+                {job &&
+                  job.skills.map((skill, index) => (
+                    <div key={index} className="text-black font-medium bg-gray-200 px-2 rounded-md">{skill}</div>
+                  ))}
+              </p>
+            </div>
             {/* Job Details */}
             <div>
               <h1 className="mb-4 font-bold text-2xl text-[#010C29]">
@@ -115,7 +127,8 @@ const ApplyForJob = () => {
                   <span className="text-gray-600">{job?.experience} Years</span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
-                  Location <span className="text-gray-600">{job?.location}</span>
+                  Location{" "}
+                  <span className="text-gray-600">{job?.location}</span>
                 </p>
                 <p className="text-[#010C29] font-semibold text-[18px] border-b border-gray-600">
                   Job Type <span className="text-gray-600">{job?.jobType}</span>
