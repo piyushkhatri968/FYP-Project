@@ -7,7 +7,7 @@ export const createJobPost = async (req, res) => {
   try {
     let { title, description, location, skills } = req.body;
     let skill = skills.join(" ");
-    const slug = (title + " " + location + " " + skill)
+    const slug = (title + " " + description + " " + location + " " + skill)
       .split(" ")
       .join("-")
       .toLowerCase()
