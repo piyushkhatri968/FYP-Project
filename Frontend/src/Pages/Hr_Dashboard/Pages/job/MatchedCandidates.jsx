@@ -1,13 +1,27 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { FaEnvelope, FaMapMarkerAlt, FaBriefcase, FaUserTie, FaCode } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { color } from "framer-motion";
+import { useState } from "react";
 
 
 const MatchedCandidatesPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const matchedCandidates = location.state?.matchedCandidates || [];
+
+  const [shortlisted, setShortlisted] = useState([]);
+
+  const handleShortlist = (candidate) => {
+    if (!shortlisted.includes(candidate)) {
+      setShortlisted([...shortlisted, candidate]);
+    }
+  };
+
+  const goToShortlisted = () => {
+    navigate("/hr/shortlisted-candidates", { state: { shortlisted } });
+  };
 
   console.log("Received:", matchedCandidates);
 
@@ -31,6 +45,18 @@ const MatchedCandidatesPage = () => {
 
   return (
     <div className="p-6">
+
+{shortlisted.length > 0 && (
+        <div className="mb-4">
+          <button
+            onClick={goToShortlisted}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            View Shortlisted Candidates ({shortlisted.length})
+          </button>
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold mb-4 text-green-700">Matched Candidates</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {matchedCandidates.map((candidate, index) => {
@@ -89,6 +115,15 @@ const MatchedCandidatesPage = () => {
                       </span>
                     ))}
                   </div>
+
+                  <div className="mt-4">
+                <button
+                  onClick={() => handleShortlist(candidate)}
+                  className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+                >
+                  Shortlist
+                </button>
+              </div>
                 </div>
               </div>
             </div>
