@@ -1,7 +1,8 @@
 from sentence_transformers import SentenceTransformer, util
 
 # Load Sentence-BERT model
-model = SentenceTransformer('all-MiniLM-L6-v2')
+# model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer('all-mpnet-base-v2')
 
 def normalize_text(text):
     return text.lower().strip()

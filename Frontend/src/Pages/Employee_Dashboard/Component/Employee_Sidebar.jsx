@@ -97,7 +97,7 @@ const Sidebar = ({ userData }) => {
               Suggested Jobs
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/dashboard/employee?tab=messages"
               className={`${location.pathname === "/dashboard/employee" &&
@@ -109,7 +109,7 @@ const Sidebar = ({ userData }) => {
               <i className="fas fa-envelope"></i>
               Messages
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/dashboard/employee?tab=saved-jobs"
