@@ -78,6 +78,7 @@ def recruiter_search():
                 user = users_collection.find_one({"_id": ObjectId(user_id)})
                 if user:
                     user_info = {
+                        "userId":str(user.get("_id")),
                         "name": user.get("name"),
                         "email": user.get("email"),
                         "username": user.get("username"),
