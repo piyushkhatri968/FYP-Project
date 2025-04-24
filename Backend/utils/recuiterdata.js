@@ -1,12 +1,10 @@
-// const mongoose = require('mongoose');
-// const { faker } = require('@faker-js/faker');
-import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
-import bcrypt from "bcryptjs";
-// MongoDB Atlas connection URI
+import { faker } from '@faker-js/faker';
+import bcrypt from 'bcryptjs';
+
 const MONGO_URI = "mongodb+srv://pawankumar:pawankumar@fyp-project.moxg2.mongodb.net/fyp-project?retryWrites=true&w=majority&appName=fyp-project";
 
-// Connect to MongoDB
+// MongoDB connection
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("✅ Connected to MongoDB Atlas");
@@ -14,7 +12,7 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   })
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Define Schemas
+// Schemas
 const userSchema = new mongoose.Schema({
   name: String,
   username: String,
@@ -55,12 +53,29 @@ const jobPostSchema = new mongoose.Schema({
   __v: Number
 });
 
-// Define Models
+// Models
 const User = mongoose.model('User', userSchema);
 const Recruiter = mongoose.model('Recruiter', recruiterSchema);
 const JobPost = mongoose.model('JobPost', jobPostSchema);
 
-// Seeding Function
+// Technical roles and data pools
+const techJobTitles = [
+  "Frontend Developer", "Backend Developer", "Full Stack Developer",
+  "DevOps Engineer", "Software Engineer", "Mobile App Developer",
+  "Cloud Engineer", "Data Engineer", "Machine Learning Engineer", "Cybersecurity Analyst"
+];
+
+const techSkills = [
+  "React", "Node.js", "Docker", "AWS", "Python", "Kubernetes", "TypeScript",
+  "MongoDB", "GraphQL", "CI/CD", "Next.js", "PostgreSQL", "Jenkins", "Express.js"
+];
+
+const pakistaniCities = [
+  "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Peshawar",
+  "Multan", "Quetta", "Sialkot", "Hyderabad"
+];
+
+// Seeder
 async function seedData() {
   try {
     const users = [];
@@ -68,64 +83,67 @@ async function seedData() {
     const jobposts = [];
 
     for (let i = 0; i < 100; i++) {
-        const hashedPassword = await bcrypt.hash("12345678", 10);
-        const userId = new mongoose.Types.ObjectId();
-        const recruiterId = new mongoose.Types.ObjectId();
-        const now = new Date();
-      
-        const user = {
-          _id: userId,
-          name: faker.person.fullName(),
-          username: `recruiter_${i}`,
-          email: faker.internet.email(),
-          password: hashedPassword,
-          profilePicture: faker.image.avatar(),
-          userType: 'recruiter',
-          recruiterDetails: recruiterId,
-          createdAt: now,
-          updatedAt: now,
-          __v: 0
-        };
-      
-        const recruiter = {
-          _id: recruiterId,
-          userId: userId,
-          position: faker.person.jobTitle(),
-          department: 'IT',
-          companyAddress: faker.location.streetAddress(),
-          companyName: faker.company.name(),
-          contactNumber: faker.phone.number('03#########'),
-          createdAt: now,
-          updatedAt: now,
-          __v: 0
-        };
-      
-        const jobPost = {
-          title: faker.person.jobTitle(),
-          department: 'IT',
-          location: faker.location.city(),
-          description: faker.lorem.sentence(),
-          experience: '1-3 years',
-          skills: [faker.word.adjective(), faker.word.noun()],
-          slug: faker.helpers.slugify(faker.lorem.words(5)).toLowerCase(),
-          jobType: 'Remote',
-          postedBy: userId,
-          createdAt: now,
-          updatedAt: now,
-          __v: 0
-        };
-      
-        users.push(user);
-        recruiters.push(recruiter);
-        jobposts.push(jobPost);
-      }
+      const hashedPassword = await bcrypt.hash("12345678", 10);
+      const userId = new mongoose.Types.ObjectId();
+      const recruiterId = new mongoose.Types.ObjectId();
+      const now = new Date();
 
-    // Insert into MongoDB
+      const jobTitle = faker.helpers.arrayElement(techJobTitles);
+      const selectedSkills = faker.helpers.arrayElements(techSkills, 3);
+      const city = faker.helpers.arrayElement(pakistaniCities);
+
+      const user = {
+        _id: userId,
+        name: faker.person.fullName(),
+        username: `recruiter_${i}`,
+        email: faker.internet.email(),
+        password: hashedPassword,
+        profilePicture: faker.image.avatar(),
+        userType: 'recruiter',
+        recruiterDetails: recruiterId,
+        createdAt: now,
+        updatedAt: now,
+        __v: 0
+      };
+
+      const recruiter = {
+        _id: recruiterId,
+        userId: userId,
+        position: faker.person.jobTitle(),
+        department: 'IT',
+        companyAddress: faker.location.streetAddress(),
+        companyName: faker.company.name(),
+        contactNumber: faker.phone.number('03#########'),
+        createdAt: now,
+        updatedAt: now,
+        __v: 0
+      };
+
+      const jobPost = {
+        title: jobTitle,
+        department: 'IT',
+        location: city,
+        description: `We are looking for a ${jobTitle.toLowerCase()} with experience in ${selectedSkills.join(", ")}. Strong problem-solving and teamwork skills are essential.`,
+        experience: '1-3 years',
+        skills: selectedSkills,
+        slug: faker.helpers.slugify(`${jobTitle}-${city}-${selectedSkills.join('-')}`).toLowerCase(),
+        jobType: 'Remote',
+        postedBy: userId,
+        createdAt: now,
+        updatedAt: now,
+        __v: 0
+      };
+
+      users.push(user);
+      recruiters.push(recruiter);
+      jobposts.push(jobPost);
+    }
+
     await User.insertMany(users);
     await Recruiter.insertMany(recruiters);
     await JobPost.insertMany(jobposts);
 
-    console.log("✅ Seeded 100 users, recruiters, and jobposts!");
+    console.log("✅ Seeded 100 users, recruiters, and technical jobposts successfully.");
     mongoose.connection.close();
   } catch (error) {
     console.error("❌ Error during seeding:", error);
