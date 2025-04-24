@@ -23,6 +23,8 @@ import userRoute from "../Routes/user.route.js";
 import applicationRoute from "../Routes/Application.route.js";
 import recruiterRoute from "../Routes/recruiter.route.js";
 import adminRoute from "../Routes/Admin.route.js";
+import suggestionRoutes from "../Routes/suggestions.route.js";
+import notificationRoutes from "../Routes/notification.routes.js";
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -45,6 +47,9 @@ app.use("/api/application/candidate", applicationRoute);
 app.use("/api/recruiter", recruiterRoute);
 app.use("/api/jobs", jobRoute);
 app.use("/api/admin", adminRoute);
+app.use("/api/suggestion", suggestionRoutes);
+app.use("/api/notifications", notificationRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
