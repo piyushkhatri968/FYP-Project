@@ -11,12 +11,13 @@ import Employee_Application from "./Component/Employee_Application";
 import Account_Setting from "./Component/Account_Setting";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Employee_Jobs_Invitation from "./Component/Employee_Jobs_Invitation";
 
 const Employee_Dashboard = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
-    const { currentUser } = useSelector((state) => state.user);
-    const [currentUserData, setCurrentUserData] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
+  const [currentUserData, setCurrentUserData] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -26,19 +27,19 @@ const Employee_Dashboard = () => {
     }
   }, [location.search || location.pathname]);
 
-    useEffect(() => {
-      const getUserData = async () => {
-        try {
-          const userData = await axios.get(
-            `http://localhost:8080/api/user/getUserInfo/${currentUser._id}`
-          );
-          setCurrentUserData(userData.data.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getUserData();
-    }, []);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userData = await axios.get(
+          `http://localhost:8080/api/user/getUserInfo/${currentUser._id}`
+        );
+        setCurrentUserData(userData.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, []);
   return (
     <>
       <div className="flex flex-col justify-center items-center md:items-start gap-8 md:flex-row my-16 md:mt-8">
@@ -56,6 +57,9 @@ const Employee_Dashboard = () => {
 
           {/* SUGGESTED JOBS */}
           {tab === "suggestedjobs" && <Employee_Suggested_Jobs />}
+
+          {/* INVITED JOBS */}
+          {tab === "invitedjobs" && <Employee_Jobs_Invitation />}
 
           {/* APPLIED JOBS */}
           {tab === "appliedjobs" && <Employee_Applied_Jobs />}

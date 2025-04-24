@@ -97,6 +97,19 @@ const Sidebar = ({ userData }) => {
               Suggested Jobs
             </Link>
           </li>
+          <li>
+            <Link
+              to="/dashboard/employee?tab=invitedjobs"
+              className={`${location.pathname === "/dashboard/employee" &&
+                  location.search === "?tab=invitedjobs"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+                } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <FaLightbulb className="text-xl" />
+              Jobs Invitation
+            </Link>
+          </li>
           {/* <li>
             <Link
               to="/dashboard/employee?tab=messages"
