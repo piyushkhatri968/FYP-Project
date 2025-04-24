@@ -25,6 +25,7 @@ import recruiterRoute from "../Routes/recruiter.route.js";
 import adminRoute from "../Routes/Admin.route.js";
 import suggestionRoutes from "../Routes/suggestions.route.js";
 import notificationRoutes from "../Routes/notification.routes.js";
+import inviteRoutes from "../Routes/invite.route.js"
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -48,6 +49,7 @@ app.use("/api/recruiter", recruiterRoute);
 app.use("/api/jobs", jobRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/suggestion", suggestionRoutes);
+app.use("/api/hr",inviteRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 

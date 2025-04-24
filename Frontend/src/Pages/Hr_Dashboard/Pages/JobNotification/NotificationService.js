@@ -15,7 +15,7 @@ const NotificationService = {
       // Handle the response from the backend
       if (response.data.success) {
         console.log("Job successfully posted and notifications sent");
-        return { success: true };
+        return { success: true ,  jobPost: response.data.jobPost, };
       } else {
         console.error("Failed to send notifications");
         return { success: false };

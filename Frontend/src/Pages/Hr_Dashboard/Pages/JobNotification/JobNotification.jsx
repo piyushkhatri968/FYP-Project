@@ -13,6 +13,8 @@ const JobNotification = ({ addRecentJob }) => {
   
   // console.log("Current User from Redux:", currentUser); //debuging
   const [jobDetails, setJobDetails] = useState({
+
+    
     title: "",
     department: "",
     location: "",
@@ -23,7 +25,9 @@ const JobNotification = ({ addRecentJob }) => {
     postedBy: currentUser?._id || "", // Set postedBy with the user ID from Redux state
   });
 
-  console.log(currentUser._id);
+
+  // console.log("jobId:",jobId)
+  // console.log(currentUser._id);
 
   const navigate = useNavigate();
   const [matchedCandidates, setMatchedCandidates] = useState([]);
@@ -99,10 +103,15 @@ const JobNotification = ({ addRecentJob }) => {
     try {
       // Send job details to the backend
       const response = await NotificationService.sendNotifications(jobDetails);
+      
   
       // Check if response.success exists
       if (response && response.success) {
         setSuccessMessage("Job posted successfully!");
+        const createdJobId = response.jobPost._id; 
+      console.log("createdJobId:" ,createdJobId)
+
+        // const createdJobId = response.jobId || response._id;
         // addRecentJob(jobDetails); // Update User Dashboard
   
         // === Match candidates after job post ===
@@ -113,7 +122,7 @@ const JobNotification = ({ addRecentJob }) => {
           location: { city: jobDetails.location }, 
         };
 
-        console.log("hr input",recruiterInput)
+        // console.log("hr input",recruiterInput)
   
         try {
           const matchRes = await fetch("http://localhost:5000/recruiter-search", {
@@ -134,8 +143,11 @@ const JobNotification = ({ addRecentJob }) => {
             setMatchedCandidates([]);
         
         }
+
+        console.log("Created Job ID:", createdJobId);
+
         navigate("/hr/matched-candidates", {
-          state: { matchedCandidates: matchData.matched_candidates },
+          state: { matchedCandidates: matchData.matched_candidates, jobId: createdJobId, },
         });
 
 
