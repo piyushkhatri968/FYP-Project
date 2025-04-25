@@ -1,102 +1,119 @@
 import React from "react";
-import { FaGear } from "react-icons/fa6";
+import { FaGear, FaUserPlus, FaUserTie } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
 import { PiUsersThreeBold } from "react-icons/pi";
 import { Link, useLocation } from "react-router-dom";
 import { GrUserAdmin } from "react-icons/gr";
 import { useSelector } from "react-redux";
-import { IoMdPerson } from "react-icons/io";
+import { IoIosSettings, IoMdPerson } from "react-icons/io";
+import defaultImage from "../../../assets/Images/Avatar.png";
+import { LiaUserTagSolid } from "react-icons/lia";
 
-const Sidebar = () => {
+const Sidebar = ({ userData }) => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
+
   return (
-    <div
-      className="w-full mt-6 flex flex-col justify-between rounded-md overflow-hidden bg-[#0D1B2A] gap-12"
-      style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
-    >
-      <div>
-        <Link
-          to="/dashboard/admin?tab=adminDash"
-          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
-            location.pathname === "/profile" &&
-            location.search === "?tab=adminDash"
-              ? "text-[#00B79E]"
-              : null
-          }`}
-        >
-          <span className="bg-[#515151] p-2 rounded-full">
-            <MdDashboard />
-          </span>
-          <span>Dashboard</span>
-        </Link>
-        <Link
-          to="/dashboard/admin?tab=allEmployees"
-          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
-            location.pathname === "/profile" &&
-            location.search === "?tab=allEmployees"
-              ? "text-[#00B79E]"
-              : null
-          }`}
-        >
-          <span className="bg-[#515151] p-2 rounded-full">
-            <IoMdPerson />
-          </span>
-          <span>Employees</span>
-        </Link>
-        <Link
-          to="/dashboard/admin?tab=allRecruiter"
-          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
-            location.pathname === "/profile" &&
-            location.search === "?tab=allRecruiter"
-              ? "text-[#00B79E]"
-              : null
-          }`}
-        >
-          <span className="bg-[#515151] p-2 rounded-full">
-            <IoMdPerson />
-          </span>
-          <span>Recruiters</span>
-        </Link>
-        <Link
-          to="/dashboard/admin?tab=alladmins"
-          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
-            location.pathname === "/profile" &&
-            location.search === "?tab=alladmins"
-              ? "text-[#00B79E]"
-              : null
-          }`}
-        >
-          <span className="bg-[#515151] p-2 rounded-full">
-            <IoMdPerson />
-          </span>
-          <span>Admins</span>
-        </Link>
-        <Link
-          to="/dashboard/admin?tab=addNewAdmin"
-          className={`hover:bg-BlueColor w-full px-4 py-2 font-medium text-lg transition-all duration-200 flex items-center gap-2 ${
-            location.pathname === "/profile" &&
-            location.search === "?tab=addNewAdmin"
-              ? "text-[#00B79E]"
-              : null
-          }`}
-        >
-          <span className="bg-[#515151] p-2 rounded-full">
-            <GrUserAdmin />
-          </span>
-          <span>Add New Admin</span>
-        </Link>
+    <div className="md:w-96 bg-white shadow-lg mx-auto rounded-xl p-6">
+      {/* Profile Section */}
+      <div className="text-center mx-auto">
+        <img
+          draggable="false"
+          src={userData?.profilePicture || defaultImage}
+          alt="Profile"
+          className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-[lightgray]"
+        />
+        <h3 className="text-xl md:text-2xl font-bold mt-4 text-black">
+          {userData?.name}
+        </h3>
+        <p className="text-gray-500">{userData?.userType || "Admin"}</p>
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <h1 className="pl-4 py-2 text-2xl font-medium">
-            {currentUser?.username}
-          </h1>
-          <p className="bg-[#303030] py-1 px-2 rounded-full text-[11px]">
-            Admin
-          </p>
-        </div>
-      </div>
+
+      {/* Navigation Links */}
+      <nav className="mt-6">
+        <ul>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=adminDash"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=adminDash"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <MdDashboard size={20} />
+              </span>
+              <span>Dashboard</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=allEmployees"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=allEmployees"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <FaUserTie size={20}/>
+              </span>
+              <span>Employees</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=allRecruiter"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=allRecruiter"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <LiaUserTagSolid size={20}/>
+              </span>
+              <span>Recruiters</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=alladmins"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=alladmins"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <GrUserAdmin size={20}/>
+              </span>
+              <span>Admins</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=addNewAdmin"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=addNewAdmin"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <FaUserPlus size={20}/>
+              </span>
+              <span>Add New Admin</span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

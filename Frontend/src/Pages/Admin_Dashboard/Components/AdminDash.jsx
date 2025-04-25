@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { FaUsers, FaUserTie } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa6";
+import { GrUserAdmin } from "react-icons/gr";
+import { RiUserCommunityFill } from "react-icons/ri";
 
-const AdminDash = ({ totalUsers }) => {
-  console.log(totalUsers);
+const AdminDash = ({ totalUsers, jobs }) => {
   const totalUser = totalUsers?.length;
   const totalEmployees = totalUsers?.filter(
     (user) => user.userType === "employee"
@@ -13,41 +15,50 @@ const AdminDash = ({ totalUsers }) => {
   const totalAdmins = totalUsers?.filter(
     (user) => user.userType === "Admin"
   ).length;
+  const totalJobs = jobs?.length;
   return (
-    <div
-      className="w-full mt-6 flex flex-col rounded-md overflow-hidden bg-[#0D1B2A] p-4"
-      style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)" }}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <div
-          className="w-full rounded-md overflow-hidden bg-[#010C29] font-semibold text-lg items-center p-4 flex justify-between"
-          style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)" }}
-        >
-          <span>Users</span>
-          <span className="text-2xl">{totalUser}</span>
+    <div className="mx-auto p-3 px-12 w-full shadow-lg rounded-xl">
+      {/* Quick Actions */}
+      <section>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-r from-blue-400 to-blue-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform">
+            <div className="flex flex-col items-center">
+              <FaUsers size={32} className="mb-3" />
+              <span className="font-semibold text-xl">Users</span>
+            </div>
+            <div className="text-3xl font-semibold">{totalUser}</div>
+          </div>
+          <div className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform">
+            <div className="flex flex-col items-center">
+              <FaUserTie size={32} className="mb-3" />
+              <span className="font-semibold text-xl">Employees</span>
+            </div>
+            <div className="text-3xl font-semibold">{totalEmployees}</div>
+          </div>
+          <div className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform">
+            <div className="flex flex-col items-center">
+              <RiUserCommunityFill size={32} className="mb-3" />
+              <span className="font-semibold text-xl">Recruiters</span>
+            </div>
+            <div className="text-3xl font-semibold">{totalRecruiters}</div>
+          </div>
+          <div className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform">
+            <div className="flex flex-col items-center">
+              <GrUserAdmin size={32} className="mb-3" />
+              <span className="font-semibold text-xl">Admins</span>
+            </div>
+            <div className="text-3xl font-semibold">{totalAdmins}</div>
+          </div>
+          <div className="bg-gradient-to-r from-green-400 to-green-500 text-white p-6 rounded-lg shadow-md hover:shadow-lg flex items-center justify-between transition transform">
+            <div className="flex flex-col items-center">
+              <FaClipboardList size={32} className="mb-3" />
+              <span className="font-semibold text-xl">Jobs Posted</span>
+            </div>
+            <div className="text-3xl font-semibold">{totalJobs}</div>
+          </div>
         </div>
-        <div
-          className="w-full rounded-md overflow-hidden bg-[#010C29] font-semibold text-lg items-center p-4 flex justify-between"
-          style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)" }}
-        >
-          <span>Admins</span>
-          <span className="text-2xl">{totalAdmins}</span>
-        </div>
-        <div
-          className="w-full rounded-md overflow-hidden bg-[#010C29] font-semibold text-lg items-center p-4 flex justify-between"
-          style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)" }}
-        >
-          <span>Employees</span>
-          <span className="text-2xl">{totalEmployees}</span>
-        </div>
-        <div
-          className="w-full rounded-md overflow-hidden bg-[#010C29] font-semibold text-lg items-center p-4 flex justify-between"
-          style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)" }}
-        >
-          <span>Recruiters</span>
-          <span className="text-2xl">{totalRecruiters}</span>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };

@@ -7,13 +7,19 @@ import AllRecruiters from "./Components/AllRecruiters";
 import AdminDash from "./Components/AdminDash";
 import AllAdmin from "./Components/AllAdmin";
 import AddNewAdmin from "./Components/AddNewAdmin";
+import { useSelector } from "react-redux";
 
 const Admin_Dashboard = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("");
 
   const [totalUsers, setTotalUsers] = useState(null);
   const [userLoading, setUserLoading] = useState(false);
+  const [loggedInLoading, setLoggedInLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [jobsLoading, setJobsLoading] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -40,22 +46,64 @@ const Admin_Dashboard = () => {
       console.log(error);
     }
   };
+  const getLoggedInUsers = async () => {
+    try {
+      setLoggedInLoading(true);
+      const response = await axios.get(
+        `http://localhost:8080/api/auth/getMe/${currentUser._id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setUserData(response.data.user);
+        setLoggedInLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoggedInLoading(false);
+    }
+  };
+  const getAllJobs = async () => {
+    try {
+      setJobsLoading(true);
+      const response = await axios.get(
+        `http://localhost:8080/api/admin/allJobs`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setJobs(response.data.allJobs);
+        setJobsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setJobsLoading(false);
+    }
+  };
   useEffect(() => {
     getTotalUsers();
+    getLoggedInUsers();
+    getAllJobs();
   }, []);
   return (
-    <div className="mt-[70px] lg:mt-[0px] bg-[#0D1B2A]">
-      {userLoading ? (
+    <div className="mt-[70px] lg:mt-[0px]">
+      {userLoading || loggedInLoading || jobsLoading ? (
         <div className="flex justify-center items-center w-full h-[200px]">
           <div className="w-6 h-6 border-4 border-[#00806E] border-dotted rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="flex flex-col lg:flex-row gap-2 min-h-screen text-white mx-4">
           <div className="lg:w-[400px]">
-            <Sidebar />
+            <Sidebar userData={userData} />
           </div>
           {tab === "adminDash" && (
-            <AdminDash totalUsers={totalUsers} setTotalUsers={setTotalUsers} />
+            <AdminDash
+              totalUsers={totalUsers}
+              setTotalUsers={setTotalUsers}
+              jobs={jobs}
+            />
           )}
           {tab === "allEmployees" && (
             <AllEmployees

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaLightbulb } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import defaultImage from "../../../assets/Images/Avatar.png"
+import { MdOutlineInsertInvitation } from "react-icons/md";
 
 const Sidebar = ({ userData }) => {
   const location = useLocation();
@@ -106,7 +107,7 @@ const Sidebar = ({ userData }) => {
                   : null
                 } flex items-center gap-3 px-7 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
-              <FaLightbulb className="text-xl" />
+              <MdOutlineInsertInvitation className="text-xl" />
               Jobs Invitation
             </Link>
           </li>

@@ -2,6 +2,7 @@ import User from "../Models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { errorHandler } from "../utils/Error.js";
+import JobPost from "../Models/Hr_Models/Jobs.model.js";
 
 export const register = async (req, res, next) => {
   const { name, username, email, password } = req.body;
@@ -64,9 +65,7 @@ export const register = async (req, res, next) => {
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    // Sort users by creation date (latest first)
     const users = await User.find({}).sort({ createdAt: -1 });
-
     const populatedUsers = await Promise.all(
       users.map(async (user) => {
         if (user.userType === "employee") {
@@ -103,6 +102,18 @@ export const deleteUser = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error in deleting users:", error);
+    next(error);
+  }
+};
+
+export const getAllJobs = async (req, res, next) => {
+  try {
+    const allJobs = await JobPost.find({});
+    res.status(200).json({
+      success: true,
+      allJobs,
+    });
+  } catch (error) {
     next(error);
   }
 };

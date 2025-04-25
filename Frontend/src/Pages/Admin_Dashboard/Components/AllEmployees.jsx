@@ -57,7 +57,7 @@ const AllEmployees = ({ totalUsers, setTotalUsers }) => {
 
   return (
     <div
-      className="w-full mt-6 flex flex-col rounded-md overflow-hidden bg-[#0D1B2A] p-4 text-white"
+      className="w-full mt-6 flex flex-col rounded-md overflow-hidden  p-4 text-black"
       style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
     >
       <div className="flex items-end w-full justify-end">
@@ -97,7 +97,7 @@ const AllEmployees = ({ totalUsers, setTotalUsers }) => {
                 {filteredClients?.map((user, index) => (
                   <tr
                     key={user._id}
-                    className={(index + 1) % 2 === 0 ? "bg-BlueColor" : ""}
+                    className={(index + 1) % 2 === 0 ? "bg-gray-200" : ""}
                   >
                     <td className="px-3 py-3">{index + 1}</td>
                     <td className="px-3 py-3">{user?.name}</td>

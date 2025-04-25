@@ -4,6 +4,9 @@ import { FaBookmark, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import moment from "moment";
 import { Spinner } from "flowbite-react";
 import { useSelector } from "react-redux";
+import companyImage from "../../../assets/Images/Jobs/CompanyImg.png";
+import { Link } from "react-router-dom";
+import { CiClock1, CiFilter, CiLocationOn } from "react-icons/ci";
 
 const Employee_Jobs_Invitation = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -14,13 +17,16 @@ const Employee_Jobs_Invitation = () => {
   useEffect(() => {
     const getJobsInvitation = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `http://localhost:8080/api/hr/invitedJobs/${currentUser.candidateDetails}`
         );
         if (response.status === 200) {
-          setJobInvitations(response.data.invites);
+          setJobInvitations(response.data);
+          setLoading(false);
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
@@ -59,78 +65,51 @@ const Employee_Jobs_Invitation = () => {
           </div>
         ) : jobInvitations && jobInvitations.length > 0 ? (
           jobInvitations.map((job, index) => (
-            <div
+            <Link
+              to={`/jobs/${job?.job._id}`}
               key={index}
-              className="bg-white p-6 rounded-lg border-2 hover:shadow-lg transition-shadow"
+              className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md transition-all duration-200"
             >
-              {/* Header Section */}
-              <div className="flex justify-between items-center mb-4">
-                {/* <div className="flex items-center gap-4">
-                  <div className="bg-gray-200 w-28 h-20 rounded-md flex justify-center items-center">
-                    <img
-                      src={
-                        job.company_logo ||
-                        "https://c8.alamy.com/comp/2AH6RFF/real-estate-company-logo-design-template-blue-house-and-building-concept-construction-architecture-element-apartment-condo-rouded-window-shape-2AH6RFF.jpg"
-                      }
-                      alt=""
-                      className="w-24 h-16 rounded-md object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-semibold">{job.title}</h2>
-                    <p className="text-gray-500 text-sm flex gap-2 items-center">
-                      {job.postedBy ? job.postedBy.name : "Unknown Recruiter"} •{" "}
-                      <FaMapMarkerAlt className="inline text-red-500" />{" "}
-                      {job.location} •{" "}
-                      <FaClock className="inline text-yellow-500" />{" "}
-                      {moment(job.createdAt).fromNow()}
-                    </p>
-                  </div>
-                </div> */}
-                {/* <button onClick={() => toggleFavorite(job._id)}>
-                  <FaBookmark
-                    className={`text-2xl cursor-pointer ${
-                      favorites && favorites.includes(job._id)
-                        ? "text-blue-400"
-                        : "text-gray-400"
-                    }`}
-                  />
-                </button> */}
+              {/* Company Image */}
+              <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
+                <img
+                  src={companyImage}
+                  alt="Company Logo"
+                  className="w-10 h-10"
+                  draggable="false"
+                />
               </div>
 
-              {/* Description */}
-              {/* <p className="text-gray-600 mb-4">{job.description}</p> */}
-
-              {/* Skills */}
-              {/* <div className="flex flex-wrap gap-2 mb-4">
-                {job.skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-1 rounded-full"
-                  >
-                    {skill}
+              {/* Job Details */}
+              <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
+                <h2 className="text-lg font-bold">{job?.job.title}</h2>
+                <p className="text-sm">
+                  Via{" "}
+                  <span className="text-red-500">
+                    {job?.recruiter.companyName}
                   </span>
-                ))}
-              </div> */}
+                </p>
+                <div className="text-gray-500 flex items-center space-x-1 mt-1">
+                  <CiLocationOn className="text-gray-600 text-lg" />
+                  <span>{job?.job.location}</span>
+                </div>
+                <div className="text-gray-500 flex items-center space-x-1">
+                  <CiFilter className="text-gray-600 text-lg" />
+                  <span>{job?.job.skills.join(", ")}</span>
+                </div>
+              </div>
 
-              {/* Footer Section */}
-              {/* <div className="flex justify-between items-center">
-                <div className="flex gap-2 justify-center items-center flex-wrap">
-                  <p className="text-gray-500 text-sm">{job.jobType}</p>•{" "}
-                  <p className="text-gray-500 text-sm">
-                    {job.experience} years of experience
-                  </p>
+              {/* Right Side */}
+              <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
+                <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
+                  {job?.job.jobType}
                 </div>
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => handleApply(job._id)}
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                  >
-                    Apply Now
-                  </button>
+                <div className="flex justify-center items-center gap-2 text-gray-500">
+                  <CiClock1 />
+                  <span>{moment(job?.job.createdAt).fromNow()}</span>
                 </div>
-              </div> */}
-            </div>
+              </div>
+            </Link>
           ))
         ) : (
           <div className="text-center text-gray-600 mt-10">

@@ -175,7 +175,7 @@ const Navbar = () => {
                         : currentUser.userType === "employee"
                         ? "dashboard/employee?tab=dashboard"
                         : currentUser.userType === "Admin"
-                        ? "dashboard/admin"
+                        ? "dashboard/admin?tab=adminDash"
                         : null
                     }
                   >
