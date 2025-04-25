@@ -15,11 +15,10 @@ const MatchedCandidatesPage = () => {
   console.log("For Job ID:", jobId);
 
   const handleInvite = async (candidateId) => {
-    console.log("Current user", currentUser); // Debugging line
+    
 
-    const recruiterId =currentUser?._id || "" // Replace with actual HR/recruiter ID
-
-    // const jobId = jobId; // Replace with actual Job ID
+    const recruiterId =currentUser.recruiterDetails|| "" 
+    
 
     console.log("Sending invite with:", { candidateId, jobId, recruiterId });
 
