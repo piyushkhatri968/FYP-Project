@@ -34,7 +34,7 @@ def experience_match(seeker_exp, job_exp):
 def flexible_match(job_seeker_input, job):
     """Checks if a job post matches the job seeker's criteria."""
     if "title" in job_seeker_input:
-        if title_similarity(job_seeker_input["title"], job["title"]) < 0.5:
+        if title_similarity(job_seeker_input["title"], job["title"]) < 0.9:
             return False
     if "location" in job_seeker_input and normalize_text(job_seeker_input["location"]) not in normalize_text(job["location"]):
         return False

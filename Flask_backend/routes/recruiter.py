@@ -43,7 +43,7 @@ def recruiter_search():
         if "position" in recruiter_input:
             candidate_position = normalize_text(candidate.get("position", ""))
             similarity_score = title_similarity(recruiter_input["position"], candidate_position)
-            if similarity_score < 0.7:
+            if similarity_score < 0.9:
                 continue
 
         # Experience filtering

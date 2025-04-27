@@ -1,2 +1,5 @@
 Flask_backend/venv
 Flask_backend/env
+
+__pycache__/
+*.pyc
