@@ -38,8 +38,8 @@
 from sentence_transformers import SentenceTransformer, util
 
 
-# Load Sentence-BERT model
-model = SentenceTransformer('all-MiniLM-L6-v2')
+# Load MPNet model
+model = SentenceTransformer('all-mpnet-base-v2')
 
 def normalize_text(text):
     """Make text lowercase and remove extra spaces."""
