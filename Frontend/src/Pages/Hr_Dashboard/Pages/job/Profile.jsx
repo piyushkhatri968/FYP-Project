@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user); // Get current user from Redux
+  const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     contactNumber: "",
     companyName: "",
@@ -11,73 +11,98 @@ function Profile() {
     department: "",
     position: "",
   });
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    username: "",
+    email: "",
+    profilePicture: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileComplete, setIsProfileComplete] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUploading, setImageUploading] = useState(false);
 
-  // Fetch existing user data when the component loads
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!currentUser) return;
-      try {
-        setLoading(true);
-        const { data } = await axios.get(`http://localhost:8080/api/recruiter/profile/${currentUser._id}`);
-
-        // If the profile is not empty, mark it as complete
-        if (data.contactNumber || data.companyName || data.companyAddress || data.department || data.position) {
-          setFormData({
-            contactNumber: data.contactNumber || "",
-            companyName: data.companyName || "",
-            companyAddress: data.companyAddress || "",
-            department: data.department || "",
-            position: data.position || "",
-          });
-          setIsProfileComplete(true); // Profile exists, show "edit" button
-        }
-
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        setError("Failed to load profile data.");
+  const fetchUserData = async () => {
+    if (!currentUser) return;
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`http://localhost:8080/api/recruiter/profile/${currentUser._id}`);
+      if (data.contactNumber || data.companyName || data.companyAddress || data.department || data.position) {
+        setFormData({
+          contactNumber: data.contactNumber || "",
+          companyName: data.companyName || "",
+          companyAddress: data.companyAddress || "",
+          department: data.department || "",
+          position: data.position || "",
+        });
+        setIsProfileComplete(true);
       }
-    };
+      setUserInfo({
+        name: data.userId?.name || "",
+        username: data.userId?.username || "",
+        email: data.userId?.email || "",
+        profilePicture: data.userId?.profilePicture || "",
+      });
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError("Failed to load profile data.");
+    }
+  };
+
+  useEffect(() => {
     fetchUserData();
   }, [currentUser]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
+  const handleUserInfoChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setImageFile(files[0]);
+    } else {
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) return;
+    setImageUploading(true);
+    const imageData = new FormData();
+    imageData.append("file", imageFile);
+    imageData.append("upload_preset", "for_fyp_project");
+    imageData.append("cloud_name", "dtfvymy9c");
+    try {
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dtfvymy9c/image/upload", imageData);
+      const imageUrl = res.data.secure_url;
+      setUserInfo((prev) => ({ ...prev, profilePicture: imageUrl }));
+      setImageUploading(false);
+    } catch (err) {
+      setError("Failed to upload image. Please try again.");
+      setImageUploading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!currentUser) {
-      setError("No user is logged in.");
-      return;
-    }
+    if (!currentUser) return setError("No user logged in.");
 
     try {
       setLoading(true);
       setError("");
       setSuccessMessage("");
 
-      const userType = currentUser.userType;
-      const requiredFields = userType === "recruiter" ? [
-        "contactNumber", 
-        "companyName", 
-        "companyAddress", 
-        "department", 
-        "position"
-      ] : [];
+      const requiredFields = currentUser.userType === "recruiter"
+        ? ["contactNumber", "companyName", "companyAddress", "department", "position"]
+        : [];
 
-      // Check if all required fields are filled for recruiters
       for (const field of requiredFields) {
         if (!formData[field]) {
           setError(`${field} is required.`);
@@ -89,201 +114,163 @@ function Profile() {
       const response = await axios.post("http://localhost:8080/api/recruiter/completeProfile", {
         userId: currentUser._id,
         ...formData,
+        ...userInfo,
       });
 
+      await fetchUserData();
       setLoading(false);
-      setSuccessMessage(response.data.message || "Profile saved successfully!");
-      setIsProfileComplete(true); // Mark profile as saved
-      setIsEditing(false); // Exit editing mode
-    } catch (error) {
+      setSuccessMessage(response.data.message || "Profile updated successfully!");
+      setIsProfileComplete(true);
+      setIsEditing(false);
+    } catch (err) {
+      console.error(err);
       setLoading(false);
-      setError("An error occurred while saving data. Please try again.");
-      console.error("Error saving recruiter data:", error);
+      setError("Failed to save profile.");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!currentUser) return;
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone!");
+
+    if (confirmDelete) {
+      try {
+        setLoading(true);
+        await axios.delete(`http://localhost:8080/api/user/delete/${currentUser._id}`);
+        setLoading(false);
+        alert("Account deleted successfully. Redirecting...");
+        window.location.href = "/"; // redirect to homepage or login
+      } catch (err) {
+        setLoading(false);
+        setError("Failed to delete account.");
+      }
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">User Profile</h2>
-      {loading && <p className="text-blue-600 mb-4">Loading...</p>}
-      {error && <p className="text-red-600 mb-4">{error}</p>}
-      {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
+    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-white via-gray-100 to-white shadow-xl rounded-3xl mt-12">
+      <h2 className="text-4xl font-bold text-center text-gray-800 mb-10">Profile</h2>
 
-      {!isProfileComplete ? (
-        // New user form - Show form fields to fill out
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {currentUser?.userType === "recruiter" ? (
-            <>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
-                <input
-                  type="text"
-                  name="contactNumber"
-                  value={formData.contactNumber}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Company Address</label>
-                <input
-                  type="text"
-                  name="companyAddress"
-                  value={formData.companyAddress}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Department</label>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Position</label>
-                <input
-                  type="text"
-                  name="position"
-                  value={formData.position}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-            </>
-          ) : (
-            <p className="text-gray-600">Employee Profile. Additional fields will be available soon.</p>
-          )}
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm 
-            hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {loading ? "Saving..." : "Save"}
-          </button>
-        </form>
-      ) : (
-        // Existing user - Show profile with an "Edit" button
-        <div>
-          <div className="space-y-4">
-            {currentUser?.userType === "recruiter" ? (
-              <>
-                <p><strong>Contact Number:</strong> {formData.contactNumber || "Not provided"}</p>
-                <p><strong>Company Name:</strong> {formData.companyName || "Not provided"}</p>
-                <p><strong>Company Address:</strong> {formData.companyAddress || "Not provided"}</p>
-                <p><strong>Department:</strong> {formData.department || "Not provided"}</p>
-                <p><strong>Position:</strong> {formData.position || "Not provided"}</p>
-              </>
-            ) : (
-              <p className="text-gray-600">Employee profile data will be displayed here soon.</p>
-            )}
+      {loading && <p className="text-blue-600 mb-4 text-center animate-pulse">Loading...</p>}
+      {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
+      {successMessage && <p className="text-green-600 mb-4 text-center">{successMessage}</p>}
+
+      <div className="flex flex-col items-center space-y-4 mb-8">
+        {userInfo.profilePicture ? (
+          <img
+            src={userInfo.profilePicture}
+            alt="Profile"
+            className="w-24 h-24 rounded-full object-cover shadow-md hover:scale-105 transition-transform"
+          />
+        ) : (
+          <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center text-white text-xl">
+            N/A
           </div>
-          <button
-            onClick={() => setIsEditing(true)}
-            className="mt-6 py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm 
-            hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Edit Profile
-          </button>
+        )}
+        <div className="text-center">
+          <h3 className="text-2xl font-semibold">{userInfo.name || "Name not available"}</h3>
+          <p className="text-gray-600">@{userInfo.username || "username"}</p>
+          <p className="text-gray-500">{userInfo.email || "email not available"}</p>
         </div>
-      )}
+      </div>
 
-      {/* Edit Mode */}
-      {isEditing && (
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          {currentUser?.userType === "recruiter" ? (
+      {!isEditing ? (
+        <div className="space-y-6">
+          {/* Viewing fields */}
+          {Object.entries({
+            Name: userInfo.name,
+            Username: userInfo.username,
+            Email: userInfo.email,
+            ...(currentUser?.userType === "recruiter" && {
+              "Contact Number": formData.contactNumber,
+              "Company Name": formData.companyName,
+              "Company Address": formData.companyAddress,
+              Department: formData.department,
+              Position: formData.position,
+            }),
+          }).map(([label, value]) => (
+            <div key={label}>
+              <h4 className="text-lg font-medium text-gray-700">{label}</h4>
+              <p className="text-gray-600">{value || "Not provided"}</p>
+            </div>
+          ))}
+
+          <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 mt-8">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="py-2 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold transition"
+            >
+              Edit Profile
+            </button>
+            <button
+              onClick={handleDeleteAccount}
+              className="py-2 px-6 bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold transition"
+            >
+              Delete Account
+            </button>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Editing fields */}
+          {["name", "username", "email"].map((field) => (
+            <div key={field}>
+              <label className="block text-gray-700 mb-2 font-semibold capitalize">{field}</label>
+              <input
+                type={field === "email" ? "email" : "text"}
+                name={field}
+                value={userInfo[field]}
+                onChange={handleUserInfoChange}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+          ))}
+
+          <div>
+            <label className="block text-gray-700 mb-2 font-semibold">Profile Picture</label>
+            <input type="file" name="profilePicture" onChange={handleUserInfoChange} className="w-full" />
+            <button
+              type="button"
+              onClick={uploadImage}
+              disabled={imageUploading}
+              className="mt-2 py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-md"
+            >
+              {imageUploading ? "Uploading..." : "Upload Image"}
+            </button>
+          </div>
+
+          {currentUser?.userType === "recruiter" && (
             <>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Contact Number</label>
-                <input
-                  type="text"
-                  name="contactNumber"
-                  value={formData.contactNumber}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Company Address</label>
-                <input
-                  type="text"
-                  name="companyAddress"
-                  value={formData.companyAddress}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Department</label>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">Position</label>
-                <input
-                  type="text"
-                  name="position"
-                  value={formData.position}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
+              {["contactNumber", "companyName", "companyAddress", "department", "position"].map((field) => (
+                <div key={field}>
+                  <label className="block text-gray-700 mb-2 font-semibold capitalize">{field.replace(/([A-Z])/g, " $1")}</label>
+                  <input
+                    type="text"
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              ))}
             </>
-          ) : (
-            <p className="text-gray-600">Employee profile editing coming soon.</p>
           )}
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm 
-            hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {loading ? "Saving..." : "Save Changes"}
-          </button>
+
+          <div className="flex justify-end space-x-4 mt-8">
+            <button
+              type="button"
+              onClick={() => setIsEditing(false)}
+              className="py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white rounded-md"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="py-2 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold"
+            >
+              {loading ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
         </form>
       )}
     </div>
