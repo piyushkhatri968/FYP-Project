@@ -15,7 +15,7 @@ const AdminDash = ({ totalUsers, jobs }) => {
   const totalAdmins = totalUsers?.filter(
     (user) => user.userType === "Admin"
   ).length;
-  const totalJobs = jobs?.length;
+  const totalJobs = jobs;
   return (
     <div className="mx-auto p-3 px-12 w-full shadow-lg rounded-xl">
       {/* Quick Actions */}

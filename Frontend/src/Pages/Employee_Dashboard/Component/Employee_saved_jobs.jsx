@@ -33,7 +33,7 @@ const Employee_saved_jobs = () => {
   const handleApply = async (jobId) => {
     try {
       const userId = currentUser.candidateDetails;
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:8080/api/application/candidate/applyJob",
         {
           userId,
@@ -41,9 +41,7 @@ const Employee_saved_jobs = () => {
         }
       );
 
-      // Remove the applied job from the jobs list
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
-      alert("Job application submitted successfully.");
+      alert(response.data.message || "Job application submitted successfully.");
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.message);
