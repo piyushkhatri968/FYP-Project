@@ -109,11 +109,99 @@ export const deleteUser = async (req, res, next) => {
 export const getAllJobs = async (req, res, next) => {
   try {
     const allJobs = await JobPost.find({});
+
+    const jobCountByRecruiter = {};
+    allJobs.forEach((job) => {
+      const recruiterId = job.postedBy;
+
+      if (recruiterId) {
+        jobCountByRecruiter[recruiterId] =
+          (jobCountByRecruiter[recruiterId] || 0) + 1;
+      }
+    });
+
+    const jobStats = Object.entries(jobCountByRecruiter).map(
+      ([recruiterId, jobCount]) => ({
+        recruiterId,
+        jobCount,
+      })
+    );
+
     res.status(200).json({
       success: true,
-      allJobs,
+      allJobs: allJobs.length,
+      jobStats, // Contains recruiter IDs and job count
     });
   } catch (error) {
+    console.error("Error in getAllJobs:", error);
     next(error);
+  }
+};
+
+export const updateMe = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    const { name, username, email, password } = req.body;
+
+    // Validate fields
+    if (name && name.trim() === "") {
+      return next(errorHandler(400, "Name is required"));
+    }
+    if (email && email.trim() === "") {
+      return next(errorHandler(400, "Email is required"));
+    }
+
+    if (password && password.length < 6) {
+      return next(errorHandler(400, "Password must be at least 6 characters"));
+    }
+    if (username) {
+      if (username.length < 5 || username.length > 20) {
+        return next(
+          errorHandler(400, "Username must be between 5 and 20 characters")
+        );
+      }
+      if (username.includes(" ")) {
+        return next(errorHandler(400, "Username cannot contain spaces"));
+      }
+    }
+    // Hash password if it exists
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcryptjs.hash(password, 10);
+    }
+
+    const updateFields = {
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      profilePicture: req.body.profilePicture,
+    };
+
+    if (password) {
+      updateFields.password = hashedPassword;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updateFields },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    const { password: pass, ...rest } = updatedUser._doc;
+    res.status(200).json({
+      success: true,
+      data: rest,
+    });
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "Internal Server Error"));
   }
 };

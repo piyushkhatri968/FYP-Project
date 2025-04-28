@@ -166,10 +166,11 @@ export const getMe = async (req, res, next) => {
     if (!userId) {
       return next(errorHandler(400, "UserId is required."));
     }
-    const user = await User.findById(userId);
-    if (!user) {
+    const isUser = await User.findById(userId);
+    if (!isUser) {
       return next(errorHandler(404, "User not exist."));
     }
+    const { password: pass, ...user } = isUser._doc;
     res.status(200).json({
       success: true,
       message: "User is available",
