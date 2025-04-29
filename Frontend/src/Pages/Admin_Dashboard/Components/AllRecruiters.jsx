@@ -84,7 +84,7 @@ const AllRecruiters = ({ totalUsers, setTotalUsers, jobsCount }) => {
                   <th className="px-3 py-3 text-left">Name</th>
                   <th className="px-3 py-3 text-left">Username</th>
                   <th className="px-3 py-3 text-left">Email</th>
-                  <th className="px-3 py-3 text-left">Jobs Posted</th>
+                  {/* <th className="px-3 py-3 text-left">Jobs Posted</th> */}
                   <th className="px-3 py-3 text-left">position</th>
                   <th className="px-3 py-3 text-left">Department</th>
                   <th className="px-3 py-3 text-left">Company Name</th>
@@ -103,14 +103,6 @@ const AllRecruiters = ({ totalUsers, setTotalUsers, jobsCount }) => {
                     <td className="px-3 py-3">{user?.name}</td>
                     <td className="px-3 py-3">{user?.username}</td>
                     <td className="px-3 py-3">{user?.email}</td>
-
-                    {jobsCount &&
-                      jobsCount.filter(
-                        (stats) =>
-                          stats.recruiterId === user._id && (
-                            <td>{stats.jobCount}</td>
-                          )
-                      )}
 
                     <td className="px-3 py-3">
                       {user?.recruiterDetails?.position || "N/A"}
