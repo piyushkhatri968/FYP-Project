@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Loader from "../../Components/Loader";
 
 function Profile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -51,6 +52,9 @@ function Profile() {
     } catch (err) {
       setLoading(false);
       setError("Failed to load profile data.");
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -146,6 +150,10 @@ function Profile() {
       }
     }
   };
+
+  if(loading){
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-white via-gray-100 to-white shadow-xl rounded-3xl mt-12">
