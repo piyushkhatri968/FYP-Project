@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Loader from "../../Components/Loader";
+
 import axios from "axios";
 import {
   FaUserTie,
@@ -9,11 +11,13 @@ import {
 import { useSelector } from "react-redux"; // CurrentUser
 const ApplicationTracking = () => {
   const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.user.currentUser);
 
   
   const fetchApplications = async () => {
     try {
+      setLoading(true)
       const hrId = user._id; 
       const response = await axios.get(
         `http://localhost:8080/api/application/candidate/getApplication?hrId=${hrId}`
@@ -24,6 +28,9 @@ const ApplicationTracking = () => {
       console.log("Fetched applications:", data);
     } catch (error) {
       console.error("Error fetching applications:", error);
+    }
+    finally{
+      setLoading(false)
     }
   };
   
@@ -74,6 +81,10 @@ const ApplicationTracking = () => {
       (app) => app.status?.toLowerCase() === stage.id
     ).length,
   }));
+
+  if(loading){
+    return <Loader/>
+  }
 
   return (
     <div className="bg-gradient-to-r from-gray-50 to-gray-100 min-h-screen p-6 flex items-center justify-center">

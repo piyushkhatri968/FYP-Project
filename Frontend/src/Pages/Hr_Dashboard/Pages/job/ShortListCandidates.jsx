@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSearch, FaCalendarAlt, FaFilter } from "react-icons/fa";
 import InterviewScheduling from "./InterviewScheduling"
+
+import Loader from "../../Components/Loader";
 // import ShortlistCandidates from './ShortListCandidates';
 import { useSelector } from "react-redux"; // CurrentUser
 
@@ -12,7 +14,7 @@ const ShortlistCandidates = () => {
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
   const [modalCandidate, setModalCandidate] = useState(null);
- 
+ const [isloading, setIsLoading]=useState(true)
   const [showInterviewModal, setShowInterviewModal] = useState(false);
 
   // // Fetch shortlisted candidates
@@ -37,6 +39,7 @@ const ShortlistCandidates = () => {
   useEffect(() => {
     const fetchShortlistedCandidates = async () => {
       try {
+        setIsLoading(true) // Set loading to true before fetching
         if (!user || !user._id) {
           console.log("HR ID is missing.");
           return; // If user._id is not available, return early
@@ -53,6 +56,10 @@ const ShortlistCandidates = () => {
       } catch (error) {
         console.error("Error fetching shortlisted candidates:", error);
       }
+      finally{
+        setIsLoading(false)
+      }
+
     };
   
     fetchShortlistedCandidates();
@@ -114,6 +121,10 @@ const ShortlistCandidates = () => {
     setShowInterviewModal(false); // Close interview scheduling modal
   };
   
+
+  if(isloading){
+    return <Loader/>
+  }
 
   return (
     

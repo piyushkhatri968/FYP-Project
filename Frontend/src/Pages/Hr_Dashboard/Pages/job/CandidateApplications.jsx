@@ -10,6 +10,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import axios from "axios";
+import Loader from "../../Components/Loader";
 
 const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [candidates, setCandidates] = useState([]);
@@ -217,6 +218,9 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const openModal = (candidate) => setModalCandidate(candidate);
   const closeModal = () => setModalCandidate(null);
+ if(isLoading){
+  return <Loader/>
+ }
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">

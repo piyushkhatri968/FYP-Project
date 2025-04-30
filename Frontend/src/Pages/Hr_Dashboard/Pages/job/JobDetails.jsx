@@ -34,12 +34,7 @@ const JobDetails = ({ job, onEdit, onAnalytics, onCandidates, onTracking, onDele
         >
           Edit Job
         </button>
-        <button
-          onClick={() => onAnalytics(job)}
-          className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
-        >
-          View Analytics
-        </button>
+     
         <button
           onClick={() => onCandidates(job)}
           className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
