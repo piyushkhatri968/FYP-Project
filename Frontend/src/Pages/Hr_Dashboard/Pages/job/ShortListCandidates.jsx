@@ -1,163 +1,117 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSearch, FaCalendarAlt, FaFilter } from "react-icons/fa";
-import InterviewScheduling from "./InterviewScheduling"
-
+import InterviewScheduling from "./InterviewScheduling";
 import Loader from "../../Components/Loader";
-// import ShortlistCandidates from './ShortListCandidates';
-import { useSelector } from "react-redux"; // CurrentUser
+import { useSelector } from "react-redux";
 
 const ShortlistCandidates = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPosition, setFilterPosition] = useState("");
   const [filterExperience, setFilterExperience] = useState("");
-  const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
   const [modalCandidate, setModalCandidate] = useState(null);
- const [isloading, setIsLoading]=useState(true)
+  const [interviewCandidate, setInterviewCandidate] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [showInterviewModal, setShowInterviewModal] = useState(false);
-
-  // // Fetch shortlisted candidates
-  // useEffect(() => {
-  //   const fetchShortlistedCandidates = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:8080/api/application/candidate/shortlisted-candidates"
-  //       );
-  //       setShortlistedCandidates(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching shortlisted candidates:", error);
-  //     }
-  //   };
-
-  //   fetchShortlistedCandidates();
-  // }, []);
-
 
   const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const fetchShortlistedCandidates = async () => {
       try {
-        setIsLoading(true) // Set loading to true before fetching
-        if (!user || !user._id) {
-          console.log("HR ID is missing.");
-          return; // If user._id is not available, return early
-        }
-  
-        const hrId = user._id; 
-      
-  
+        setIsLoading(true);
+        if (!user || !user._id) return;
+
         const response = await axios.get(
-          `http://localhost:8080/api/application/candidate/shortlisted-candidates?hrId=${hrId}`
+          `http://localhost:8080/api/application/candidate/shortlisted-candidates?hrId=${user._id}`
         );
-        
-        setShortlistedCandidates(response.data); // Set shortlisted candidates state
+        setShortlistedCandidates(response.data);
       } catch (error) {
-        console.error("Error fetching shortlisted candidates:", error);
+        console.error("Error fetching candidates:", error);
+      } finally {
+        setIsLoading(false);
       }
-      finally{
-        setIsLoading(false)
-      }
-
     };
-  
+
     fetchShortlistedCandidates();
-  }, [user]); // Run effect whenever the `user` state changes
-  
+  }, [user]);
 
-  
-
- 
-
-  // Define experience ranges
-  const experienceRanges = [
+  const experience = [
     { label: "Fresh Graduates", value: "0" },
     { label: "1-2 Years", value: "1" },
     { label: "3-4 Years", value: "3" },
     { label: "5+ Years", value: "5" },
   ];
-
-
-
-  // Filter candidates
   const filteredCandidates = shortlistedCandidates.filter((candidate) => {
     const { userId } = candidate;
-    const candidateName = userId?.userId?.name.toLowerCase() || "";
-    const jobPosition = userId?.position || "";
-    const candidateExperience = userId?.experience || 0;
+    const name = userId?.userId?.name?.toLowerCase() || "";
+    const position = userId?.position || "";
+    const experienceStr = userId?.experience|| "0";
+let exp = 0;
+
+if (typeof experienceStr === "string" && experienceStr.includes("-")) {
+  // Convert "2-3" into average, or pick min value
+  const [min] = experienceStr.split("-").map(Number);
+  exp = min; // or (min + max) / 2 if you want midpoint
+} else {
+  exp = Number(experienceStr); // Will safely convert "2" to 2
+}
 
     return (
-      
-      candidateName.includes(searchQuery.toLowerCase()) &&
-      (filterPosition === "" || jobPosition === filterPosition) &&
+      name.includes(searchQuery.toLowerCase()) &&
+      (filterPosition === "" || position === filterPosition) &&
       (filterExperience === "" ||
-        (filterExperience === "0" && candidateExperience === 0) ||
-        (filterExperience === "1" &&
-          candidateExperience >= 1 &&
-          candidateExperience <= 2) ||
-        (filterExperience === "3" && candidateExperience >= 3))
+        (filterExperience === "0" && exp === 0) ||
+        (filterExperience === "1" && exp >= 1 && exp <= 2) ||
+        (filterExperience === "3" && exp >= 3 && exp <= 4) ||
+        (filterExperience === "5" && exp >= 5))
     );
   });
 
-  // Toggle candidate selection
-  const toggleSelection = (id) => {
-    setSelectedCandidates((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((candidateId) => candidateId !== id)
-        : [...prevSelected, id]
-    );
+  const handleScheduleInterview = (candidate) => {
+    setInterviewCandidate(candidate);
+    setShowInterviewModal(true);
   };
- // Handle scheduling interview button click
- const handleScheduleInterview = (candidate) => {
-  setModalCandidate(candidate);
-  setShowInterviewModal(true);
-};
-
-  // Modal handlers
   const openModal = (candidate) => setModalCandidate(candidate);
-  const closeModal = () => {
-    setModalCandidate(null); // Close candidate details modal
-    setShowInterviewModal(false); // Close interview scheduling modal
-  };
-  
 
-  if(isloading){
-    return <Loader/>
-  }
+ 
+  const closeModal = () => {
+    setModalCandidate(null);
+    setInterviewCandidate(null);
+    setShowInterviewModal(false);
+  };
+
+  if (isLoading) return <Loader />;
 
   return (
-    
-    <div className="p-6 bg-gray-100 min-h-screen">
-      
-      
-     
-      <h3 className="text-2xl font-bold mb-6">Shortlisted Candidates</h3>
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
+      <h3 className="text-xl sm:text-2xl font-bold mb-6">Shortlisted Candidates</h3>
 
-      {/* Search & Filter Section */}
-      <div className="flex flex-wrap items-center gap-4 mb-6">
-        {/* Search Input */}
-        <div className="flex items-center gap-2 bg-white p-2 rounded shadow-md">
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-6">
+        {/* Search */}
+        <div className="flex items-center gap-2 bg-white p-2 rounded shadow w-full sm:w-auto">
           <FaSearch className="text-gray-500" />
           <input
             type="text"
             placeholder="Search candidates"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="outline-none"
+            className="outline-none w-full sm:w-auto"
           />
         </div>
 
-        {/* Position Filter */}
-        <div className="flex items-center gap-2 bg-white p-2 rounded shadow-md">
+        {/* Filter by Position */}
+        <div className="flex items-center gap-2 bg-white p-2 rounded shadow w-full sm:w-auto">
           <FaFilter className="text-gray-500" />
           <select
             value={filterPosition}
             onChange={(e) => setFilterPosition(e.target.value)}
-            className="outline-none"
+            className="outline-none w-full"
           >
             <option value="">Filter by Position</option>
-            {[...new Set(shortlistedCandidates.map((c) => c.userId.position))].map(
+            {[...new Set(shortlistedCandidates.map((c) => c.userId?.position))].map(
               (position) => (
                 <option key={position} value={position}>
                   {position}
@@ -167,16 +121,16 @@ const ShortlistCandidates = () => {
           </select>
         </div>
 
-        {/* Experience Filter */}
-        <div className="flex items-center gap-2 bg-white p-2 rounded shadow-md">
+        {/* Filter by Experience */}
+        <div className="flex items-center gap-2 bg-white p-2 rounded shadow w-full sm:w-auto">
           <FaFilter className="text-gray-500" />
           <select
             value={filterExperience}
             onChange={(e) => setFilterExperience(e.target.value)}
-            className="outline-none"
+            className="outline-none w-full"
           >
             <option value="">Filter by Experience</option>
-            {experienceRanges.map((range) => (
+            {experience.map((range) => (
               <option key={range.value} value={range.value}>
                 {range.label}
               </option>
@@ -185,90 +139,75 @@ const ShortlistCandidates = () => {
         </div>
       </div>
 
-      {/* Candidates List or No Match Message */}
+      {/* Candidate Cards */}
       {filteredCandidates.length > 0 ? (
-        <div className="space-y-4">
+        <div className="grid gap-4">
           {filteredCandidates.map((candidate) => {
             const { userId } = candidate;
+            const name = userId?.userId?.name || "Unknown";
+            const experience = userId?.experience || 0;
+            const position = userId?.position || "N/A";
+            const profileImage =
+              userId?.userId?.profilePicture ;
+
             return (
               <div
                 key={candidate._id}
-                className="flex items-center justify-between p-4 bg-white rounded shadow-md"
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-white rounded-xl shadow hover:shadow-lg transition duration-300"
               >
-                <div className="flex items-center gap-4">
-                  <input
-                    type="checkbox"
-                    checked={selectedCandidates.includes(candidate._id)}
-                    onChange={() => toggleSelection(candidate._id)}
+                <div className="flex items-center gap-4 w-full sm:w-auto">
+                  <img
+                    src={profileImage}
+                    alt={`${name}'s profile`}
+                    className="w-14 h-14 rounded-full object-cover border-2 border-gray-200"
                   />
                   <div>
-                    <h4 className="font-bold"> Name: {userId?.userId?.name}</h4>
-                    <p className="text-gray-600">Position: {userId?.position}</p>
-                    <p className="text-gray-600">
-                      Experience: {userId?.experience || 0} years
-                    </p>
+                    <h4 className="text-lg font-semibold text-gray-800">{name}</h4>
+                    <p className="text-sm text-gray-600">Position: {position}</p>
+                    <p className="text-sm text-gray-600">Experience: {experience} years</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+
+                <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0 w-full sm:w-auto">
                   <button
-                    onClick={() => openModal(candidate)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                   onClick={() => openModal(candidate)}
+
+                    className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition text-sm"
                   >
                     View Profile
                   </button>
                   <button
-              onClick={() => handleScheduleInterview(candidate)}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              <FaCalendarAlt className="inline mr-1" /> Schedule Interview
-            </button>
+                    onClick={() => handleScheduleInterview(candidate)}
+                    className="px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition text-sm"
+                  >
+                    <FaCalendarAlt className="inline mr-1" /> Schedule Interview
+                  </button>
                 </div>
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="text-center text-gray-600 p-6">
-          <p className="text-lg font-medium">
-            No candidates found matching the current filters.
-          </p>
-          <br />
-          <p className="fs-7"><strong>NOT FOUND</strong> </p>
+        <div className="text-center text-gray-600 py-10">
+          <p className="text-lg font-medium">No candidates found matching the current filters.</p>
+          <p className="font-semibold mt-2">NOT FOUND</p>
         </div>
       )}
 
-      {/* Candidate Details Modal */}
+      {/* Profile Modal */}
       {modalCandidate && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
-            <h4 className="text-xl font-bold">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow w-full max-w-md">
+            <h4 className="text-xl font-bold mb-2">
               Name: {modalCandidate.userId?.userId?.name}
             </h4>
-            <br/>
-            <p>
-              <strong>Email:</strong> {modalCandidate.userId?.userId?.email}
-            </p>
-            <p>
-            <strong>Skills:</strong> {modalCandidate.userId?.skills?.join(' ') || "N/A"}
-
-            </p>
-            <p>
-              <strong>Phone:</strong> {modalCandidate.userId?.phone || "N/A"}
-            </p>
-            <p>
-              <strong>Position:</strong> {modalCandidate.userId?.position}
-            </p>
-            <p>
-              <strong>Experience:</strong> {modalCandidate.userId?.experience}{" "}
-              years
-            </p>
-            <p>
-              <strong>Social Links:</strong>{" "}
-              {modalCandidate.userId?.socialLinks || "N/A"}
-            </p>
-            <p className="text-green-600 font-semibold mt-4">
-              Status: Shortlisted
-            </p>
+            <p><strong>Email:</strong> {modalCandidate.userId?.userId?.email}</p>
+            <p><strong>Skills:</strong> {modalCandidate.userId?.skills?.join(" ") || "N/A"}</p>
+            <p><strong>Phone:</strong> {modalCandidate.userId?.phone || "N/A"}</p>
+            <p><strong>Position:</strong> {modalCandidate.userId?.position}</p>
+            <p><strong>Experience:</strong> {modalCandidate.userId?.experience} years</p>
+            <p><strong>Social Links:</strong> {modalCandidate.userId?.socialLinks || "N/A"}</p>
+            <p className="text-green-600 font-semibold mt-4">Status: Shortlisted</p>
             <button
               onClick={closeModal}
               className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -280,15 +219,10 @@ const ShortlistCandidates = () => {
       )}
 
       {/* Interview Scheduling Modal */}
-      {showInterviewModal && (
-        <InterviewScheduling
-          candidate={modalCandidate}
-          closeModal={closeModal}
-        />
+      {showInterviewModal && interviewCandidate && (
+        <InterviewScheduling candidate={interviewCandidate} closeModal={closeModal} />
       )}
-      
     </div>
-    
   );
 };
 

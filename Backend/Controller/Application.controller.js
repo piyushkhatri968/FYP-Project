@@ -356,7 +356,7 @@ export const getShortlistedCandidates = async (req, res) => {
 
         populate: {
           path: "userId", // Then populate userId from the Candidate model
-          select: "name experience email", // Fetching selected fields
+          select: "name experience email profilePicture", // Fetching selected fields
         },
       })
       .populate("jobId", " postedBy"); // populates, include job details

@@ -66,84 +66,53 @@ const HrPage = () => {
         setLoadingAnalytics(false);
       }
     };
-  
+
     fetchAnalytics();
   }, []);
-  
-  // useEffect(() => {
-  //   const fetchAnalytics = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:8080/api/application/candidate/analytics"
-  //       );
-  //       setAnalytics(response.data);
-  //     } catch (err) {
-  //       setErrorAnalytics("Failed to load analytics data.");
-  //     } finally {
-  //       setLoadingAnalytics(false);
-  //     }
-  //   };
-
-  //   fetchAnalytics();
-  // }, []);
-
-
-
-// get interviewScheduling:
-useEffect(() => {
-  const fetchInterviews = async () => {
-    try {
-      const hrId = currentUser._id;
-      const response = await axios.get(
-        `http://localhost:8080/api/application/candidate/get-interview-schedule?hrId=${hrId}`
-      );
-      console.log("Filtered Interview Data:", response.data); // Debugging
-      setInterviews(response.data);
-    } catch (err) {
-      setErrorInterviews("Failed to load interview schedule.");
-    } finally {
-      setLoadingInterviews(false);
-    }
-  };
-
-  fetchInterviews();
-}, []);
 
 
 
 
-  // useEffect(() => {
-  //   const fetchInterviews = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:8080/api/application/candidate/get-interview-schedule"
-  //       );
-  //       console.log("Interview data from API:", response.data); // Log API response
-  //       setInterviews(response.data);
-  //     } catch (err) {
-  //       setErrorInterviews("Failed to load interview schedule.");
-  //     } finally {
-  //       setLoadingInterviews(false);
-  //     }
-  //   };
+  // get interviewScheduling:
+  useEffect(() => {
+    const fetchInterviews = async () => {
+      try {
+        const hrId = currentUser._id;
+        const response = await axios.get(
+          `http://localhost:8080/api/application/candidate/get-interview-schedule?hrId=${hrId}`
+        );
+        console.log("Filtered Interview Data:", response.data); // Debugging
+        setInterviews(response.data);
+      } catch (err) {
+        setErrorInterviews("Failed to load interview schedule.");
+      } finally {
+        setLoadingInterviews(false);
+      }
+    };
 
-  //   fetchInterviews();
-  // }, []);
+    fetchInterviews();
+  }, []);
+
+
+
+
 
   return (
     <div className="min-h-screen flex bg-gradient-to-r from-gray-50 to-gray-200">
       <main className="flex-1 p-8 space-y-8">
         {/* Header */}
-        <header className="flex items-center justify-between bg-white p-6 rounded-lg shadow-lg">
-          <h1 className="text-4xl font-extrabold text-gray-800">
-            {username ? `Welcome, HR, ${username}!` : "Welcome, HR Manager!"}
+        <header className="flex items-center justify-between bg-white p-6 rounded-lg shadow-lg gap-3">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold mb-6 break-words">
+            Welcome, HR{username ? `, ${username}` : " Manager"}!
           </h1>
+
           <button
-            className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition"
+            className="bg-gradient-to-r from-blue-400 to-blue-700 text-sm sm:text-base md:text-lg text-white px-4 sm:px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition"
             onClick={() => navigate("/hr/profile")}
           >
             Profile Settings
           </button>
+
         </header>
 
         {/* Quick Actions */}

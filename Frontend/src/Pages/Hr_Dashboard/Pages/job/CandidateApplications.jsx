@@ -23,24 +23,20 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state) => state.user.currentUser);
-  const positions = [
-    "Frontend Developer",
-    "Backend Developer",
-    "Data Scientist",
-  ];
+
   const experienceCategories = [
     { label: "Fresh Graduates", value: 0 },
     { label: "1 Year", value: 1 },
     { label: "2 Years", value: 2 },
     { label: "3 Years", value: 3 },
-    { label: "4+ Years", value: 4 },
+    { label: "4+ Years", value: "4+" },
   ];
 
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         setIsLoading(true);
-        
+
         if (!user || !user._id) {
           setErrorMessage("HR ID is missing.");
           setIsLoading(false);
@@ -66,35 +62,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     };
 
     fetchCandidates();
-  }, [user]); 
-
-  console.log("candidates are :", candidates);
-// ****************************8 OLD CODE *****************************************
-  // // Fetch candidates from the backend
-  // useEffect(() => {
-  //   const fetchCandidates = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.get(
-  //         "http://localhost:8080/api/application/candidate/get"
-  //       );
-  //       console.log("Response:", response);
-  //       setCandidates(response.data.data || []);
-  //       setFilteredCandidates(response.data.data || []);
-  //     } catch (error) {
-  //       console.error("Error fetching candidates:", error);
-  //       setErrorMessage("Failed to load candidate data. Please try again.");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchCandidates();
-  // }, []);
-  
-
-// ****************************8 OLD CODE *****************************************
-
-  // console.log("candidates are :", candidates);
+  }, [user]);
 
   // Handle filtering based on search, position, and experience
   useEffect(() => {
@@ -107,10 +75,11 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
               .includes(searchQuery.toLowerCase())) && // Apply search filter
           (filterPosition === "" ||
             candidate.userId?.position?.toLowerCase() ===
-              filterPosition.toLowerCase()) && // Apply position filter
+            filterPosition.toLowerCase()) && // Apply position filter
           (filterExperience === "" ||
-            parseInt(candidate.userId?.experience || 0) ===
-              parseInt(filterExperience)) // Apply experience filter
+            (filterExperience === "4+" ? parseInt(candidate.userId?.experience || 0) >= 4 : parseInt(candidate.userId?.experience || 0) === parseInt(filterExperience))
+          )
+
       );
       setFilteredCandidates(filtered);
     };
@@ -152,28 +121,27 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     try {
       // Prompt the user to enter a rejection reason
       const rejectionReason = prompt(
-        `Please enter a reason for rejecting ${
-          candidate.userId?.name || "the candidate"
+        `Please enter a reason for rejecting ${candidate.userId?.name || "the candidate"
         }:`
       );
-  
+
       // If no reason is provided, cancel the rejection
       if (!rejectionReason) {
         alert("Rejection reason is required.");
         return;
       }
-  
+
       // Send the rejection reason along with the status to the server
       await axios.post(
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
         { status: "Rejected", reason: rejectionReason }
       );
-  
+
       // Show confirmation to the admin
       alert(
         `${candidate.userId?.name || "Candidate"} has been rejected with reason: "${rejectionReason}".`
       );
-  
+
       // Remove the rejected candidate from the frontend list
       setCandidates((prev) => prev.filter((c) => c._id !== candidate._id));
       setFilteredCandidates((prev) =>
@@ -184,10 +152,10 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       alert("Failed to reject candidate.");
     }
   };
-  
-  
 
- 
+
+
+
 
   const handleShortlistCandidate = async (candidate) => {
     try {
@@ -206,7 +174,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       alert("Failed to shortlist candidate.");
     }
   };
-  
+
 
   const handleShortlist = (candidate) => {
     if (candidate.status === "Shortlisted") {
@@ -218,13 +186,15 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const openModal = (candidate) => setModalCandidate(candidate);
   const closeModal = () => setModalCandidate(null);
- if(isLoading){
-  return <Loader/>
- }
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h3 className="text-2xl font-bold mb-6">Candidate Applications</h3>
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
+      <h3 className="text-xl sm:text-2xl font-bold mb-6"> Applied Candidates</h3>
+
+
 
       {/* Search and Filters */}
       <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -245,12 +215,17 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
             onChange={(e) => setFilterPosition(e.target.value)}
             className="outline-none w-full"
           >
+
+
+
             <option value="">Filter by Position</option>
-            {positions.map((position) => (
-              <option key={position} value={position}>
-                {position}
-              </option>
-            ))}
+            {[...new Set(filteredCandidates.map((c) => c.userId?.position).filter(Boolean))].map(
+              (position) => (
+                <option key={position} value={position}>
+                  {position}
+                </option>
+              )
+            )}
           </select>
         </div>
         <div className="flex items-center gap-2 bg-white p-2 rounded shadow-md w-full sm:w-auto">
@@ -279,75 +254,75 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         <p>No candidates match the criteria.</p>
       ) : (
         <div className="space-y-4">
-         {filteredCandidates.map((candidate) => (
-  <div
-    key={candidate._id}
-    className="flex items-center justify-between p-4 bg-white rounded shadow-md"
-  >
-    <div className="flex items-center gap-4">
-    <img
-  src={candidate.userId.userId?.profilePicture ||    <FaUser className="text-blue-500 text-2xl" />}
-  alt="User Profile"
-  className="w-8 h-8 rounded-full object-cover"
-/>
-   
-      <div>
-        {/* Display User's Name */}
-        <h4 className="font-bold"> {candidate.userId.userId?.name || "N/A"}</h4>
+          {filteredCandidates.map((candidate) => (
+            <div
+              key={candidate._id}
+              className="p-4 bg-white rounded shadow-md flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+            >
+              <div className="flex items-center gap-4">
+                <img
+                  src={
+                    candidate.userId.userId?.profilePicture ||
+                    "https://via.placeholder.com/40"
+                  }
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div>
+                  <h4 className="font-bold">
+                    {candidate.userId.userId?.name || "N/A"}
+                  </h4>
+                  <p className="text-gray-600">
+                    Position: {candidate.userId.position}
+                  </p>
+                  <p className="text-gray-600">
+                    Experience: {candidate.userId.experience} years
+                  </p>
+                  <p
+                    className={`text-sm font-semibold ${candidate.status === "Shortlisted"
+                        ? "text-green-600"
+                        : "text-gray-500"
+                      }`}
+                  >
+                    {candidate.status}
+                  </p>
+                </div>
+              </div>
 
-        {/* Other candidate details */}
-        <p className="text-gray-600">Position: {candidate.userId.position}</p>
-        <p className="text-gray-600">
-          Experience: {candidate.userId.experience} years
-        </p>
-        <p
-          className={`text-sm font-semibold ${
-            candidate.status === "Shortlisted"
-              ? "text-green-600"
-              : "text-gray-500"
-          }`}
-        >
-          {candidate.status}
-        </p>
-      </div>
-    </div>
-    {/* Actions */}
-    <div className="flex items-center gap-2">
-      <button
-        onClick={() => openModal(candidate)}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        View Profile
-      </button>
-      <button
-  onClick={() => handleShortlist(candidate)}
-  disabled={candidate.status === "Shortlisted"}
-  className={`px-4 py-2 rounded ${
-    candidate.status === "Shortlisted"
-      ? "bg-green-500 text-white cursor-not-allowed"
-      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-  }`}
->
-  {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
-</button>
+              {/* Actions */}
+              <div className="overflow-x-auto">
+                <div className="flex items-center gap-2 w-max">
+                  <button
+                    onClick={() => openModal(candidate)}
+                    className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap"
+                  >
+                    View Profile
+                  </button>
+                  <button
+                    onClick={() => handleShortlist(candidate)}
+                    disabled={candidate.status === "Shortlisted"}
+                    className={`px-3 py-2 rounded whitespace-nowrap ${candidate.status === "Shortlisted"
+                        ? "bg-green-500 text-white cursor-not-allowed"
+                        : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                      }`}
+                  >
+                    {candidate.status === "Shortlisted" ? "Shortlisted" : "Shortlist"}
+                  </button>
+                  <button
+                    onClick={() => handleRejectCandidate(candidate)}
+                    className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 whitespace-nowrap"
+                  >
+                    Reject
+                  </button>
+ 
+                </div>
+              </div>
 
-      <button
-        onClick={() => handleRejectCandidate(candidate)}
-        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-      >
-        Reject
-      </button>
-      <input
-        type="checkbox"
-        checked={selectedCandidates.includes(candidate._id)}
-        onChange={() => toggleSelection(candidate._id)}
-        className="form-checkbox h-5 w-5 text-blue-600"
-      />
-    </div>
-  </div>
-))}
+            </div>
 
 
+
+          ))}
         </div>
       )}
 
@@ -371,10 +346,10 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
       {/* Profile Modal */}
       {modalCandidate && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md text-center">
             <h4 className="text-xl font-bold mb-4">{modalCandidate.userId.userId?.name}</h4>
-           
+
             <p>
               <strong>Position:</strong>{" "}
               {modalCandidate.userId?.position || "N/A"}
