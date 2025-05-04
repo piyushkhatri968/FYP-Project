@@ -8,6 +8,7 @@ import AdminDash from "./Components/AdminDash";
 import AllAdmin from "./Components/AllAdmin";
 import AddNewAdmin from "./Components/AddNewAdmin";
 import { useSelector } from "react-redux";
+import AdminSetings from "./Components/AdminSetings";
 
 const Admin_Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,7 +20,8 @@ const Admin_Dashboard = () => {
   const [loggedInLoading, setLoggedInLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [jobsLoading, setJobsLoading] = useState(false);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState(0);
+  const [jobsCount, setJobsCount] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -75,6 +77,7 @@ const Admin_Dashboard = () => {
       );
       if (response.status === 200) {
         setJobs(response.data.allJobs);
+        setJobsCount(response.data.jobStats);
         setJobsLoading(false);
       }
     } catch (error) {
@@ -115,6 +118,7 @@ const Admin_Dashboard = () => {
             <AllRecruiters
               totalUsers={totalUsers}
               setTotalUsers={setTotalUsers}
+              jobs={jobs}
             />
           )}
           {tab === "alladmins" && (
@@ -122,6 +126,9 @@ const Admin_Dashboard = () => {
           )}
           {tab === "addNewAdmin" && (
             <AddNewAdmin getTotalUsers={getTotalUsers} />
+          )}
+          {tab === "adminSettings" && (
+            <AdminSetings userData={userData} setUserData={setUserData} />
           )}
         </div>
       )}

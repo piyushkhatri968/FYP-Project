@@ -2,6 +2,10 @@ import User from "../Models/user.model.js";
 import { errorHandler } from "../utils/Error.js";
 import bcryptjs from "bcryptjs";
 
+// import User from "../Models/user.model.js";
+import JobPost from "../Models/Hr_Models/Jobs.model.js";
+import Recruiter from "../Models/recruiter.model.js";
+
 export const getUserInfo = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -117,5 +121,32 @@ export const updateCandidateProfile = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(errorHandler(500, "Internal Server Error"));
+  }
+};
+
+
+export const deleteUserAccount = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    // Delete all jobs posted by the user
+    await JobPost.deleteMany({ postedBy: userId });
+
+    // If the user is a recruiter, delete recruiter profile
+    if (user.userType === "recruiter") {
+      await Recruiter.deleteOne({ userId });
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "User and associated jobs deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Server error while deleting account." });
   }
 };

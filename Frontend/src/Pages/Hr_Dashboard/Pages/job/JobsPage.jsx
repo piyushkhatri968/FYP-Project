@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Loader from "../../Components/Loader";
+
+
+
 import JobListings from "./JobListings";
 import JobDetails from "./JobDetails";
 import JobForm from "./JobForm";
-import JobAnalytics from "./JobAnalytics";
+// import JobAnalytics from "./JobAnalytics";
 import CandidateApplications from "./CandidateApplications";
 import ShortListCandidates from "./ShortListCandidates";
 import ApplicationTracking from "./ApplicationTracking";
@@ -12,7 +16,8 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState([]); // Store jobs from backend
   const [selectedJob, setSelectedJob] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isViewingAnalytics, setIsViewingAnalytics] = useState(false);
+  const [loading , setLoading] = useState(true);
+  // const [isViewingAnalytics, setIsViewingAnalytics] = useState(false);
   const [isViewingCandidates, setIsViewingCandidates] = useState(false);
   const [isViewingTracking, setIsViewingTracking] = useState(false); // New state for tracking view
   const [showShortlisted, setShowShortlisted] = useState(false); // State for 
@@ -45,6 +50,10 @@ const JobsPage = () => {
       } catch (error) {
         console.error("Error fetching jobs:", error);
       }
+      finally{
+        setLoading(false); // Set loading to false after fetching
+
+      }
     };
   
     fetchJobs();
@@ -74,7 +83,7 @@ const JobsPage = () => {
   const handleJobSelect = (job) => {
     setSelectedJob(job);
     setIsEditing(false);
-    setIsViewingAnalytics(false);
+    
     setIsViewingCandidates(false);
     setIsViewingTracking(false);
     setShowShortlisted(false); // Reset shortlisted view when selecting a new job
@@ -85,10 +94,7 @@ const JobsPage = () => {
     setIsEditing(true);
   };
 
-  const handleJobAnalytics = (job) => {
-    setSelectedJob(job);
-    setIsViewingAnalytics(true);
-  };
+ 
 
   const handleJobCandidates = (job) => {
     setSelectedJob(job);
@@ -143,13 +149,17 @@ const JobsPage = () => {
 
   // console.log("Jobs state in JobsPage:", jobs);
 
-  return (
+  if (loading) {
+    return <Loader />;
+  }
+
+  return  (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold mb-6">Job Management</h2>
 
       {!selectedJob &&
         !isEditing &&
-        !isViewingAnalytics &&
+       
         !isViewingCandidates &&
         !isViewingTracking && (
           <JobListings
@@ -157,28 +167,27 @@ const JobsPage = () => {
             onSelect={handleJobSelect}
             onEdit={handleJobEdit}
             onCreate={handleJobCreate}
-            onAnalytics={handleJobAnalytics}
+           
             onCandidates={handleJobCandidates}
           />
         )}
 
       {selectedJob &&
         !isEditing &&
-        !isViewingAnalytics &&
+      
         !isViewingCandidates &&
         !isViewingTracking && (
           <JobDetails
             job={selectedJob}
             onEdit={handleJobEdit}
-            onAnalytics={() => handleJobAnalytics(selectedJob)}
+           
             onCandidates={() => handleJobCandidates(selectedJob)}
             onTracking={handleViewTracking} // Pass the handler to view tracking
             onDelete={handleDeleteJob} // Pass delete handler
           />
         )}
 
-      {isViewingAnalytics && <JobAnalytics job={selectedJob} />}
-
+    
       {isEditing && (
         <JobForm
           job={selectedJob}

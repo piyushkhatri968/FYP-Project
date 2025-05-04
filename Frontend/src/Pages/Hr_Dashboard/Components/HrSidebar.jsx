@@ -18,7 +18,7 @@ const HrSidebar = () => {
 
   return (
     <>
-      {/* Hamburger Menu for Mobile */}
+      {/* Hamburger Menu for Mobile (only visible on mobile) */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="md:hidden fixed top-4 left-4 text-white text-2xl z-20 bg-[#010C29] p-2 rounded-md"
@@ -33,20 +33,20 @@ const HrSidebar = () => {
         } md:translate-x-0 md:static md:h-auto md:flex md:w-[250px]`}
       >
         <div className="mb-9">
+          {/* Header with title */}
           <h1 className="text-3xl font-bold text-start text-white mb-4">
             HR Portal
           </h1>
+
           <ul className="space-y-4">
-            {[
+            {[ 
               { name: "Dashboard", path: "/hr/dashboard" },
               { name: "Post a Job", path: "/hr/job-notification" },
               { name: "Manage Jobs", path: "/hr/manage-jobs" },
               { name: "View Applications", path: "/hr/candidate-profiles" },
               { name: "Application Tracking", path: "/hr/application-tracking" },
               { name: "Shortlist Candidates", path: "/hr/shortlisted-candidates" },
-              // { name: "Job Analytics", path: "/hr/job-analytics" },
               { name: "Notification Settings", path: "/hr/notification-settings" },
-              // { name: "Announcements", path: "/hr/employment-announcements" },
             ].map((item, index) => (
               <motion.li
                 key={item.path}
@@ -58,17 +58,17 @@ const HrSidebar = () => {
                   location.pathname === item.path ? "bg-red-600" : ""
                 }`}
               >
-                <Link to={item.path} className="block font-semibold">
+                <Link
+                  to={item.path}
+                  onClick={() => setIsSidebarOpen(false)} 
+                  className="block font-semibold"
+                >
                   {item.name}
                 </Link>
               </motion.li>
             ))}
           </ul>
         </div>
-
-        {/* <button className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg w-full font-bold transition duration-300">
-          Logout
-        </button> */}
       </aside>
     </>
   );

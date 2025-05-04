@@ -59,7 +59,7 @@ const Sidebar = ({ userData }) => {
               } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <span className="p-2 rounded-full">
-                <FaUserTie size={20}/>
+                <FaUserTie size={20} />
               </span>
               <span>Employees</span>
             </Link>
@@ -75,7 +75,7 @@ const Sidebar = ({ userData }) => {
               } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <span className="p-2 rounded-full">
-                <LiaUserTagSolid size={20}/>
+                <LiaUserTagSolid size={20} />
               </span>
               <span>Recruiters</span>
             </Link>
@@ -91,7 +91,7 @@ const Sidebar = ({ userData }) => {
               } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <span className="p-2 rounded-full">
-                <GrUserAdmin size={20}/>
+                <GrUserAdmin size={20} />
               </span>
               <span>Admins</span>
             </Link>
@@ -107,9 +107,25 @@ const Sidebar = ({ userData }) => {
               } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
             >
               <span className="p-2 rounded-full">
-                <FaUserPlus size={20}/>
+                <FaUserPlus size={20} />
               </span>
               <span>Add New Admin</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/admin?tab=adminSettings"
+              className={`${
+                location.pathname === "/dashboard/admin" &&
+                location.search === "?tab=adminSettings"
+                  ? "text-white bg-[#FD1616] font-bold"
+                  : null
+              } flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
+            >
+              <span className="p-2 rounded-full">
+                <FaGear size={20} />
+              </span>
+              <span>Settings</span>
             </Link>
           </li>
         </ul>
