@@ -218,11 +218,11 @@ const SignUp = () => {
               {formData.userType === "recruiter" && (
                 <>
                   {[
-                    "position",
-                    "department",
-                    "companyName",
-                    "companyAddress",
-                    "contactNumber",
+                    "Position",
+                    "Department",
+                    "CompanyName",
+                    "CompanyAddress",
+                    "ContactNumber",
                   ].map((field, idx) => (
                     <div
                       key={idx}

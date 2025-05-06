@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HRSidebar from "./HRSidebar";
+import HRSidebar  from "./HrSidebar.jsx"
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import HRNavbar from "./HrNavbar.jsx";
@@ -15,7 +15,7 @@ const HRLayout = () => {
       {/* Sidebar and main content */}
       <div className="flex pt-0">
         <HRSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-        <main className="flex-1 p-6 bg-gray-100">
+        <main className="flex-1 p-6  bg-gray-100">
           <Outlet />
         </main>
       </div>
