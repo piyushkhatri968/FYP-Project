@@ -2,9 +2,11 @@ import Application from "../Models/application.model.js";
 import { errorHandler } from "../utils/Error.js";
 import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
+import User from "../Models/user.model.js"
 import Interview from "../Models/Hr_Models/interview.model.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { AppliedJobFormat } from "../utils/emailTemplate.js";
+import { generateStatusEmail } from "../utils/emailTemplate.js";
 
 export const getApplications = async (req, res, next) => {
   try {
@@ -162,10 +164,15 @@ export const getApp = async (req, res) => {
 //   }
 // };
 
-// UpdateStatus:
+
+
+
+
+// UpdateStatus: and sending emails,,, 
 export const updateStatus = async (req, res, next) => {
   const { id } = req.params; // Application ID
-  const { status, reason } = req.body; // New status and rejection reason
+  
+  const { status, reason } = req.body; // New status and rejection reason 
 
   // Validate status
   if (!["Applied", "Shortlisted", "Rejected"].includes(status)) {
@@ -178,24 +185,64 @@ export const updateStatus = async (req, res, next) => {
   }
 
   try {
-    // Find the application and update its status and reason
+    // Prepare update data
     const updateData = { status };
     if (status === "Rejected") {
-      updateData.rejectionReason = reason; // Save the rejection reason
+      updateData.rejectionReason = reason;
     }
 
+    // Update the application
     const application = await Application.findByIdAndUpdate(id, updateData, {
       new: true,
     });
+// console.log("application," ,application)
+
 
     if (!application) {
       return res.status(404).json({ error: "Application not found." });
     }
 
+    // Get user email and send status email
+    const user = await Candidate.findById(application.userId).populate("userId","name email");
+    // console.log("current user",user)
+
+    const Hrdetails= await JobPost.findById(application.jobId).
+    populate(
+      {
+        path:"postedBy",
+        populate:{
+          path:"recruiterDetails"
+        }
+        
+      }
+    )
+   
+
+    // console.log(user)
+   
+    if (user && user.userId?.email) {
+      const { subject, message } = generateStatusEmail({
+        name: user.userId?.name || "Candidate",
+        position:user.position,
+        Hrposition: Hrdetails.postedBy?.recruiterDetails?.position,
+        companyName:Hrdetails.postedBy?.recruiterDetails?.companyName,
+        status,
+        reason,
+      });
+
+      await sendEmail({
+        email: user.userId?.email,
+        subject,
+        message,
+      });
+    }
+
+    // Final response
     res.status(200).json({
       message: `Application status updated to ${status}.`,
       application,
     });
+
   } catch (error) {
     console.error("Error updating application status:", error);
     res.status(500).json({ error: "Internal server error." });

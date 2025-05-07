@@ -1,5 +1,9 @@
+import Candidate from "../Models/candidate.model.js";
 import JobInvite from "../Models/Hr_Models/JobInvite.model.js";
-
+import JobPost from "../Models/Hr_Models/Jobs.model.js";
+import User from "../Models/user.model.js";
+import Recruiter from "../Models/recruiter.model.js";
+import { generateJobInviteEmail } from "../utils/emailTemplate.js"
 export const inviteCandidateToJob = async (req, res) => {
   const { candidateId, jobId, recruiterId, message } = req.body;
   try {
@@ -22,6 +26,22 @@ export const inviteCandidateToJob = async (req, res) => {
     });
 
     await invite.save();
+
+    // const candidate= await Candidate.findById(candidateId)
+
+    // const job= await JobPost.findById(jobId)
+    // const recruiter= await Recruiter.findById(recruiterId)
+
+
+    // if (!candidate || !recruiter || !job) {
+    //   return res.status(404).json({ message: "Invalid candidate, recruiter, or job." });
+    // }
+
+    // // generating Email:
+    // const { subject, htmlMessage }=generateJobInviteEmail({
+
+
+    // })
 
     res
       .status(201)
