@@ -4,6 +4,7 @@ import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
 import Interview from "../Models/Hr_Models/interview.model.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import { AppliedJobFormat } from "../utils/emailTemplate.js";
 
 export const getApplications = async (req, res, next) => {
   try {
@@ -214,8 +215,7 @@ export const applyJobApplication = async (req, res, next) => {
     if (!job) {
       return next(errorHandler(404, "Job not found"));
     }
-
-    const user = await Candidate.findById(userId);
+    const user = await Candidate.findById(userId).populate("userId");
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
@@ -237,11 +237,11 @@ export const applyJobApplication = async (req, res, next) => {
     );
 
     const email = job.postedBy.email;
+    const userEmail = user.userId.email;
+    const jobTitle = job.title;
     const subject = "Applied for Job";
-    const message = `have applied for the job.`;
-    await sendEmail({ email, subject, message });
-    // console.log("recruiter", recruiterEmail);
-    // console.log(message);
+    const html = AppliedJobFormat({ userEmail, jobTitle, jobId: job._id });
+    await sendEmail({ email, subject, message: html });
 
     res.status(201).json({
       success: true,
