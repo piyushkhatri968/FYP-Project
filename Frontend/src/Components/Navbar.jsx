@@ -68,7 +68,7 @@ const Navbar = () => {
         className={`desktop-nav px-4 sm:px-8 fixed top-0 md:px-12 lg:px-20 bg-[#010C29] text-white navbar-container visible`}
       >
         <div className="logo">
-          <Link to="/">Logo</Link>
+          <Link to="/">Skill Sync</Link>
         </div>
         <div>
           <ul className="flex gap-10">
