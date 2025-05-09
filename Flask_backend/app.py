@@ -660,27 +660,15 @@
 
 
 # ================================================New File structure==========================================
-# from flask import Flask
-# from flask_cors import CORS
-# from routes.job_seeker import job_seeker_blueprint
-# from routes.recruiter import recruiter_blueprint
-
-# app = Flask(__name__)
-# CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})  # Replace with your frontend URL
-
-# # Register blueprints
-# app.register_blueprint(job_seeker_blueprint)
-# app.register_blueprint(recruiter_blueprint)
-
-# if __name__ == '__main__':
-#     app.run(debug=True,use_reloader=False)    
-
 
 from flask import Flask
 from flask_cors import CORS
 from routes.job_seeker import job_seeker_blueprint
 from routes.recruiter import recruiter_blueprint
 from utils.vector_db import title_idx, skill_idx, title_ids, skill_ids
+from listener import listen_to_changes
+import threading
+# from utils.vector_db import vector_db_blueprint   
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
@@ -694,6 +682,16 @@ app.config['SKILL_IDS'] = skill_ids
 # Register blueprints
 app.register_blueprint(job_seeker_blueprint)
 app.register_blueprint(recruiter_blueprint)
+# app.register_blueprint(vector_db_blueprint)
+
+# if __name__ == '__main__':
+#     listener_thread = threading.Thread(target=listen_to_changes, daemon=True)
+#     listener_thread.start()
+#     app.run(debug=True, use_reloader=False)        
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)    
+    # start watching both collections in background threads
+    listen_to_changes()
+
+    # now launch Flask (no reloader so only one copy of the listener runs)
+    app.run(debug=True, use_reloader=False)

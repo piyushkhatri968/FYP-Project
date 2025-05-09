@@ -13,7 +13,7 @@ export const getCandidateDetails = async (req, res, next) => {
     next(error);
   }
 };
-
+// ======================================Piyush Code==================================================
 export const postCandidateDetails = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -23,11 +23,26 @@ export const postCandidateDetails = async (req, res, next) => {
     if (!candidate) {
       return next(errorHandler(404, "User not found"));
     }
+    console.log(candidate)
     res.status(200).json({ success: true, data: candidate });
   } catch (error) {
     console.log(error);
   }
 };
+
+// ======================================Piyush Code==================================================
+
+// ==========================================babar's code==========================================
+
+// ==========================================babar's code==========================================
+
+
+
+
+
+
+
+
 
 export const getAppliedJobs = async (req, res, next) => {
   const { id } = req.params;

@@ -3,6 +3,7 @@ import Candidate from "../Models/candidate.model.js";
 import User from "../Models/user.model.js";
 import { errorHandler } from "../utils/Error.js";
 
+// =====================================Pawan's code=========================================
 export const createJobPost = async (req, res) => {
   try {
     let { title, description, location, skills } = req.body;
@@ -29,6 +30,15 @@ export const createJobPost = async (req, res) => {
     });
   }
 };
+
+// =====================================Pawan's code=========================================
+
+// =====================================babar's code==========================================
+
+// =====================================babar's code==========================================
+
+
+
 
 // getting posted jobs:
 
