@@ -2,7 +2,11 @@ import Application from "../Models/application.model.js";
 import { errorHandler } from "../utils/Error.js";
 import Candidate from "../Models/candidate.model.js";
 import JobPost from "../Models/Hr_Models/Jobs.model.js";
+import User from "../Models/user.model.js"
 import Interview from "../Models/Hr_Models/interview.model.js";
+import { sendEmail } from "../utils/sendEmail.js";
+import { AppliedJobFormat } from "../utils/emailTemplate.js";
+import { generateStatusEmail } from "../utils/emailTemplate.js";
 
 export const getApplications = async (req, res, next) => {
   try {
@@ -21,16 +25,13 @@ export const getApplications = async (req, res, next) => {
     const jobIds = jobsPostedByHR.map((job) => job._id);
 
     if (jobIds.length === 0) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "No applications found for this HR.",
-          data: [],
-        });
+      return res.status(200).json({
+        success: true,
+        message: "No applications found for this HR.",
+        data: [],
+      });
     }
 
-    
     const query = { jobId: { $in: jobIds } }; // Get applications for HR's jobs
     if (status) query.status = status;
     if (jobTitle) query["jobId.title"] = { $regex: jobTitle, $options: "i" };
@@ -110,9 +111,6 @@ export const getApplications = async (req, res, next) => {
 //   }
 // };
 
-
-
-
 export const getApp = async (req, res) => {
   try {
     const { hrId } = req.query; // Get HR's ID from request query
@@ -139,10 +137,15 @@ export const getApp = async (req, res) => {
 
     // Count applications based on status
     const applicationStats = {
-      applied: filteredApplications.filter((app) => app.status === "Applied").length,
-      shortlisted: filteredApplications.filter((app) => app.status === "Shortlisted").length,
-      rejected: filteredApplications.filter((app) => app.status === "Rejected").length,
-      hired: filteredApplications.filter((app) => app.status === "Hired").length,
+      applied: filteredApplications.filter((app) => app.status === "Applied")
+        .length,
+      shortlisted: filteredApplications.filter(
+        (app) => app.status === "Shortlisted"
+      ).length,
+      rejected: filteredApplications.filter((app) => app.status === "Rejected")
+        .length,
+      hired: filteredApplications.filter((app) => app.status === "Hired")
+        .length,
       applications: filteredApplications, // Send filtered applications for frontend
     };
 
@@ -151,8 +154,6 @@ export const getApp = async (req, res) => {
     res.status(500).json({ error: "Error fetching applications" });
   }
 };
-
-
 
 // export const getApp = async (req, res) => {
 //   try {
@@ -163,10 +164,15 @@ export const getApp = async (req, res) => {
 //   }
 // };
 
-// UpdateStatus:
+
+
+
+
+// UpdateStatus: and sending emails,,, 
 export const updateStatus = async (req, res, next) => {
   const { id } = req.params; // Application ID
-  const { status, reason } = req.body; // New status and rejection reason
+  
+  const { status, reason } = req.body; // New status and rejection reason 
 
   // Validate status
   if (!["Applied", "Shortlisted", "Rejected"].includes(status)) {
@@ -179,24 +185,64 @@ export const updateStatus = async (req, res, next) => {
   }
 
   try {
-    // Find the application and update its status and reason
+    // Prepare update data
     const updateData = { status };
     if (status === "Rejected") {
-      updateData.rejectionReason = reason; // Save the rejection reason
+      updateData.rejectionReason = reason;
     }
 
+    // Update the application
     const application = await Application.findByIdAndUpdate(id, updateData, {
       new: true,
     });
+// console.log("application," ,application)
+
 
     if (!application) {
       return res.status(404).json({ error: "Application not found." });
     }
 
+    // Get user email and send status email
+    const user = await Candidate.findById(application.userId).populate("userId","name email");
+    // console.log("current user",user)
+
+    const Hrdetails= await JobPost.findById(application.jobId).
+    populate(
+      {
+        path:"postedBy",
+        populate:{
+          path:"recruiterDetails"
+        }
+        
+      }
+    )
+   
+
+    // console.log(user)
+   
+    if (user && user.userId?.email) {
+      const { subject, message } = generateStatusEmail({
+        name: user.userId?.name || "Candidate",
+        position:user.position,
+        Hrposition: Hrdetails.postedBy?.recruiterDetails?.position,
+        companyName:Hrdetails.postedBy?.recruiterDetails?.companyName,
+        status,
+        reason,
+      });
+
+      await sendEmail({
+        email: user.userId?.email,
+        subject,
+        message,
+      });
+    }
+
+    // Final response
     res.status(200).json({
       message: `Application status updated to ${status}.`,
       application,
     });
+
   } catch (error) {
     console.error("Error updating application status:", error);
     res.status(500).json({ error: "Internal server error." });
@@ -212,12 +258,11 @@ export const applyJobApplication = async (req, res, next) => {
       return next(errorHandler(400, "User ID and Job ID are required."));
     }
 
-    const job = await JobPost.findById(jobId);
+    const job = await JobPost.findById(jobId).populate("postedBy");
     if (!job) {
       return next(errorHandler(404, "Job not found"));
     }
-
-    const user = await Candidate.findById(userId);
+    const user = await Candidate.findById(userId).populate("userId");
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
@@ -237,6 +282,13 @@ export const applyJobApplication = async (req, res, next) => {
       { $addToSet: { appliedJobs: jobId } }, // Prevent duplicates
       { new: true }
     );
+
+    const email = job.postedBy.email;
+    const userEmail = user.userId.email;
+    const jobTitle = job.title;
+    const subject = "Applied for Job";
+    const html = AppliedJobFormat({ userEmail, jobTitle, jobId: job._id });
+    await sendEmail({ email, subject, message: html });
 
     res.status(201).json({
       success: true,
@@ -432,7 +484,6 @@ export const getinterviewScheduling = async (req, res) => {
   }
 };
 
-
 // export const getinterviewScheduling = async (req, res) => {
 //   try {
 //     const interviews = await Interview.find()
@@ -448,8 +499,6 @@ export const getinterviewScheduling = async (req, res) => {
 
 // anlaytics
 
-
-
 export const getAnalytics = async (req, res) => {
   try {
     const { hrId } = req.query; // Get HR's ID from request query
@@ -459,11 +508,10 @@ export const getAnalytics = async (req, res) => {
     }
 
     // Find applications related to jobs posted by this HR
-    const applications = await Application.find()
-      .populate({
-        path: "jobId",
-        select: "postedBy",
-      });
+    const applications = await Application.find().populate({
+      path: "jobId",
+      select: "postedBy",
+    });
 
     // Filter applications that belong to jobs posted by this HR
     const filteredApplications = applications.filter(
@@ -472,8 +520,12 @@ export const getAnalytics = async (req, res) => {
 
     // Count applications based on status
     const applicationsReceived = filteredApplications.length;
-    const shortlisted = filteredApplications.filter((app) => app.status === "Shortlisted").length;
-    const hired = filteredApplications.filter((app) => app.status === "Hired").length;
+    const shortlisted = filteredApplications.filter(
+      (app) => app.status === "Shortlisted"
+    ).length;
+    const hired = filteredApplications.filter(
+      (app) => app.status === "Hired"
+    ).length;
 
     res.status(200).json({
       applicationsReceived,
@@ -485,8 +537,6 @@ export const getAnalytics = async (req, res) => {
     res.status(500).json({ message: "Error fetching analytics data." });
   }
 };
-
-
 
 // export const getAnalytics = async (req, res) => {
 //   try {
