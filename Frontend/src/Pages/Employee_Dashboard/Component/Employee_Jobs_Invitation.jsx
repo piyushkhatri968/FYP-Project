@@ -38,17 +38,14 @@ const Employee_Jobs_Invitation = () => {
   const handleApply = async (jobId) => {
     try {
       const userId = currentUser.candidateDetails;
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:8080/api/application/candidate/applyJob",
         {
           userId,
           jobId,
         }
       );
-
-      // Remove the applied job from the jobs list
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
-      alert("Job application submitted successfully.");
+      alert(response.data.message);
     } catch (error) {
       console.error(error);
       alert("Failed to apply for the job.");
@@ -68,7 +65,7 @@ const Employee_Jobs_Invitation = () => {
             <Link
               to={`/jobs/${job?.job._id}`}
               key={index}
-              className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md transition-all duration-200"
+              className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md transition-all duration-200 hover:scale-[1.01]"
             >
               {/* Company Image */}
               <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">

@@ -16,7 +16,6 @@ export const createJobPost = async (req, res) => {
     const newJobPost = new JobPost({ ...req.body, slug }); // Destructuring the request body to create a new job post
     await newJobPost.save(); // Save the job post to the database
     // Return a success response with the job post data
-    console.log(newJobPost);
     res.status(201).json({
       success: true,
       message: "Job post created successfully",

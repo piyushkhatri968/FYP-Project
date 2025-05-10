@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Candidate from "./candidate.model.js";
+import Recruiter from "./recruiter.model.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,9 +50,9 @@ userSchema.pre("findOneAndDelete", async function (next) {
   if (!user) return next();
 
   try {
-    if (user.role === "Candidate" && user.candidateDetails) {
+    if (user.userType === "employee" && user.candidateDetails) {
       await Candidate.findByIdAndDelete(user.candidateDetails);
-    } else if (user.role === "Recruiter" && user.recruiterDetails) {
+    } else if (user.userType === "recruiter" && user.recruiterDetails) {
       await Recruiter.findByIdAndDelete(user.recruiterDetails);
     }
     next();
