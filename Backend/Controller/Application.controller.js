@@ -195,7 +195,6 @@ export const updateStatus = async (req, res, next) => {
     const application = await Application.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-// console.log("application," ,application)
 
 
     if (!application) {
@@ -204,7 +203,6 @@ export const updateStatus = async (req, res, next) => {
 
     // Get user email and send status email
     const user = await Candidate.findById(application.userId).populate("userId","name email");
-    // console.log("current user",user)
 
     const Hrdetails= await JobPost.findById(application.jobId).
     populate(
@@ -218,7 +216,6 @@ export const updateStatus = async (req, res, next) => {
     )
    
 
-    // console.log(user)
    
     if (user && user.userId?.email) {
       const { subject, message } = generateStatusEmail({
