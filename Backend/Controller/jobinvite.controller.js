@@ -4,6 +4,7 @@ import JobPost from "../Models/Hr_Models/Jobs.model.js";
 import User from "../Models/user.model.js";
 import Recruiter from "../Models/recruiter.model.js";
 import { generateJobInviteEmail } from "../utils/emailTemplate.js"
+import { sendEmail } from "../utils/sendEmail.js";
 export const inviteCandidateToJob = async (req, res) => {
   const { candidateId, jobId, recruiterId, message } = req.body;
   try {
@@ -27,27 +28,43 @@ export const inviteCandidateToJob = async (req, res) => {
 
     await invite.save();
 
-    // const candidate= await Candidate.findById(candidateId)
+    const candidate= await Candidate.findById(candidateId).populate("userId","name email")
+   
 
-    // const job= await JobPost.findById(jobId)
-    // const recruiter= await Recruiter.findById(recruiterId)
-
-
-    // if (!candidate || !recruiter || !job) {
-    //   return res.status(404).json({ message: "Invalid candidate, recruiter, or job." });
-    // }
-
-    // // generating Email:
-    // const { subject, htmlMessage }=generateJobInviteEmail({
+    const job= await JobPost.findById(jobId)
+    const recruiter= await Recruiter.findById(recruiterId)
 
 
-    // })
+    if (!candidate || !recruiter || !job) {
+      return res.status(404).json({ message: "Invalid candidate, recruiter, or job." });
+    }
+    
+
+    // generating Email:
+    const { subject,  message:htmlMessage  }=generateJobInviteEmail({
+      candidateName: candidate.userId?.name,
+      jobTitle: job.title,
+      companyName: recruiter.companyName,
+      recruiterPosition: recruiter.position,
+      message,
+      
+      
+
+
+    })
+
+      await sendEmail({
+            email: candidate.userId?.email,
+            subject,
+            message: htmlMessage,
+          });
 
     res
       .status(201)
       .json({ message: "Candidate invited successfully!", invite });
   } catch (err) {
-    res.status(500).json({ message: "Error sending invite", error: err });
+    res.status(500).json({ message: "Error sending invite", error: err.message || err });
+    
   }
 };
 

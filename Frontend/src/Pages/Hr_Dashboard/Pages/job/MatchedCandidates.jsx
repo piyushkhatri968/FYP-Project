@@ -8,8 +8,7 @@ const MatchedCandidatesPage = () => {
   // const matchedCandidates = location.state?.matchedCan || [];
 
   const { matchedCandidates = [], jobId } = location.state || {};
-  
-  console.log("For Job ID:", jobId);
+
   const currentUser = useSelector((state) => state.user.currentUser);
 
   console.log("For Job ID:", jobId);
@@ -67,7 +66,7 @@ const MatchedCandidatesPage = () => {
       <h2 className="text-2xl font-bold mb-4 text-green-700">Matched Candidates</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {matchedCandidates.map((candidate, index) => {
-          console.log("Candidate object:", candidate);
+          // console.log("Candidate object:", candidate);
           const {   candidateId,userInfo, position, experience, location, skills, _id } = candidate;
           return (
             <div

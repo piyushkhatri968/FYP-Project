@@ -108,7 +108,8 @@ export const generateStatusEmail = ({ name, status, reason, position,companyName
 
 
 
-export const generateJobInviteEmail = ({ candidateName, jobTitle, companyName, recruiterName, message,  }) => {
+export const generateJobInviteEmail = ({ candidateName, jobTitle, companyName, recruiterPosition ,message }) => {
+  console.log("details:", "candidateName", candidateName, "jobTitle", jobTitle, "companyName", companyName, "recruiterPosition", recruiterPosition, "message", message);
   const subject = `You're Invited to Apply for ${jobTitle} at ${companyName}`;
 
   const htmlMessage = `
@@ -125,7 +126,7 @@ export const generateJobInviteEmail = ({ candidateName, jobTitle, companyName, r
 
     <p>If you have any questions, feel free to reply to this email.</p>
 
-    <p>Best regards, <br/>${recruiterName} <br/>${companyName}</p>
+    <p>Best regards, <br/>${recruiterPosition} <br/>${companyName}</p>
   `;
 
   return { subject, message: htmlMessage };
