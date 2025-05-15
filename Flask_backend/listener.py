@@ -17,12 +17,12 @@ def _watch_collection(collection_name):
         { "$match": { "operationType": { "$in": OPS } } }
     ]
 
-    print(f"🚀 [Listener:{collection_name}] starting (watching ops={OPS})")
+    print(f"[Listener:{collection_name}] starting (watching ops={OPS})")
     stream = coll.watch(pipeline, full_document='updateLookup')
     for change in stream:
         op = change["operationType"]
         doc_id = change["documentKey"]["_id"]
-        print(f"📣 [Listener:{collection_name}] event={op} _id={doc_id}")
+        print(f"[Listener:{collection_name}] event={op} _id={doc_id}")
 
         if op == "insert":
             insert_into_vector_db(change["fullDocument"], collection_name)

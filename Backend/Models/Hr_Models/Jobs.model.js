@@ -20,11 +20,11 @@ const jobPostSchema = new mongoose.Schema(
     },
     experience: {
       type: String,
-      required: true,
+      // required: true,
     },
     skills: {
       type: [String], // An array of strings for skills
-      required: true,
+      // required: true,
     },
 
     slug: {
