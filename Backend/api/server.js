@@ -54,6 +54,7 @@ app.use("/api/hr", inviteRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/home", homeRoute);
 
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
