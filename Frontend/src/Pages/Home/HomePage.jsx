@@ -21,6 +21,7 @@ function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
 
   const [interestedJob, setInterestedJob] = useState([]);
+  const [topCompanies, setTopCompanies] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const checkUserInfo = async () => {
@@ -45,12 +46,12 @@ function HomePage() {
   const getInterestedJobs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:8080/api/home/interestedJobs",
-        { withCredentials: true }
-      );
+      const response = await axios.get("http://localhost:8080/api/home", {
+        withCredentials: true,
+      });
       if (response.status === 200) {
-        setInterestedJob(response.data);
+        setInterestedJob(response.data.interestedJob);
+        setTopCompanies(response.data.topCompanies);
         setLoading(false);
       }
     } catch (error) {
@@ -114,7 +115,7 @@ function HomePage() {
         </div>
       </div>
       <InterestedJobs interestedJob={interestedJob} />
-      <TopCompanies />
+      <TopCompanies topCompanies={topCompanies}/>
       <Stats />
       <HowWebWorks />
       {currentUser ? <JobRecruitment /> : null}

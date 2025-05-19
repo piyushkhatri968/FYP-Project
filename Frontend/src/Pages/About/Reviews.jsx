@@ -42,9 +42,9 @@ function Reviews() {
           What Clients Say About Us
         </h2>
         <p className="text-gray-600 px-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-          suspendisse ultrices gravida.
+          Our clients are at the heart of everything we do. Here’s what they
+          have to say about their experience working with us — from seamless
+          hiring processes to outstanding candidate matches.
         </p>
       </div>
 

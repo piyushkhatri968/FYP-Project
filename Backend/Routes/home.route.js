@@ -1,8 +1,8 @@
 import express from "express";
-import { interestedJobs } from "../Controller/home.controller.js";
+import { homeData } from "../Controller/home.controller.js";
 
 const router = express.Router();
 
-router.get("/interestedJobs", interestedJobs);
+router.get("/", homeData);
 
 export default router;
