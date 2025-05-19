@@ -4,8 +4,10 @@ import { CiLocationOn } from "react-icons/ci";
 import { CiFilter } from "react-icons/ci";
 import { CiClock1 } from "react-icons/ci";
 import { CiHeart } from "react-icons/ci";
+import moment from "moment";
+import { Link } from "react-router-dom";
 
-const InterestedJobs = () => {
+const InterestedJobs = ({ interestedJob }) => {
   const Jobs = [
     {
       jobImage: companyImg,
@@ -90,57 +92,117 @@ const InterestedJobs = () => {
         opportunities just for you. Browse through and apply to roles that align
         with your career aspirations and expertise.
       </p>
+      {interestedJob && interestedJob.length >= 8 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-16 mx-4 sm:mx-12 md:mx-0 text-center md:text-left">
+          {interestedJob.map((job, index) => (
+            <Link
+              to={`/jobs/${job._id}`}
+              key={index}
+              className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row cursor-pointer"
+            >
+              {/* Company Image */}
+              <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
+                <img
+                  src={companyImg}
+                  alt="Company Logo"
+                  className="w-10 h-10"
+                  draggable="false"
+                />
+              </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-16 mx-4 sm:mx-12 md:mx-0 text-center md:text-left">
-        {Jobs.map((job, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row"
-          >
-            {/* Company Image */}
-            <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
-              <img
-                src={job.jobImage}
-                alt="Company Logo"
-                className="w-10 h-10"
-                draggable="false"
-              />
-            </div>
+              {/* Job Details */}
+              <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
+                <h2 className="text-lg font-bold">{job?.title}</h2>
+                <p className="text-sm ">
+                  Via{" "}
+                  <span className="text-red-500">
+                    {job.postedBy?.recruiterDetails?.companyName}
+                  </span>
+                </p>
+                <div className="text-gray-500 flex items-center space-x-1 mt-1">
+                  <CiLocationOn className="text-gray-600 text-lg" />
+                  <span>{job?.location}</span>
+                </div>
+                <div className="text-gray-500 flex items-center space-x-1">
+                  <CiFilter className="text-gray-600 text-lg" />
+                  {job.skills.map((skill, index) => (
+                    <span key={index}>{capitialize(skill)}</span>
+                  ))}
+                </div>
+              </div>
 
-            {/* Job Details */}
-            <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
-              <h2 className="text-lg font-bold">{job.jobName}</h2>
-              <p className="text-sm ">
-                Via <span className="text-red-500">{job.companyName}</span>
-              </p>
-              <div className="text-gray-500 flex items-center space-x-1 mt-1">
-                <CiLocationOn className="text-gray-600 text-lg" />
-                <span>{job.location}</span>
+              {/* Right Section (Status and Like Icon) */}
+              <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
+                <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
+                  {job.jobType}
+                </div>
+                {/* <div className=" flex justify-center ">
+                  <CiHeart className="text-gray-500 text-2xl bg-white border rounded-lg" />
+                </div> */}
+                <div className="flex justify-center items-center gap-2 text-gray-500">
+                  <CiClock1 />
+                  <span>{moment(job.createdAt).fromNow()}</span>
+                </div>
               </div>
-              <div className="text-gray-500 flex items-center space-x-1">
-                <CiFilter className="text-gray-600 text-lg" />
-                <span>{job.tag}</span>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-16 mx-4 sm:mx-12 md:mx-0 text-center md:text-left">
+          {Jobs.map((job, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row"
+            >
+              {/* Company Image */}
+              <div className="md:w-[6rem] md:h-[5rem] w-full h-[3.8rem] bg-white flex items-center justify-center rounded-md border border-dashed border-gray-300">
+                <img
+                  src={job.jobImage}
+                  alt="Company Logo"
+                  className="w-10 h-10"
+                  draggable="false"
+                />
               </div>
-            </div>
 
-            {/* Right Section (Status and Like Icon) */}
-            <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
-              <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
-                {job.work_schedules}
+              {/* Job Details */}
+              <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
+                <h2 className="text-lg font-bold">{job.jobName}</h2>
+                <p className="text-sm ">
+                  Via <span className="text-red-500">{job.companyName}</span>
+                </p>
+                <div className="text-gray-500 flex items-center space-x-1 mt-1">
+                  <CiLocationOn className="text-gray-600 text-lg" />
+                  <span>{job.location}</span>
+                </div>
+                <div className="text-gray-500 flex items-center space-x-1">
+                  <CiFilter className="text-gray-600 text-lg" />
+                  <span>{job.tag}</span>
+                </div>
               </div>
-              <div className=" flex justify-center ">
-                <CiHeart className="text-gray-500 text-2xl bg-white border rounded-lg" />
-              </div>
-              <div className="flex justify-center items-center gap-2 text-gray-500">
-                <CiClock1 />
-                <span>{job.posted_at}</span>
+
+              {/* Right Section (Status and Like Icon) */}
+              <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
+                <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
+                  {job.work_schedules}
+                </div>
+                <div className=" flex justify-center ">
+                  <CiHeart className="text-gray-500 text-2xl bg-white border rounded-lg" />
+                </div>
+                <div className="flex justify-center items-center gap-2 text-gray-500">
+                  <CiClock1 />
+                  <span>{job.posted_at}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default InterestedJobs;
+
+export const capitialize = (skill) => {
+  return skill.charAt(0).toUpperCase() + skill.slice(1) + ", ";
+};

@@ -20,28 +20,57 @@ function HomePage() {
   const { currentUser } = useSelector((state) => state.user);
   const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const checkUserInfo = async () => {
-      if (currentUser) {
-        if (currentUser.userType === "employee") {
-          try {
-            const response = await axios.get(
-              `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
-            );
-            const { position, skills } = response.data.data;
-            if (!position || (Array.isArray(skills) && skills.length === 0)) {
-              setShowPopup(true);
-            } else {
-              setShowPopup(false);
-            }
-          } catch (error) {
-            console.error("Error fetching employee data:", error);
+  const [interestedJob, setInterestedJob] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const checkUserInfo = async () => {
+    if (currentUser) {
+      if (currentUser.userType === "employee") {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/api/candidate/getData/${currentUser.candidateDetails}`
+          );
+          const { position, skills } = response.data.data;
+          if (!position || (Array.isArray(skills) && skills.length === 0)) {
+            setShowPopup(true);
+          } else {
+            setShowPopup(false);
           }
+        } catch (error) {
+          console.error("Error fetching employee data:", error);
         }
       }
-    };
+    }
+  };
+  const getInterestedJobs = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        "http://localhost:8080/api/home/interestedJobs",
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setInterestedJob(response.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     checkUserInfo();
+    getInterestedJobs();
   }, []);
+  if (loading) {
+    return (
+      <div className="fixed top-0 z-[5000] flex items-center justify-center w-full h-screen bg-BlueColor">
+        <svg viewBox="25 25 50 50" className="svg-loader">
+          <circle r="20" cy="50" cx="50"></circle>
+        </svg>
+      </div>
+    );
+  }
   return (
     <>
       {showPopup && <ProfileCompletionPopup />}
@@ -84,7 +113,7 @@ function HomePage() {
           </Link>
         </div>
       </div>
-      <InterestedJobs />
+      <InterestedJobs interestedJob={interestedJob} />
       <TopCompanies />
       <Stats />
       <HowWebWorks />
