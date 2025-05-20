@@ -57,6 +57,7 @@ const HrSidebar = () => {
             { name: "View Applications", path: "/hr/candidate-profiles" },
             { name: "Application Tracking", path: "/hr/application-tracking" },
             { name: "Shortlist Candidates", path: "/hr/shortlisted-candidates" },
+            {name: "Hired Candidates" , path:"/hr/hired_candidates"},
             { name: "Notification Settings", path: "/hr/notification-settings" },
           ].map((item, index) => (
             <motion.li

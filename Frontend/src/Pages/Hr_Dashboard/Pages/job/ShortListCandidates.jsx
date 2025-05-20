@@ -82,6 +82,80 @@ if (typeof experienceStr === "string" && experienceStr.includes("-")) {
     setShowInterviewModal(false);
   };
 
+
+const HandleRejectCandidate=async(candidate)=>{
+    try {
+      setIsLoading(true)
+        // Prompt the user to enter a rejection reason
+        const rejectionReason = prompt(
+          `Please enter a reason for rejecting ${candidate.userId?.name || "the candidate"
+          }:`
+        );
+  
+        // If no reason is provided, cancel the rejection
+        if (!rejectionReason) {
+          alert("Rejection reason is required.");
+          return;
+        }
+  
+        // Send the rejection reason along with the status to the server
+        await axios.post(
+          `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
+          { status: "Rejected", reason: rejectionReason }
+        );
+  
+        if(isLoading){
+          return <Loader/>
+        }
+        // Show confirmation to the admin
+        alert(
+          `${candidate.userId?.name || "Candidate"} has been rejected with reason: "${rejectionReason}".`
+        );
+
+      
+      } catch (error) {
+        console.error("Failed to reject candidate:", error);
+        alert("Failed to reject candidate.");
+      }finally{
+        setIsLoading(false)
+      }
+
+}
+
+
+    const handleHireCandidate= async(candidate)=>{
+          try {
+            setIsLoading(true)
+           
+            const response = await axios.post(
+              `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
+              { status: "Hired" }
+            );
+
+            if(isLoading){
+              return <Loader/>
+            }
+            alert(`${candidate.userId.userId?.name || "Candidate"} has been Hired.`);
+           
+          } catch (error) {
+            console.error("Error Hiring candidate:", error);
+            alert("Failed to Hiring candidate.");
+          }
+          finally{
+            setIsLoading(false)
+          }
+
+
+      
+    }
+
+    const handleHirelist = (candidate) => {
+    if (candidate.status === "Hired") {
+      alert(`${candidate.userId.userId?.name || "Candidate"} is already Hired.`);
+      return;
+    }
+    handleHireCandidate(candidate); // Call the API function
+  };
   if (isLoading) return <Loader />;
 
   return (
@@ -168,7 +242,7 @@ if (typeof experienceStr === "string" && experienceStr.includes("-")) {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0 w-full sm:w-auto">
+                {/* <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0 w-full sm:w-auto">
                   <button
                    onClick={() => openModal(candidate)}
 
@@ -182,7 +256,40 @@ if (typeof experienceStr === "string" && experienceStr.includes("-")) {
                   >
                     <FaCalendarAlt className="inline mr-1" /> Schedule Interview
                   </button>
-                </div>
+                </div> */}
+
+
+
+<div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-4 sm:mt-0 w-full sm:w-auto">
+  <button
+    onClick={() => openModal(candidate)}
+    className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition text-sm w-full sm:w-auto"
+  >
+    View Profile
+  </button>
+  <button
+    onClick={() => handleScheduleInterview(candidate)}
+    className="px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition text-sm w-full sm:w-auto"
+  >
+    <FaCalendarAlt className="inline mr-1" /> Schedule Interview
+  </button>
+  <button
+    onClick={() => handleHirelist(candidate)}
+    className="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition text-sm w-full sm:w-auto"
+  >
+
+    Hire
+  </button>
+  <button
+    onClick={() => HandleRejectCandidate(candidate)}
+    className="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition text-sm w-full sm:w-auto"
+  >
+    Reject
+  </button>
+</div>
+
+
+
               </div>
             );
           })}

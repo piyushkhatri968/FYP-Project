@@ -175,7 +175,7 @@ export const updateStatus = async (req, res, next) => {
   const { status, reason } = req.body; // New status and rejection reason 
 
   // Validate status
-  if (!["Applied", "Shortlisted", "Rejected"].includes(status)) {
+  if (!["Applied", "Shortlisted", "Rejected","Hired"].includes(status)) {
     return res.status(400).json({ error: "Invalid status value." });
   }
 
@@ -190,6 +190,14 @@ export const updateStatus = async (req, res, next) => {
     if (status === "Rejected") {
       updateData.rejectionReason = reason;
     }
+
+    const UpdateHiredStatus= { status };
+    
+      if(UpdateHiredStatus === "Hired" ){
+        UpdateHiredStatus.status=UpdateHiredStatus
+
+      }
+    
 
     // Update the application
     const application = await Application.findByIdAndUpdate(id, updateData, {
@@ -422,6 +430,42 @@ export const getShortlistedCandidates = async (req, res) => {
       .json({ message: "Error fetching shortlisted candidates", error });
   }
 };
+
+
+
+export const getHiredCandidates = async (req, res) => {
+  try {
+    const { hrId } = req.query; // Get HR's ID
+
+    if (!hrId) {
+      return res.status(400).json({ message: "HR ID is required." });
+    }
+    const shortlistedApplications = await Application.find({
+      status: "Hired",
+    })
+      .populate({
+        path: "userId", // First populate userId from the Application model
+
+        populate: {
+          path: "userId", // Then populate userId from the Candidate model
+          select: "name experience email profilePicture", // Fetching selected fields
+        },
+      })
+      .populate("jobId", " postedBy"); // populates, include job details
+
+    // Filter applications where the job is posted by the given HR
+    const filteredHiredCandidates = shortlistedApplications.filter(
+      (app) => app.jobId?.postedBy.toString() === hrId
+    );
+
+    res.status(200).json(filteredHiredCandidates);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching Hired candidates", error });
+  }
+};
+
 
 export const updateShortListId = async (req, res) => {
   try {

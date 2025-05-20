@@ -53,7 +53,7 @@ const InterviewScheduling = ({ candidate, closeModal, addInterview }) => {
           candidateConfirmation,
         }
       );
-
+console.log("candidate",candidate)
       // Send email to the candidate using EmailJS
       const emailData = {
         user_email: candidate.userId?.userId?.email, // Candidate's email
@@ -66,22 +66,13 @@ const InterviewScheduling = ({ candidate, closeModal, addInterview }) => {
         location: interviewMode === "In-person" ? location : "N/A",
         interviewers: interviewers,
         comments: jobComments,
+        // Hrposition: Hrposition,
+        // companyName: companyName
       };
 
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, emailData, PUBLIC_KEY);
 
-      // Optionally update UI with new interview
-      // if (addInterview) {
-      //   addInterview({
-      //     name: candidate.userId?.userId?.name || "Unknown Candidate",
-      //     date: new Date(interviewDate).toLocaleDateString("en-US", {
-      //       month: "short",
-      //       day: "numeric",
-      //       year: "numeric",
-      //     }),
-      //     time: interviewTime,
-      //   });
-      // }
+    
 
       alert("Interview scheduled successfully! Email notification sent.");
       closeModal();
@@ -97,7 +88,7 @@ const InterviewScheduling = ({ candidate, closeModal, addInterview }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded shadow-md w-full max-w-md">
+      <div className="bg-white p-4 rounded shadow-md w-full max-w-md max-h-[90vh] overflow-y-auto">
         <h4 className="text-lg font-semibold mb-2">Schedule Interview</h4>
         <p className="text-sm mb-4">
           For Candidate: {candidate.userId?.userId?.name}

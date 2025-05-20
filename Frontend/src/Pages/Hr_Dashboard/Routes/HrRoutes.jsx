@@ -16,6 +16,7 @@ import EmployeeAnnouncement from "../Pages/job/EmployeeAnnouncement";
 import InterviewScheduling from "../Pages/job/InterviewScheduling";
 import Profile from "../Pages/job/Profile";
 import MatchedCandidates from "../Pages/job/MatchedCandidates";
+import HiredCandidates from "../Pages/job/HiredCandidates"
 
 import RecruiterRoute from "../../../Components/Protected Routes/RecruiterRoute";
 // HR-specific routes
@@ -26,6 +27,8 @@ const HrRoutes = (
       <Route path="/hr/manage-jobs" element={<JobsPage />} />
       <Route path="/hr/application-tracking" element={<ApplicationTracking />} />
       <Route path="/hr/shortlisted-candidates" element={<ShortlistCandidates />} />
+      <Route path="/hr/hired_candidates" element={ <HiredCandidates/>}/>
+
       <Route path="/hr/candidate-profiles" element={<CandidateApplications />} />
       <Route path="/hr/job-analytics" element={<JobAnalytics />} />
       <Route path="/hr/account-settings" element={<AccountSetting />} />

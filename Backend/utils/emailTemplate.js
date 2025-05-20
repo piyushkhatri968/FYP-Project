@@ -101,6 +101,17 @@ export const generateStatusEmail = ({ name, status, reason, position,companyName
       <br/>${companyName}</p>
     `;
   }
+  else if (status === 'Hired') {
+    subject = `Congratulations – You're Hired for ${position}!`;
+    message = `
+      <p>Dear ${name},</p>
+      <p>We are excited to inform you that you have been <strong>hired</strong> for the position of <strong>${position}</strong> at <strong>${companyName}</strong>.</p>
+      <p>Your skills and experience stood out, and we’re thrilled to welcome you to our team.</p>
+      <p>Our HR team will contact you soon with details regarding onboarding and your joining formalities.</p>
+      <p>Congratulations once again, and we look forward to a successful journey together!</p>
+      <p>Best regards,<br/>${Hrposition}<br/>${companyName}</p>
+    `;
+  }
 
   return { subject, message };
 };

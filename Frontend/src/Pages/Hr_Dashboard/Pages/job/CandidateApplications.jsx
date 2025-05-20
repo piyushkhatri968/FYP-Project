@@ -119,6 +119,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const handleRejectCandidate = async (candidate) => {
     try {
+      setIsLoading(true)
       // Prompt the user to enter a rejection reason
       const rejectionReason = prompt(
         `Please enter a reason for rejecting ${candidate.userId?.name || "the candidate"
@@ -136,7 +137,9 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
         { status: "Rejected", reason: rejectionReason }
       );
-
+     if (isLoading) {
+    return <Loader />
+  }
       // Show confirmation to the admin
       alert(
         `${candidate.userId?.name || "Candidate"} has been rejected with reason: "${rejectionReason}".`
@@ -150,6 +153,9 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
     } catch (error) {
       console.error("Failed to reject candidate:", error);
       alert("Failed to reject candidate.");
+    } finally{
+      setIsLoading(false)
+
     }
   };
 
@@ -159,10 +165,13 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
 
   const handleShortlistCandidate = async (candidate) => {
     try {
+        
       const response = await axios.post(
         `http://localhost:8080/api/application/candidate/${candidate._id}/status`,
         { status: "Shortlisted" }
       );
+   
+    
       alert(`${candidate.userId.userId?.name || "Candidate"} has been shortlisted.`);
       setCandidates((prev) =>
         prev.map((c) =>
@@ -173,6 +182,7 @@ const CandidateApplications = ({ onViewProfile, onShortlist, onReject }) => {
       console.error("Error shortlisting candidate:", error);
       alert("Failed to shortlist candidate.");
     }
+   
   };
 
 

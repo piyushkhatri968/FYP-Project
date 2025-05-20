@@ -11,7 +11,8 @@ import {
   interviewScheduling,
   getinterviewScheduling,
   getApp,
-  getAnalytics
+  getAnalytics,
+  getHiredCandidates
 } from "../Controller/Application.controller.js";
 
 // fetching application
@@ -28,6 +29,8 @@ router.get("/getApplication",getApp)
 
 // handling shortlist:
 router.get("/shortlisted-candidates", getShortlistedCandidates);
+
+router.get("/hired_candidates", getHiredCandidates)
 
 router.patch("shortlist/:id",updateShortListId)
 
