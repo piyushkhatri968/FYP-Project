@@ -127,7 +127,6 @@ import tempfile
 import fitz  # PyMuPDF
 import requests
 import json
-import re
 from flask import Blueprint, request, jsonify
 
 resume_bp = Blueprint('resume_analyser', __name__)
@@ -149,13 +148,13 @@ def call_gemini_api(prompt: str) -> str:
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY not set in environment")
 
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent"
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
     headers = {"Content-Type": "application/json"}
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
-            "temperature": 0.1,  # Very low temperature for precise responses
-            "maxOutputTokens": 800
+            "temperature": 0.2,  # Lower temperature for more factual responses
+            "maxOutputTokens": 512
         }
     }
 
@@ -169,17 +168,6 @@ def call_gemini_api(prompt: str) -> str:
                 for part in candidate["content"]["parts"]:
                     if "text" in part:
                         return part["text"]
-    return ""
-
-def clean_experience(exp_str: str) -> str:
-    """Clean and validate experience field"""
-    if not exp_str:
-        return ""
-    
-    # Extract first number found
-    match = re.search(r'\d+', exp_str)
-    if match:
-        return match.group(0)
     return ""
 
 @resume_bp.route('/analyze-resume', methods=['POST'])
@@ -204,67 +192,26 @@ def analyze_resume():
 
         # Build structured extraction prompt
         prompt = f"""
-        Analyze this resume text and extract information strictly following these rules:
-
-        OUTPUT FORMAT (ONLY RETURN THIS JSON STRUCTURE):
+        Extract these fields from the resume text below and return ONLY this JSON format:
         {{
-            "name": "Full name from header",
-            "email": "Primary contact email",
-            "position": "Current/most recent job title",
-            "phone": "Primary phone number",
-            "age": "Calculated age if birth date found, else empty",
+            "name": "Full name from header (First Last format)",
+            "email": "First valid email",
+            "position": "Current job title (standardized capitalization)",
+            "phone": "Digits only phone number",
+            "age": "Only if birth year provided (current year - birth year)",
             "location": "Current city/country",
-            "experience": "Years of experience in current position (number only)",
-            "skills": ["list", "of", "technical", "skills"]
+            "experience": "Years in current role (whole number only)",
+            "skills": ["Technical skills from Skills section"]
         }}
 
-        EXTRACTION RULES:
-        1. NAME:
-           - Look at resume header
-           - Use full name format (First Last)
-           - Exclude titles like 'Mr.', 'Dr.'
-
-        2. EMAIL:
-           - Extract first valid email found
-           - Must match standard email format
-
-        3. POSITION:
-           - Current or most recent job title
-           - Standardize capitalization (e.g., 'Software Engineer' not 'SOFTWARE ENGINEER')
-           - Exclude company names
-
-        4. PHONE:
-           - First valid phone number found
-           - Format as digits only (no spaces/dashes)
-
-        5. AGE:
-           - Calculate only if birth year is explicitly mentioned
-           - Formula: (Current year - birth year)
-           - If uncertain, leave empty
-
-        6. LOCATION:
-           - Current city/country from contact info
-           - Not work location or address
-
-        7. EXPERIENCE:
-           - Years in current/most recent position only
-           - Must be a whole number (e.g., '3' not '3.5')
-           - Calculate from work history if needed
-           - If multiple positions, use current one only
-
-        8. SKILLS:
-           - Only technical/hard skills
-           - Look for 'Skills' section or similar
-           - Standardize naming (e.g., 'JavaScript' not 'JS')
-           - Exclude soft skills like 'Teamwork'
-           - Minimum 3 skills, maximum 15
-
-        STRICT INSTRUCTIONS:
+        RULES:
         - Return ONLY the JSON object
-        - No explanations or additional text
         - Empty strings for missing data
-        - Empty array if no skills found
-        - All fields must be included
+        - Phone: digits only
+        - Skills: Only technical, from Skills section (3-15 items)
+        - Experience: Whole number for current role only
+        - Age: Only if explicitly provided
+        - Standardize all formatting
 
         RESUME TEXT:
         {text}
@@ -273,17 +220,17 @@ def analyze_resume():
         # Call the LLM
         response_text = call_gemini_api(prompt)
         
-        # Clean the response
+        # Clean the response to extract just the JSON
         try:
-            # Extract JSON portion
+            # Remove any text before and after the JSON
             json_start = response_text.find('{')
             json_end = response_text.rfind('}') + 1
             json_str = response_text[json_start:json_end]
             
-            # Parse and validate
+            # Parse the JSON
             extracted_data = json.loads(json_str)
             
-            # Required fields with defaults
+            # Ensure all fields are present
             required_fields = {
                 "name": "",
                 "email": "",
@@ -291,41 +238,20 @@ def analyze_resume():
                 "phone": "",
                 "age": "",
                 "location": "",
-                "experience": "",
                 "skills": []
             }
             
-            # Validate and clean each field
+            # Merge with default fields to ensure structure
             for field in required_fields:
                 if field not in extracted_data:
                     extracted_data[field] = required_fields[field]
-                
-                # Special cleaning for certain fields
-                if field == "skills":
-                    if not isinstance(extracted_data[field], list):
-                        extracted_data[field] = []
-                    # Remove empty skills and deduplicate
-                    extracted_data[field] = list(set(
-                        skill.strip() for skill in extracted_data[field] 
-                        if skill and isinstance(skill, str)
-                    ))[:15]  # Limit to 15 skills
-                
-                elif field == "experience":
-                    extracted_data[field] = clean_experience(str(extracted_data[field]))
-                
-                elif field == "phone":
-                    if extracted_data[field]:
-                        # Keep only digits
-                        extracted_data[field] = re.sub(r'\D', '', str(extracted_data[field]))
+                elif field == "skills" and not isinstance(extracted_data[field], list):
+                    extracted_data[field] = []
             
             return jsonify(extracted_data), 200
             
         except json.JSONDecodeError as e:
-            return jsonify({
-                "error": "Failed to parse response",
-                "details": str(e),
-                "raw_response": response_text
-            }), 500
+            return jsonify({"error": f"Failed to parse response: {str(e)}", "raw_response": response_text}), 500
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
