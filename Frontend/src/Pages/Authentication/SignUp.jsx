@@ -228,12 +228,14 @@ const SignUp = () => {
                       key={idx}
                       className="flex flex-col justify-center items-start w-full gap-2"
                     >
-                      <label className="font-semibold">
-                        {field.replace(/([A-Z])/g, " $1")}
-                      </label>
+                        <label className="font-semibold">
+          {field
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase())}
+        </label>
                       <input
                         type="text"
-                        placeholder={field.replace(/([A-Z])/g, " $1")}
+                        placeholder={field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
                         className="w-full rounded-full bg-[#F9F6F6] h-12 px-5"
                         id={field}
                         onChange={handleInputChange}
