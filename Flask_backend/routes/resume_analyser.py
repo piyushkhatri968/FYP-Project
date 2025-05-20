@@ -192,26 +192,72 @@ def analyze_resume():
 
         # Build structured extraction prompt
         prompt = f"""
-        Extract these fields from the resume text below and return ONLY this JSON format:
+        Analyze this resume and return ONLY a JSON object with the following structure:
+
         {{
-            "name": "Full name from header (First Last format)",
-            "email": "First valid email",
-            "position": "Current job title (standardized capitalization)",
-            "phone": "Digits only phone number",
-            "age": "Only if birth year provided (current year - birth year)",
-            "location": "Current city/country",
-            "experience": "Years in current role (whole number only)",
-            "skills": ["Technical skills from Skills section"]
+            "basic_info": {{
+                "name": "Properly formatted name (Title Case)",
+                "email": "Primary contact email",
+                "phone": "Digits only phone number",
+                "location": "Properly formatted location"
+            }},
+            "professional_info": {{
+                "position": "Standardized position title",
+                "experience": "Whole number years only",
+                "skills": [
+                    "Separated skills (no combined entries)",
+                    "Standardized formatting",
+                    "Only from Skills section"
+                ]
+            }},
+            "evaluation": {{
+                "pros": [
+                    "Encouraging strength statements",
+                    "Focus on technical capabilities",
+                    "Highlight relevant achievements"
+                ],
+                "cons": [
+                    "Constructive improvement areas",
+                    "Specific skill gaps to address",
+                    "Presented as opportunities"
+                ],
+                "suggestions": [
+                    "Actionable recommendations",
+                    "Specific skills to develop",
+                    "Project ideas to consider",
+                    "Ways to showcase work better"
+                ]
+            }}
         }}
 
-        RULES:
-        - Return ONLY the JSON object
-        - Empty strings for missing data
-        - Phone: digits only
-        - Skills: Only technical, from Skills section (3-15 items)
-        - Experience: Whole number for current role only
-        - Age: Only if explicitly provided
-        - Standardize all formatting
+        STRICT PROCESSING RULES:
+        1. Name and Location:
+        - Convert to Title Case (e.g. "Piyush Khatri")
+        - Remove extra spaces and ALL CAPS
+
+        2. Position Title:
+        - Standardize formatting (e.g. "Mern Stack Developer")
+        - Remove special characters and ALL CAPS
+
+        3. Skills:
+        - Split combined entries (e.g. "HTML/CSS" → "HTML", "CSS")
+        - Remove skill levels or percentages
+        - Standardize naming (e.g. "React.js" not "REACT JS")
+
+        4. Experience:
+        - Must be whole number only
+        - Round down if necessary
+        - "0" for less than 1 year
+
+        5. Evaluation Tone:
+        - Pros: 3 maximum, focus on technical strengths
+        - Cons: 3 maximum, specific to technical gaps
+        - Suggestions: 5 maximum, highly actionable
+
+        6. Formatting:
+        - No duplicate fields
+        - No empty fields (use empty strings)
+        - No combined skill entries
 
         RESUME TEXT:
         {text}

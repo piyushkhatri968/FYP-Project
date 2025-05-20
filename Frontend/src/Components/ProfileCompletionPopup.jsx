@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Link } from "react-router-dom";
 
 const ProfileCompletionPopup = () => {
   const [openModal, setOpenModal] = useState(true);
@@ -29,15 +30,15 @@ const ProfileCompletionPopup = () => {
                 Complete Your Profile!
               </h2>
               <p className="text-gray-600 text-center mb-6 max-w-72 md:max-w-96">
-                Fill out the necessary information to get the best job
-                suggestions tailored just for you! Take the next step in your
-                job-seeking journey.
+                Upload your CV and automatically save all your details in one
+                click — no need to fill out each field manually. Streamline your
+                job-seeking process effortlessly.
               </p>
             </div>
           </div>
           <div className="flex justify-center">
-            <button className="bg-[#FD1616] text-white px-4 py-2 rounded-lg shadow hover:bg-blue-900 transition duration-200">
-              <a href="/dashboard/employee?tab=profile">Complete My Profile</a>
+            <button className="bg-[#FD1616] text-white px-4 py-2 rounded-lg shadow font-semibold hover:bg-blue-900 transition duration-200">
+              <Link to="/resume-analyzer">Upload CV</Link>
             </button>
           </div>
         </div>

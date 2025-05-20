@@ -79,7 +79,7 @@ const Other_Info = ({ userData }) => {
             disabled={!isEditing}
             placeholder="Your Age"
             required
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
         <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -92,7 +92,7 @@ const Other_Info = ({ userData }) => {
             disabled={!isEditing}
             placeholder="Work Experience"
             required
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
       </div>
@@ -107,7 +107,7 @@ const Other_Info = ({ userData }) => {
             disabled={!isEditing}
             placeholder="Language"
             required
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
         <div className="flex flex-col gap-2 md:mt-4 w-full">

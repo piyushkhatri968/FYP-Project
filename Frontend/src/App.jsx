@@ -34,6 +34,7 @@ import ApplyForJob from "./Pages/ApplyForJob";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { signoutsuccess } from "./Redux/User/UserSlice";
+import Resume_Analyzer from "./Pages/Resume_Analyzer/Resume_Analyzer";
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -126,6 +127,7 @@ const App = () => {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/find-job" element={<FindAJob />} />
           <Route path="/resume" element={<Resume />} />
+          <Route path="/resume-analyzer" element={<Resume_Analyzer />} />
           <Route
             path="/jobSearch/:title?/:location?"
             element={<Public_Job_Search />}

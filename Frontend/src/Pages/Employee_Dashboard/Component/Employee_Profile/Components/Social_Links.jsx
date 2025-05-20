@@ -12,7 +12,7 @@ const Social_Links = () => {
           <input
             type="text"
             placeholder="https://www.facebook.com/"
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
         <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -20,7 +20,7 @@ const Social_Links = () => {
           <input
             type="number"
             placeholder="https://twitter.com/"
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
       </div>
@@ -30,7 +30,7 @@ const Social_Links = () => {
           <input
             type="text"
             placeholder="https://www.linkedin.com/"
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
         <div className="flex flex-col gap-2 md:mt-4 w-full">
@@ -38,7 +38,7 @@ const Social_Links = () => {
           <input
             type="text"
             placeholder="https://github.com/"
-            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78"
+            className="border-gray-300 px-4 py-2.5 rounded-md md:w-78 placeholder:text-gray-500 placeholder:font-normal text-black font-semibold"
           />
         </div>
       </div>
