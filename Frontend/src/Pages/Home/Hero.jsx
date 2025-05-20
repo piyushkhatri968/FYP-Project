@@ -19,9 +19,12 @@ function Hero() {
           match your skills and aspirations.
         </p>
         <div className="flex gap-4 justify-center lg:justify-start">
-          <button className="font-semibold text-sm lg:text-md bg-[#FD1616] text-white px-4 py-3 w-full sm:w-auto hover:bg-[#011935] transition-all duration-500">
+          <Link
+            to="/resume-analyzer"
+            className="font-semibold text-sm lg:text-md bg-[#FD1616] text-white px-4 py-3 w-full sm:w-auto hover:bg-[#011935] transition-all duration-500"
+          >
             Upload your CV
-          </button>
+          </Link>
           <Link
             to="/contact"
             className="text-center font-semibold bg-white px-4 py-3 text-gray-800 w-full sm:w-auto hover:bg-[#FD1616] hover:text-white transition-all duration-500"
