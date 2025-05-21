@@ -36,9 +36,6 @@ export const createJobPost = async (req, res) => {
 
 // =====================================babar's code==========================================
 
-
-
-
 // getting posted jobs:
 
 export const getJobPosts = async (req, res, next) => {

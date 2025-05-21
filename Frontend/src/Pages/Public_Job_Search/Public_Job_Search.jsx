@@ -25,19 +25,24 @@ const Public_Job_Search = () => {
     try {
       if (loading) return;
       setLoading(true);
-      const response = await fetch("http://localhost:5000/job-seeker-match", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          job_seeker_input: jobSeekerInput,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/searching/job-seeker",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // job_seeker_input: jobSeekerInput,
+            position: titleInput.trim(),
+            location: locationInput.trim(),
+          }),
+        }
+      );
 
       const data = await response.json();
-      setJobResults(data.matched_jobs || []);
-      console.log("Job results:", data.matched_jobs);
+      setJobResults(data || []);
+      console.log("Job results:", data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     } finally {
@@ -79,7 +84,7 @@ const Public_Job_Search = () => {
           <div className="flex items-center justify-between border border-gray-400 py-2 px-3 w-full rounded-xl focus-within:border-blue-500">
             <input
               type="text"
-              placeholder="Location (optional)"
+              placeholder="City"
               name="location"
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}

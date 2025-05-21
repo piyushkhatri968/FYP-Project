@@ -28,6 +28,7 @@ import notificationRoutes from "../Routes/notification.routes.js";
 import inviteRoutes from "../Routes/invite.route.js";
 import homeRoute from "../Routes/home.route.js";
 import resumeAnalyzerRoute from "../Routes/resumeAnalyzer.route.js";
+import searchingRoute from "../Routes/Searching.routes.js";
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -55,6 +56,7 @@ app.use("/api/hr", inviteRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/home", homeRoute);
 app.use("/api/resume", resumeAnalyzerRoute);
+app.use("/api/searching", searchingRoute);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
