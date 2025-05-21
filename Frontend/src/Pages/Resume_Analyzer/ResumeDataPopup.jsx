@@ -7,7 +7,11 @@ import {
   updateSuccess,
 } from "../../Redux/User/UserSlice";
 
-const ResumeDataPopup = ({ setResumeDataSavePopup, resumeData }) => {
+const ResumeDataPopup = ({
+  setResumeDataSavePopup,
+  resumeData,
+  setBrowseJobsPopup,
+}) => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -123,6 +127,9 @@ const ResumeDataPopup = ({ setResumeDataSavePopup, resumeData }) => {
         dispatch(updateSuccess(response.data.updateUser));
         setTimeout(() => {
           setResumeDataSavePopup(false);
+        }, 1000);
+        setTimeout(() => {
+          setBrowseJobsPopup(true);
         }, 1500);
       }
     } catch (err) {
@@ -250,7 +257,7 @@ const ResumeDataPopup = ({ setResumeDataSavePopup, resumeData }) => {
               </p>
             )}
             {saveSuccess && (
-              <p className="mt-4 text-green-600 w-full text-center bg-gray-100 rounded-md">
+              <p className="mt-4 text-green-600 w-full text-center bg-gray-100 rounded-md p-3">
                 Resume data saved successfully!
               </p>
             )}
