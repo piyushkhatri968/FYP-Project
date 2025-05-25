@@ -9,6 +9,7 @@ import moment from "moment";
 
 const Public_Job_Search = () => {
   const { title, location } = useParams();
+  console.log(title)
 
   const [searchTitle, setSearchTitle] = useState(title || "");
   const [searchLocation, setSearchLocation] = useState(
@@ -34,8 +35,8 @@ const Public_Job_Search = () => {
           },
           body: JSON.stringify({
             // job_seeker_input: jobSeekerInput,
-            position: titleInput.trim(),
-            location: locationInput.trim(),
+            position: titleInput?.trim(),
+            location: locationInput?.trim(),
           }),
         }
       );
