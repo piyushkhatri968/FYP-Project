@@ -63,7 +63,7 @@ const Employee_Jobs_Invitation = () => {
         ) : jobInvitations && jobInvitations.length > 0 ? (
           jobInvitations.map((job, index) => (
             <Link
-              to={`/jobs/${job?.job._id}`}
+              to={`/jobs/${job?.job?._id}`}
               key={index}
               className="flex items-center justify-between bg-[#FDE7E7] p-6 gap-6 md:gap-0 flex-col md:flex-row hover:rounded-md transition-all duration-200 hover:scale-[1.01]"
             >
@@ -79,31 +79,31 @@ const Employee_Jobs_Invitation = () => {
 
               {/* Job Details */}
               <div className="flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-1 pl-8 gap-1">
-                <h2 className="text-lg font-bold">{job?.job.title}</h2>
+                <h2 className="text-lg font-bold">{job?.job?.title}</h2>
                 <p className="text-sm">
                   Via{" "}
                   <span className="text-red-500">
-                    {job?.recruiter.companyName}
+                    {job?.recruiter?.companyName}
                   </span>
                 </p>
                 <div className="text-gray-500 flex items-center space-x-1 mt-1">
                   <CiLocationOn className="text-gray-600 text-lg" />
-                  <span>{job?.job.location}</span>
+                  <span>{job?.job?.location}</span>
                 </div>
                 <div className="text-gray-500 flex items-center space-x-1">
                   <CiFilter className="text-gray-600 text-lg" />
-                  <span>{job?.job.skills.join(", ")}</span>
+                  <span>{job?.job?.skills.join(", ")}</span>
                 </div>
               </div>
 
               {/* Right Side */}
               <div className="flex flex-col justify-center items-center gap-2 md:gap-4">
                 <div className="text-red-600 bg-white py-2 px-8 border rounded-xl text-sm">
-                  {job?.job.jobType}
+                  {job?.job?.jobType}
                 </div>
                 <div className="flex justify-center items-center gap-2 text-gray-500">
                   <CiClock1 />
-                  <span>{moment(job?.job.createdAt).fromNow()}</span>
+                  <span>{moment(job?.job?.createdAt).fromNow()}</span>
                 </div>
               </div>
             </Link>

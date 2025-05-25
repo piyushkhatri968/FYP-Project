@@ -50,7 +50,7 @@ const Sidebar = ({ userData }) => {
               My Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/resume"
               className={`flex items-center gap-3 px-8 py-3 text-gray-600 border-t-2 border-dashed border-gray-100 hover:text-white hover:bg-[#FD1616] transition-all duration-300`}
@@ -58,7 +58,7 @@ const Sidebar = ({ userData }) => {
               <i className="fas fa-file"></i>
               My Resume
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/dashboard/employee?tab=appliedjobs"

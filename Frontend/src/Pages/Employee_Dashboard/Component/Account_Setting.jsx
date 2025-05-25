@@ -10,6 +10,7 @@ import {
   deleteUserFailure,
   deleteUserSuccess,
   deleteUserStart,
+  updateSuccess,
 } from "../../../Redux/User/UserSlice";
 
 const Account_Setting = () => {
@@ -148,14 +149,15 @@ const Account_Setting = () => {
         setTimeout(() => {
           window.location.reload(false);
         }, 1000);
+        dispatch(updateSuccess(response.data.data));
         setIsEditing(false);
         setUpdateUserError(null);
         setUpdateUserSuccess("User updated successfully");
       }
     } catch (error) {
       setUpdateUserSuccess(null);
-      console.log(error.response.data.message);
-      setUpdateUserError(error.response.data.message);
+      console.log(error);
+      setUpdateUserError(error.response?.data?.message);
     }
   };
 
