@@ -46,27 +46,74 @@ def analyze_resume():
         resume_text = extract_text_from_pdf(resume_path)
 
         prompt = f"""
-        Extract structured resume data from the text below. Respond in JSON format like:
+         Analyze this resume and return ONLY a JSON object with the following structure:
+
         {{
             "basic_info": {{
-                "name": "",
-                "email": "",
-                "phone": "",
-                "location": ""
+                "name": "Properly formatted name (Title Case)",
+                "email": "Primary contact email",
+                "phone": "Digits only phone number",
+                "location": "Properly formatted location"
             }},
             "professional_info": {{
-                "position": "",
-                "experience": "",
-                "skills": []
+                "position": "Standardized position title",
+                "experience": "Whole number years only",
+                "skills": [
+                    "Separated skills (no combined entries)",
+                    "Standardized formatting",
+                    "Only from Skills section"
+                ]
             }},
             "evaluation": {{
-                "pros": [],
-                "cons": [],
-                "suggestions": []
+                "pros": [
+                    "Encouraging strength statements",
+                    "Focus on technical capabilities",
+                    "Highlight relevant achievements"
+                ],
+                "cons": [
+                    "Constructive improvement areas",
+                    "Specific skill gaps to address",
+                    "Presented as opportunities"
+                ],
+                "suggestions": [
+                    "Actionable recommendations",
+                    "Specific skills to develop",
+                    "Project ideas to consider",
+                    "Ways to showcase work better"
+                ]
             }}
         }}
 
-        Resume Text:
+        STRICT PROCESSING RULES:
+        1. Name and Location:
+        - Convert to Title Case (e.g. "Piyush Khatri")
+        - Remove extra spaces and ALL CAPS
+
+        2. Position Title:
+        - Standardize formatting (e.g. "Mern Stack Developer")
+        - Remove special characters and ALL CAPS
+
+        3. Skills:
+        - Split combined entries (e.g. "HTML/CSS" → "HTML", "CSS")
+        - Remove skill levels or percentages
+        - Standardize naming (e.g. "React.js" not "REACT JS")
+
+        4. Experience:
+        - Must be whole number only
+        - Round down if necessary
+        - "0" for less than 1 year
+
+        5. Evaluation Tone:
+        - Pros: 3 maximum, focus on technical strengths
+        - Cons: 3 maximum, specific to technical gaps
+        - Suggestions: 5 maximum, highly actionable
+
+        6. Formatting:
+        - No duplicate fields
+        - No empty fields (use empty strings)
+        - No combined skill entries
+
+        RESUME TEXT:
         {resume_text}
         """
 
